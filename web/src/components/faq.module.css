@@ -1,0 +1,53 @@
+@import '../styles/vars.css';
+
+.root {
+
+}
+
+.drawer {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+
+  @nest & > svg {
+    margin: .9rem .5rem 0 0;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    stroke: var(--color-secondary);
+  }
+}
+
+.answer-wrapper {
+  max-height: 0px;
+  overflow: hidden;
+  transition: 0.25s ease-in-out;
+}
+
+.question {
+  cursor: pointer;
+  display: block;
+  composes: title6 from './typography.module.css';
+  padding-top: 1rem;
+  position: relative;
+  margin-bottom: 0;
+  transition: all 0.25s ease-out;
+}
+
+.answer {
+  composes: paragraphmain from './typography.module.css';
+}
+
+.drawer-trigger {
+  display: none;
+  @nest &:checked {
+    @nest & ~ svg {
+      transform: rotate(90deg);
+    }
+    @nest & ~ .infoWrapper > .answer-wrapper {
+      max-height: 350px;
+    }
+    @nest & ~ .infoWrapper > .question {
+      padding-bottom: 1rem;
+    }
+  }
+}

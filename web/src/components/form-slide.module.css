@@ -1,0 +1,21 @@
+@import '../styles/vars.css';
+
+.root {
+  display: grid;
+  grid-template-columns: .25fr .75fr;
+  height: 100vh;
+}
+
+.side-panel {
+  position: relative;
+}
+
+.side-panel-overlay {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(var(--color-primary-rgb), .8);
+}

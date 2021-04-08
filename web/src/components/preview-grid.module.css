@@ -1,0 +1,20 @@
+@import '../styles/vars.css';
+
+.root {
+  width: 100%;
+  display: grid;
+  row-gap: 3rem;
+  padding: var(--padding-y) var(--padding-x);
+  justify-items: center;
+}
+
+.title {
+  composes: title3 from './typography.module.css';
+}
+
+.grid {
+  max-width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 3rem;
+}

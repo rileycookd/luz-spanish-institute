@@ -1,12 +1,10 @@
-@import '../styles/custom-media.css';
+@import '../styles/media-queries.css';
+@import '../styles/vars.css';
+
 
 .root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  max-width: 960px;
-  padding: 1.5em;
-  margin: 0 auto;
-
-  @media (--media-min-small) {
-    padding: 2em;
-  }
 }

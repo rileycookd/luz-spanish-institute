@@ -1,0 +1,8 @@
+@import '../styles/vars.css';
+
+.root {
+  padding: 5.5rem var(--padding-x);
+  display: grid;
+  grid-template-columns: .75fr .25fr;
+  column-gap: 4rem;
+}

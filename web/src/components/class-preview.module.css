@@ -1,0 +1,84 @@
+@import '../styles/vars.css';
+
+.root {
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 1rem;
+  grid-template-columns: .4fr .6fr;
+  padding: 1rem;
+  cursor: pointer;
+  background-color: var(--color-white);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--color-grey-xlight);
+  transition: box-shadow .2s ease-out;
+
+  @media(hover: hover) {
+    @nest &:hover {
+      box-shadow: var(--shadow-main);
+      z-index: 3;
+      position: relative;
+      
+      @nest & > .content > .titles > .title {
+        color: var(--color-accent);
+      }
+    }
+  }
+}
+
+.thumbnail {
+  width: max-content;
+  max-width: 100%;
+  height: auto;
+}
+
+.content {
+  padding: 1rem;
+  padding-left: 0;
+  display: grid;
+  align-content: space-between;
+  row-gap: 1rem;
+}
+
+.titles {
+  display: grid;
+  row-gap: 1rem;
+  color: var(--color-text-dark);
+}
+
+.title {
+  transition: color .2s ease-out;
+  composes: title5 from './typography.module.css';
+}
+
+.excerpt {
+  composes: paragraphmain from './typography.module.css';
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+.meta-item {
+  display: flex;
+
+  @nest & > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--color-secondary);
+    margin-right: .5rem;
+  }
+}
+
+.meta-item-info {
+  composes: titlesub from './typography.module.css';
+  font-weight: 400;
+
+  @nest & > span {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--color-secondary);
+  }
+}

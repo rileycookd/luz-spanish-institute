@@ -1,0 +1,61 @@
+@import '../styles/vars.css';
+
+.root {
+  padding: 1rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  composes: link from './typography.module.css';
+  transition: color .1s linear;
+
+  @media(hover: hover) {
+    @nest &:hover {
+      color: var(--color-accent);
+    }
+  }
+}
+
+.button {
+  cursor: pointer;
+  border-radius: var(--border-radius-default);
+  font-family: "Montserrat";
+  font-weight: 700;
+  outline: none;
+  border: none;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  transition: background-color .1s ease-out;
+
+  @media (hover: hover) {
+    @nest &:hover {
+      background-color: var(--color-accent-dark);
+    }
+  }
+}
+
+.button-small {
+  composes: small from './typography.module.css';
+  padding: .5rem 1rem;
+}
+
+.button-large {
+  composes: base from './typography.module.css';
+  padding: 2rem;
+}
+
+.button-secondary {
+  border: 1px solid var(--color-primary);
+  background-color: transparent;
+
+  @media (hover: hover) {
+    @nest &:hover {
+      background-color: var(--color-grey-medium);
+    }
+  }
+
+  @nest &.button-small {
+    padding: calc(.5rem - 1px) calc(1rem - 1px);
+  }
+  @nest &.button-large {
+    padding: calc(2rem - 1px);
+  }
+}

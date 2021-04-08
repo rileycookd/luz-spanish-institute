@@ -1,0 +1,94 @@
+@import '../styles/vars.css';
+
+
+.root {
+
+}
+
+.footer {
+  color: var(--color-text-light);
+  padding: 7.75rem var(--padding-x);
+  display: grid;
+  row-gap: 4rem;
+  background-color: var(--color-primary);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contact {
+  display: grid;
+  row-gap: 1rem;
+  grid-auto-rows: max-content;
+}
+
+.contact-item {
+  height: max-content;
+  display: flex;
+  align-items: center;
+}
+
+.contact-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  fill: var(--color-secondary);
+  margin-right: 1rem;
+}
+
+.contact-info {
+  
+}
+
+.site-map {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 4rem;
+}
+
+.site-map-column {
+  display: grid;
+  grid-auto-rows: max-content;
+  row-gap: 1rem;
+}
+
+.site-map-title {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  composes: base from './typography.module.css';
+}
+
+.site-map-links {
+  list-style: none;
+  display: grid;
+  row-gap: .25rem;
+}
+
+.site-map-link {
+  composes: paragraphmain from './typography.module.css';
+  
+  @nest & > a {
+    color: var(--color-text-medium);
+    text-decoration: none;
+  }
+}
+
+.social-links {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 1.25rem;
+
+  @nest & > svg {
+    fill: var(--color-text-medium);
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.copyright {
+  color: var(--color-text-medium);
+  font-family: 'Montserrat';
+  font-weight: 700;
+  composes: small from './typography.module.css';
+}

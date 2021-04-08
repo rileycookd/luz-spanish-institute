@@ -1,0 +1,76 @@
+:root {
+  /* ~~~~~~ */
+  /* COLORS */
+  /* ~~~~~~ */
+
+  --color-black: #082735;
+  --color-black-rgb: 8, 39, 53;
+  
+  --color-white: #FFF; 
+
+  --color-grey-medium: #7E95A0;
+  --color-grey-light: #C4C4C4;
+  --color-grey-xlight: #E5E5E5;
+  --color-grey-xxlight: #F3F5F6;
+
+  /* Primary Shades */
+
+  --color-primary: #082735;
+  --color-primary-rgb: 8, 39, 53;
+
+  --color-primary-medium-dark: #0B3447;
+  --color-primary-medium: #0D4159;
+  --color-primary-medium-light: #114E6A;
+
+  /* Accent Shades */
+
+  --color-accent: #F2BB05;
+  --color-accent-dark: #DCAA04;
+
+  /* Secondary Shades */
+  
+  --color-secondary: #00BFB2;
+  --color-secondary-rgb: 97, 152, 142;
+
+  /* Text Colors */
+
+  --color-text-dark: #4E616A;
+  --color-text-medium: #5F7681;
+  --color-text-light: #ADBCC2;
+
+  /* Status Colors */
+
+  --color-error: #D44D5C;
+  --color-success: #64B990;
+
+
+
+  /* ~~~~~~~ */
+  /*  Fonts */
+  /* ~~~~~~~ */
+
+  --font-headings: 'Montserrat';
+  --font-text: 'Raleway';
+
+  /* ~~~~~~~ */
+  /* SHADOWS */
+  /* ~~~~~~~ */
+
+  --shadow-main: 0 6px 20px rgba(var(--color-primary-rgb), .12);
+  --shadow-dark: 0 4px 15px rgba(var(--color-primary-rgb), .4);
+
+  /* ~~~~~~~ */
+  /* Padding */
+  /* ~~~~~~~ */
+
+  --padding-x: 150px;
+  --padding-y: 12rem;
+
+  /* ~~~~~~~~~~~~~ */
+  /* Border Radius */
+  /* ~~~~~~~~~~~~~ */
+
+  --border-radius-default: 3px;
+  --border-radius-medium: 8px;
+
+}

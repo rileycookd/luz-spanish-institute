@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { graphql } from "gatsby";
 
-import Hero from "../components/hero";
-import InfoRows from "../components/InfoRows";
-import CTAColumns from "../components/cta-columns";
-import CTA from "../components/cta";
-import Pricing from "../components/pricing";
-import { TopWave, BottomWave } from "../components/wave";
-
 import GraphQLErrorList from "../components/graphql-error-list";
 import SEO from "../components/seo";
 import Layout from "../containers/layout";
+import Container from '../components/container'
+
+import Header from '../components/header'
+import InfoBlock from '../components/info-block'
+import ClassPreviewGrid from '../components/class-preview-grid'
+import TestimonialBlock from '../components/testimonial-block'
+import CtaForm from '../components/cta-form'
+import Footer from '../components/footer'
 
 export const query = graphql`
   query PageTemplateQuery($id: String!) {
@@ -24,31 +25,26 @@ export const query = graphql`
       }
     }
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
-      primaryColor {
-        hex
-      }
-      secondaryColor {
-        hex
-      }
       title
-      openGraph {
-        title
-        description
-        image {
-          ...SanityImage
-        }
-      }
     }
   }
 `;
 
-const Page = props => {
+// openGraph {
+//     title
+//     description
+//     image {
+//       ...SanityImage
+//     }
+//   }
+
+const Page = (props) => {
   const { data, errors } = props;
 
   if (errors) {
     return (
       <Layout>
-        <GraphQLErrorList errors={errors} />
+        <GraphQLErrorList errors={errors} /> 
       </Layout>
     );
   }
@@ -62,38 +58,28 @@ const Page = props => {
   }
 
   const page = data.page || data.route.page;
-
+  
   const content = (page._rawContent || [])
-    .filter(c => !c.disabled)
+    .filter((c) => !c.disabled)
     .map((c, i) => {
       let el = null;
       switch (c._type) {
-        case "pricing":
-          el = <Pricing key={c._key} {...c} />;
+        case "infoBlock":
+          el = <InfoBlock key={c._key} {...c} />;
           break;
-        case "infoRows":
-          el = <InfoRows key={c._key} {...c} />;
+        case "classTypesList":
+          el = <ClassPreviewGrid key={c._key} {...c} />;
+          break;
+        case "testimonialGroup":
+          el = <TestimonialBlock key={c._key} {...c} />;
           break;
         case "hero":
-          el = <Hero key={c._key} {...c} />;
+          c.kind === 'header' 
+          ? el = <Header key={c._key} {...c} />
+          : el = <Header key={c._key} {...c} />
           break;
-        case "ctaColumns":
-          el = <CTAColumns key={c._key} {...c} />;
-          break;
-        case "ctaPlug":
-          el = <CTA key={c._key} {...c} />;
-          break;
-        case "uiComponentRef":
-          switch (c.name) {
-            case "topWave":
-              el = <TopWave />;
-              break;
-            case "bottomWave":
-              el = <BottomWave />;
-              break;
-            default:
-              break;
-          }
+        case "form":
+          el = <CtaForm key={c._key} {...c} />
           break;
         default:
           el = null;
@@ -101,26 +87,24 @@ const Page = props => {
       return el;
     });
 
-  const gradient = {
-    from: (site.primaryColor && site.primaryColor.hex) || "#d53369",
-    to: (site.secondaryColor && site.secondaryColor.hex) || "#daae51"
-  };
+  const menuItems = page.navMenu && (page.navMenu._rawItems || []);
+  const menuCtas = page.navMenu && (page.navMenu._rawCtas || []);
 
-  const menuItems = page.navMenu && (page.navMenu.items || []);
   const pageTitle = data.route && !data.route.useSiteTitle && page.title;
+  const { _rawHeaderContent, headerSubtitle, headerImage } = page;
+  const headerTitle = page.headerTitle ? page.headerTitle : pageTitle
 
   return (
-    <Layout navMenuItems={menuItems} textWhite={true}>
+    <Layout navMenuItems={menuItems} navMenuCtas={menuCtas}>
       <SEO
-        title={pageTitle}
-        description={site.description}
-        keywords={site.keywords}
-        bodyAttr={{
-          class: "leading-normal tracking-normal text-white gradient"
-        }}
-        gradient={gradient}
-      />
-      <div className="pt-24">{content}</div>
+          title={pageTitle}
+          description={site.description}
+          keywords={site.keywords}
+        />
+      <Container>
+        {content}
+        <Footer />
+      </Container>
     </Layout>
   );
 };

@@ -1,72 +1,58 @@
-import React from "react";
-import { graphql } from "gatsby";
-import Errors from "../components/errors";
-import Page from "../templates/page";
+import React from 'react'
+import { graphql } from 'gatsby'
+
+import GraphQLErrorList from '../components/graphql-error-list'
+import Layout from '../containers/layout'
+import Page from '../templates/page'
 
 export const query = graphql`
-  fragment SanityImage on SanityMainImage {
-    alt
-    crop {
-      _key
-      _type
-      top
-      bottom
-      left
-      right
+  query IndexPageQuery {
+    site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
+      title
+      description
+      keywords
     }
-    hotspot {
-      _key
-      _type
-      x
-      y
-      height
-      width
-    }
-    asset {
-      _id
-      metadata {
-        lqip
-        dimensions {
-          aspectRatio
-          width
-          height
-        }
-      }
-    }
-  }
 
-  query FrontpageQuery {
-    page: sanityPage(_id: { regex: "/(drafts.|)frontpage/" }) {
+    company: sanityCompanyInfo {
+      phone
+      email
+      _rawDescription
+      name
+      facebook
+      linkedin
+      instagram
+    } 
+
+    page: sanityPage(_id: { regex: "/(drafts.|)homepage/" }) {
       ...PageInfo
     }
+  }    
+`
 
-    site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
-      primaryColor {
-        hex
-      }
-      secondaryColor {
-        hex
-      }
-      title
-      openGraph {
-        title
-        description
-        image {
-          ...SanityImage
-        }
-      }
-    }
-  }
-`;
 
 const IndexPage = props => {
-  const { data, errors } = props;
+  const { data, errors } = props
 
   if (errors) {
-    return <Errors errors={errors} />;
+    return (
+      <Layout>
+        <GraphQLErrorList errors={errors} />
+      </Layout>
+    )
   }
 
-  return <Page data={data} />;
-};
+  const site = (data || {}).site
+  // const company = (data || {}).company
 
-export default IndexPage;
+  if (!site) {
+    throw new Error(
+      'Missing "Site settings". Open the studio at http://localhost:3333 and add some content to "Site settings" and restart the development server.'
+    )
+  }
+
+  return (
+    <Page data={data} />
+  )
+}
+
+export default IndexPage

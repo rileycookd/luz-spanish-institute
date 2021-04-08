@@ -1,0 +1,74 @@
+@import '../styles/vars.css';
+
+.root {
+  position: relative;
+  display: grid;
+}
+
+.header {
+  padding: 7rem var(--padding-x);
+  position: relative;
+  display: grid;
+  row-gap: 3rem;
+  justify-content: start;
+  background-color: var(--color-primary);
+}
+
+.titles {
+  max-width: 600px;
+  z-index: 3;
+  height: max-content;
+  display: grid;
+  grid-auto-rows: max-content;
+  justify-items: start;
+}
+
+.title {
+  color: var(--color-white);
+  composes: title2 from './typography.module.css';
+  padding-bottom: .5rem;
+
+  @nest &.uppercase {
+    max-width: 550px;
+    text-transform: uppercase;
+  }
+}
+
+.subtitle {
+  color: var(--color-text-light);
+  composes: xlarge from './typography.module.css';
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.image-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  max-height: 100%;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, rgba(8,39,53,1) 0%, rgba(8,39,53,0.7) 25%, rgba(8,39,53,0.7) 75%, rgba(8,39,53,1) 100%);
+}

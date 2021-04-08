@@ -1,25 +1,14 @@
-const { isFuture } = require("date-fns");
+const { format } = require('date-fns')
+
 /**
  * Implement Gatsby's Node APIs in this file.
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-exports.createSchemaCustomization = ({ actions, schema }) => {
-  actions.createTypes([
-    schema.buildObjectType({
-      name: "SanityPost",
-      interfaces: ["Node"],
-      fields: {
-        isPublished: {
-          type: "Boolean!",
-          resolve: source => new Date(source.publishedAt) <= new Date()
-        }
-      }
-    })
-  ]);
-};
 
+
+// Create Landing Pages (from Sanity studio Page Builder )
 async function createLandingPages(pathPrefix = "/", graphql, actions, reporter) {
   const { createPage } = actions;
   const result = await graphql(`
@@ -40,27 +29,26 @@ async function createLandingPages(pathPrefix = "/", graphql, actions, reporter) 
   if (result.errors) throw result.errors;
 
   const routeEdges = (result.data.allSanityRoute || {}).edges || [];
-  routeEdges.forEach(edge => {
+  routeEdges.forEach((edge) => {
     const { id, slug = {} } = edge.node;
     const path = [pathPrefix, slug.current, "/"].join("");
     reporter.info(`Creating landing page: ${path}`);
     createPage({
       path,
       component: require.resolve("./src/templates/page.js"),
-      context: { id }
+      context: { id },
     });
   });
 }
 
-async function createBlogPostPages(pathPrefix = "/blog", graphql, actions, reporter) {
-  const { createPage } = actions;
+async function createClassTypePages (pathPrefix = "/", graphql, actions, reporter) {
+  const { createPage } = actions
   const result = await graphql(`
     {
-      allSanityPost(filter: { slug: { current: { ne: null } }, isPublished: { eq: true } }) {
+      allSanityClassType(filter: { slug: { current: { ne: null } } }) {
         edges {
           node {
             id
-            publishedAt
             slug {
               current
             }
@@ -68,26 +56,30 @@ async function createBlogPostPages(pathPrefix = "/blog", graphql, actions, repor
         }
       }
     }
-  `);
+  `)
 
-  if (result.errors) throw result.errors;
 
-  const postEdges = (result.data.allSanityPost || {}).edges || [];
-  postEdges
-    .filter(edge => !isFuture(edge.node.publishedAt))
-    .forEach(edge => {
-      const { id, slug = {} } = edge.node;
-      const path = `${pathPrefix}/${slug.current}/`;
-      reporter.info(`Creating blog post page: ${path}`);
-      createPage({
-        path,
-        component: require.resolve("./src/templates/blog-post.js"),
-        context: { id }
-      });
-    });
+  if (result.errors) throw result.errors
+
+  const classTypeEdges = (result.data.allSanityClassType || {}).edges || []
+
+  classTypeEdges.forEach((edge) => {
+    const { id, slug = {}} = edge.node
+    const path = [pathPrefix, "classes/", slug.current, "/"].join("");
+
+    reporter.info(`Creating class type page: ${path}`)
+
+    createPage({
+      path,
+      component: require.resolve('./src/templates/class.js'),
+      context: { id }
+    })
+  })
 }
+
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await createLandingPages("/", graphql, actions, reporter);
-  await createBlogPostPages("/blog", graphql, actions, reporter);
+  await createClassTypePages("/", graphql, actions, reporter);
+
 };

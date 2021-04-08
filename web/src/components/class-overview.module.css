@@ -1,0 +1,71 @@
+@import '../styles/vars.css';
+
+
+.root {
+  display: grid;
+  row-gap: 3rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-info {
+  display: grid;
+  row-gap: 1rem;
+}
+
+.header-title {
+  composes: title3 from './typography.module.css'
+}
+
+.header-meta {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 2rem;
+  justify-content: start;
+}
+
+.header-meta-item {
+  display: flex;
+
+  @nest & > svg {
+    margin-right: .5rem;
+    fill: var(--color-secondary);
+    stroke: var(--color-secondary);
+  }
+}
+
+.header-meta-item-info {
+  composes: titlesub from './typography.module.css';
+  font-weight: 400;
+  color: var(--color-text-medium);
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+}
+
+.tab-description {
+  @nest & > div {
+    display: grid;
+    row-gap: 2rem;
+
+    @nest & ul {
+      list-style-position: inside;
+      font-family: inherit;
+      color: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      margin: 0.75rem 0;
+      padding: 0;
+
+      @nest & li {
+        padding: 0.25rem 0;
+      }
+    }
+  }
+}

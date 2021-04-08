@@ -1,0 +1,168 @@
+@import '../styles/vars.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-title {
+  composes: title6 from './typography.module.css';
+  padding-bottom: .5rem;
+}
+
+.tab-subtitle {
+  
+}
+
+.table {
+  border-collapse: collapse;
+}
+
+.table-header {
+
+}
+
+.table-body {
+  border-radius: var(--border-radius-default);
+}
+
+.table-row {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey-xlight);
+}
+
+.table-header {
+  composes: title6 from './typography.module.css';
+  padding: 1rem;
+}
+
+.table-cell {
+  composes: title6 from './typography.module.css';
+  font-weight: 400;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.accent {
+  font-weight: 500;
+  color: var(--color-secondary);
+}
+
+/* ++++++++++++ */
+/* Number Input */
+/* ++++++++++++ */
+
+.input-number-container {
+  display: flex;
+  border-radius: var(--border-radius-default);
+
+  @nest & > *:not(:first-child) {
+    margin-left: -1px;
+  }
+}
+
+
+.input-number, 
+.input-number-button {
+  border: 1px solid #ccc;
+  height: 40px;
+  user-select: none;
+}
+
+.input-number-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem;
+  background: var(--color-grey-xlight);
+  color: var(--color-primary);
+  cursor: pointer;
+
+  @nest & > svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  @nest &.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+}
+
+.input-number {
+  max-width: 3rem;
+  text-align: center;
+  outline-offset: -1px;
+}
+
+.input-group {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+}
+
+.input-number-label {
+  composes: title6 from './typography.module.css';
+  padding-right: 1rem;
+}
+
+/* ++++++++++++ */
+/* Price Toggle */
+/* ++++++++++++ */
+
+.toggle-switch-label {
+  justify-content: center;
+	align-items: center;
+	border-radius: 100px;
+	display: flex;
+}
+
+.toggle-switch-input {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+
+  @nest &:checked ~ .toggle-switch-track {
+    background-color: var(--color-secondary);
+
+    @nest & > .toggle-switch-indicator {
+      transform: translateX(1.5rem);
+    }
+  }
+}
+
+.toggle-switch-track {
+	background: var(--color-grey-xlight);
+	border: 1px solid var(--color-grey-light);
+	border-radius: 100px;
+	cursor: pointer;
+	display: flex;
+	height: 2rem;
+	margin: 0 .75rem;
+	position: relative;
+	width: 3.5rem;
+  transition: background-color .2s ease-out;
+}
+
+.toggle-switch-indicator {
+	align-items: center;
+	background: var(--color-white);
+	border-radius: 50%;
+	display: flex;
+	height: 1.5rem;
+	justify-content: center;
+	left: 3px;
+  bottom: 3px;
+	position: absolute;
+	transition: .2s ease-out;
+	width: 1.5rem;
+  border: 1px solid var(--color-grey-light);
+}

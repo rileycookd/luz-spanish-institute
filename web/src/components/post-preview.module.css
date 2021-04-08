@@ -1,0 +1,253 @@
+@import '../styles/media-queries.css';
+@import '../styles/vars.css';
+
+.root {
+  z-index: 1;
+  overflow: hidden;
+
+  @nest &.selected {
+    z-index: 2;
+
+  }
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-white);
+  padding: 2rem 6%;
+  border-bottom: 1px solid rgba(var(--color-primary-medium-rgb), .3);
+  border-top: 1px solid rgba(var(--color-primary-medium-rgb), .3);
+
+  @media (--media-min-large) {
+    padding: 3rem 6%;
+  }
+
+  @media (hover: hover) {
+    @nest &:hover {
+      cursor: pointer;
+      @nest & > .titles > .title, & > .titles > .experience-titles > .experience-title, & > .titles > .experience-titles > .title {
+        color: var(--color-accent);
+      }
+      @nest & .toggle > svg {
+        cursor: pointer;
+        fill: var(--color-accent);
+        stroke: var(--color-accent);
+      }
+    }
+  }
+}
+
+.titles {
+  display: grid;
+  color: var(--color-text-light);
+  composes: large from './typography.module.css';
+
+  
+  @nest & > *:first-child {
+    @media(--media-min-large) {
+      margin-right: 2rem;
+    }
+  }
+
+  @nest & > * {
+    overflow-wrap: break-word;
+  }
+
+  @nest &.experience {
+    font-size: var(--font-base-size);
+  }
+
+  @nest &.experience, &.skill {
+    display: grid;
+
+    @media (--media-min-large) {
+      align-items: center;
+      display: flex;
+    }
+  }
+}
+
+.title {
+  transition: color .1s linear;
+  composes: title3 from './typography.module.css';
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.experience-title {
+  color: var(--color-primary);
+  margin-bottom: .5rem;
+  transition: color .1s linear;
+  composes: title5 from './typography.module.css';
+}
+
+.icon {
+  margin-bottom: .5rem;
+  min-height: 2rem;
+  min-width: 2rem;
+  fill: var(--color-primary-medium);
+  opacity: .5;
+
+  @media (--media-min-large) {
+    margin: none;
+  }
+}
+
+.dates {
+  margin-bottom: .5rem;
+  
+  @media (--media-min-large) {
+    margin: none;
+  }
+}
+
+.body {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  row-gap: 2rem;
+  padding: 6rem 6%;
+  background-color: var(--color-primary-xtra-light);
+
+  @media (--media-min-xlarge) {
+    padding: 6rem 4rem;
+  }
+}
+
+.content {
+  display: grid;
+  justify-items: center;
+  row-gap: 2.5rem;
+  max-width: 35rem;
+
+  @nest & > hr {
+    height: 1px;
+    width: 100%;
+    background-color: var(--color-primary-light);
+    opacity: .2;
+  }
+
+  @nest &.project {
+
+    @media (--media-min-xlarge) {
+      max-width: 100%;
+      grid-auto-flow: column;
+      column-gap: 2rem;
+    }  
+  }
+}
+
+.thumbnail {
+  align-self: center;
+  border-radius: 3px;
+  width: max-content;
+  height: max-content;
+  object-fit: cover;
+}
+
+.info {
+  padding: 1rem 0;
+  display: grid;
+  row-gap: 1rem;
+  align-content: center;
+  justify-items: center;
+
+  @nest &.project {
+
+    @media (--media-min-xlarge) {
+      justify-items: start;
+    }
+  }
+}
+
+.info.experience {
+  row-gap: 2.5rem;
+}
+
+.info-title {
+  composes: title5 from './typography.module.css';
+}
+
+
+.excerpt {
+  width: 100%;
+  color: var(--color-black);
+}
+
+.bullets {
+  text-align: left;
+  display: grid;
+  row-gap: 1rem;
+  color: var(--color-black);
+  list-style-type: none;
+
+  @nest & > li {
+    display: flex;
+    align-items: center;
+
+    @nest &::before {
+      content: "";
+      height: .7rem;
+      min-width: .7rem;
+      border-radius: 50%;
+      border: 2px solid var(--color-accent);
+      display: inline-block;
+      margin-right: 1rem;
+    }
+  }
+}
+
+.toggle {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+
+  @nest & > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: var(--color-text-light);
+  }
+}
+
+input[name="r"] {
+  position: absolute;
+  visibility: hidden;
+}
+
+.link {
+  text-decoration: none;
+  text-align: center;
+  width: auto;
+  padding: .5rem 0;
+  transition: background-color .1s ease-out;
+  background-color: var(--color-primary);
+  cursor: pointer;
+  outline: none;
+  border: none;
+
+  font-family: 'Rubik';
+  font-weight: 500;
+  font-size: var(--font-large-size);
+  line-height: var(--font-large-height);
+  color: var(--color-secondary);
+
+  @media(hover: hover) {
+    @nest &:hover {
+      background-color: var(--color-accent);
+    }
+    @nest &:disabled:hover {
+      cursor: auto;
+      background-color: var(--color-primary);
+    }
+  }
+
+  @nest &:focus {
+    background-color: var(--color-accent);
+  }
+
+  @nest & > svg {
+    margin-left: .5rem;
+  }
+}

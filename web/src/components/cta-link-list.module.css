@@ -1,0 +1,63 @@
+@import '../styles/vars.css';
+
+.root {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--shadow-dark);
+  max-width: 986px;
+  overflow: hidden;
+  z-index: 5;
+
+  @nest & > * {
+    transition: background-color .2s ease-out;
+    text-decoration: none;
+    flex: 1;
+    border-left: 1px solid var(--color-primary-medium-dark);
+    background-color: var(--color-primary-medium);
+
+    @nest &:first-child {
+      border-left: none;
+    }  
+
+    @media (hover: hover) {
+      @nest &:hover {
+        background-color: var(--color-primary-medium-light);
+
+        @nest & > .link > svg {
+          transform: translateX(.5rem);
+        }
+
+        @nest & > .link > .title {
+          color: var(--color-white);
+        }
+      }
+    }
+  }
+}
+
+.link {
+  color: var(--color-text-light);
+  display: grid;
+  row-gap: .5rem;
+  padding: 4rem 2.5rem;  
+}
+
+.title {
+  transition: color .2s ease-out;
+  composes: title6 from './typography.module.css';
+}
+
+.subtitle {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+  transition: transform .2s ease-out;
+}

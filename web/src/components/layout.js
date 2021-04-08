@@ -1,60 +1,54 @@
-import React from "react";
-import Header from "./header";
-import Footer from "./footer";
-import "../styles/layout.css";
+import React, { useLayoutEffect, useRef, useEffect, useState } from 'react'
+// import { ModalProvider } from './modal'
+// import useModal from '../hooks/useModal'
+import "@fontsource/montserrat/400.css"
+import "@fontsource/montserrat/500.css"
+import "@fontsource/montserrat/700.css"
+import "@fontsource/raleway/400.css"
+import "@fontsource/raleway/700.css"
+import '../styles/layout.css'
+import * as styles from './layout.module.css'
+import Navbar from './navbar'
 
-class Layout extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrolled: false
-    };
-  }
+function Layout (props) {
+  const {
+    children,
+    onHideNav,
+    onShowNav,
+    showNav,
+    siteTitle,
+    navMenuItems,
+    navMenuCtas
+  } = props;
 
-  componentDidMount() {
-    window.addEventListener("scroll", this.toggleBodyClass);
-    this.toggleBodyClass();
-  }
+  // const { isModalOpen } = useModal()
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.toggleBodyClass);
-  }
+  // const [sidebarWidth, setSidebarWidth] = useState(0)
+  // const ref = useRef(null)
 
-  toggleBodyClass = () => {
-    if (this.state.scrolled && window.scrollY <= 10) {
-      this.setState({ scrolled: false });
-    } else if (!this.state.scrolled && window.scrollY > 10) {
-      this.setState({ scrolled: true });
-    }
-  };
+  // useLayoutEffect(()=>{
+  //   if (ref.current) {
+  //       setSidebarWidth(ref.current.clientWidth)
+  //   }
+  // }, [ref.current, ref.current ? ref.current.clientWidth:0])
+  
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setSidebarWidth(ref.current.clientWidth);
+  //   }
+  //   window.addEventListener('resize', handleResize)
+  // })
 
-  render() {
-    const {
-      children,
-      onHideNav,
-      onShowNav,
-      showNav,
-      siteTitle,
-      navMenuItems,
-      textWhite = true
-    } = this.props;
-    const { scrolled } = this.state;
-    return (
-      <>
-        <Header
-          navMenuItems={navMenuItems}
-          siteTitle={siteTitle}
-          onHideNav={onHideNav}
-          onShowNav={onShowNav}
-          showNav={showNav}
-          scrolled={scrolled}
-          textWhite={textWhite}
-        />
-        <>{children}</>
-        <Footer siteTitle={siteTitle} />
-      </>
-    );
-  }
+  return (
+    // <ModalProvider>
+      <div className={styles.root}>
+        {(navMenuItems || navMenuCtas) && (
+          <Navbar navMenuItems={navMenuItems ? navMenuItems : []} navMenuCtas={navMenuCtas ? navMenuCtas : []} />
+        )}
+        {children}
+      </div> 
+    // </ModalProvider>
+  )
 }
 
-export default Layout;
+export default Layout

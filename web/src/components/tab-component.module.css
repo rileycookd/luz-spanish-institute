@@ -1,0 +1,106 @@
+@import '../styles/vars.css';
+
+.root {
+  display: grid;
+  row-gap: 3rem;
+}
+
+.tabList {
+  color: var(--color-white);
+  z-index: 10;
+  display: grid;
+  justify-content: start;
+  grid-auto-flow: column;
+  column-gap: 2rem;
+  list-style: none;
+  border-bottom: 1px solid var(--color-primary-medium);
+
+  @nest &.dark {
+    border-bottom: 1px solid var(--color-grey-xlight);
+  }
+
+  @nest & > li {
+    display: flex;
+  }
+}
+
+.link {
+  cursor: pointer;
+  padding: .75rem 0;
+  composes: base from './typography.module.css';
+  font-family: 'Montserrat';
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-grey-medium);
+  text-decoration: none;
+  border-bottom: 5px solid transparent;
+  transition: color .1s ease-out;
+
+  @nest &.dark {
+    color: var(--color-text-light);
+
+    @nest &.active {
+      color: var(--color-primary);
+
+      @nest &:hover {
+        color: var(--color-primary);
+      }
+    }
+
+    @nest &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  @nest &.active {
+    color: var(--color-white);
+    border-bottom: 5px solid var(--color-accent);
+    font-weight: 700;
+    transition: color .1s ease-out, border-bottom .1s ease-out;
+
+
+
+    @nest &:hover {
+      border-bottom: 5px solid var(--color-accent);
+      color: var(--color-white);
+    }
+  }
+
+  @nest &:hover {
+    border-bottom: 1px solid var(--color-text-light);
+    color: var(--color-text-light);
+  }
+}
+
+/* +++++++++++++++++ */
+/*   Pricing Theme   */
+/* +++++++++++++++++ */
+
+.tab-list-pricing {
+  display: flex;
+  justify-self: center;
+  width: 50%;
+  border-radius: var(--border-radius-default);
+
+  @nest & > *:not(:first-child) {
+    margin-left: -1px;
+  }
+}
+
+.tab-pricing {
+  flex: 1;
+  cursor: pointer;
+  border: 1px solid var(--color-grey-light);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-medium);
+  transition: background-color .1s ease-out, color .1s ease-out;
+
+  @nest &.active {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+  }
+}

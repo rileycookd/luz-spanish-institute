@@ -1,0 +1,15 @@
+.root {
+  display: grid;
+  border-left: 5px solid var(--color-black);
+  padding-left: 2rem;
+}
+
+.text {
+  composes: xlarge from '../typography.module.css';
+}
+
+.caption {
+  composes: small from '../typography.module.css';
+  margin-top: 0.5rem;
+  justify-self: right;
+}

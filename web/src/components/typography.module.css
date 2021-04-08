@@ -1,25 +1,135 @@
-@import '../styles/custom-media.css';
-@import '../styles/custom-properties.css';
+@import '../styles/media-queries.css';
+
+:root {
+  --base-unit: 16;
+
+  /* Font sizes */
+  --font-micro-size: calc(8 / var(--base-unit) * 2rem);
+  --font-micro-line-height: 1;
+  --font-small-size: calc(14 / var(--base-unit) * 1rem);
+  --font-small-line-height: calc(24 / 14);
+  --font-base-size: calc(var(--base-unit) / 16 * 100%);
+  --font-base-line-height: calc(22 / var(--base-unit));
+  --font-large-size: calc(18 / var(--base-unit) * 1rem);
+  --font-large-line-height: calc(24 / 18);
+  --font-xlarge-size: calc(20 / var(--base-unit) * 1rem);
+  --font-xlarge-line-height: calc(32 / 20);
+  --font-xxlarge-size: calc(36 / var(--base-unit) * 1rem);
+  --font-xxlarge-line-height: calc(52 / 36);
+  --font-base-line-height-extra: calc(24 / var(--base-unit) * 1rem);
+  --font-article-size: calc(20 / var(--base-unit) * 1rem);
+  --font-article-line-height: calc(36 / 20);
+  --font-paragraph-main-size: (16 / var(--base-unit) * 1rem);
+  --font-paragraph-main-line-height: calc(28 / 16);
+  --font-title5-size: calc(18 / var(--base-unit) * 1rem);
+  --font-title5-line-height: calc(24 / 18);
+  --font-title4-size: calc(24 / var(--base-unit) * 1rem);
+  --font-title4-line-height: calc(32 / 24);
+  --font-title3-size: calc(28 / var(--base-unit) * 1rem);
+  --font-title3-line-height: calc(40 / 28);
+  --font-title2-size: calc(48 / var(--base-unit) * 1rem);
+  --font-title2-line-height: calc(56 / 48);
+  --font-title1-size: calc(56 / var(--base-unit) * 1rem);
+  --font-title1-line-height: calc(68 / 56);
+
+  @media screen and (min-width: 320px) {
+    html {
+      --base-unit: calc(16px + 6 * ((100vw - 320px) / 680));
+    }
+  }
+  @media screen and (min-width: 1000px) {
+    html {
+      --base-unit: 22px;
+    }
+  }
+}
 
 
-
-/*
- * Statically sized elements
- */
 
 .title1 {
+  font-family: 'Montserrat';
+  font-weight: 700;
   font-size: var(--font-title1-size);
   line-height: var(--font-title1-line-height);
+
+  @media (--media-max-small) {
+    font-size: var(--font-title2-size);
+    line-height: var(--font-title2-line-height);
+  }
 }
 
 .title2 {
+  font-family: 'Montserrat';
+  font-weight: 700;
   font-size: var(--font-title2-size);
   line-height: var(--font-title2-line-height);
+
+  @media (--media-max-small) {
+    font-size: var(--font-title3-size);
+    line-height: var(--font-title3-line-height);
+  }
 }
 
 .title3 {
+  font-family: 'Montserrat';
+  font-weight: 700;
   font-size: var(--font-title3-size);
   line-height: var(--font-title3-line-height);
+
+  @media (--media-max-small) {
+    font-size: var(--font-title4-size);
+    line-height: var(--font-title4-line-height);
+  }
+}
+
+.title4 {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-size: var(--font-title4-size);
+  line-height: var(--font-title4-line-height);
+
+  @media (--media-max-small) {
+    font-size: var(--font-title5-size);
+    line-height: var(--font-title5-line-height);
+  }
+}
+
+.title5 {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-size: var(--font-title5-size);
+  line-height: var(--font-title5-line-height);
+
+  @media (--media-max-small) {
+    font-size: var(--font-base-size);
+    line-height: var(--font-base-line-height);
+  }
+}
+
+.title6 {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-size: var(--font-base-size);
+  line-height: var(--font-base-line-height);
+}
+
+.titlesub {
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-line-height);
+}
+
+.link {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: var(--font-base-size);
+  line-height: var(--font-base-line-height);
+}
+
+.xlarge {
+  font-size: var(--font-xlarge-size);
+  line-height: var(--font-xlarge-line-height);
 }
 
 .large {
@@ -49,30 +159,33 @@
  * Responsively sized elements
  */
 
-.paragraph {
-  font-size: var(--font-base-size);
-  line-height: var(--font-base-line-height);
-  margin: 0.5rem 0 1rem 0;
+.paragraphmain {
+  font-size: var(--font-paragraph-main-size);
+  line-height: var(--font-paragraph-main-line-height);
 
-  @media (--media-min-small) {
-    font-size: var(--font-base-size);
-    line-height: var(--font-base-line-height);
-  }
-
-  @media (--media-min-medium) {
+  /* @media (--media-min-medium) {
     font-size: var(--font-large-size);
     line-height: var(--font-large-line-height);
-  }
+  } */
+}
+
+.paragraphlarge {
+  font-size: var(--font-xlarge-size);
+  line-height: var(--font-xlarge-line-height);
+}
+
+.articleParagraph {
+  font-size: var(--font-article-size);
+  line-height: var(--font-article-line-height);
 }
 
 .blockQuote {
-  background: var(--color-very-light-gray);
+  background: #eee;
 }
 
 .responsiveTitle1 {
-  font-weight: 600;
-  font-size: var(--font-title2-size);
-  line-height: var(--font-title2-line-height);
+  font-size: var(--font-title3-size);
+  line-height: var(--font-title3-line-height);
   margin: 1rem 0 2rem;
 
   @media (--media-min-small) {
@@ -87,7 +200,6 @@
 }
 
 .responsiveTitle2 {
-  font-weight: 600;
   font-size: var(--font-large-size);
   line-height: var(--font-large-line-height);
   margin: 1.5rem 0 0.5rem;
@@ -104,7 +216,6 @@
 }
 
 .responsiveTitle3 {
-  font-weight: 600;
   font-size: var(--font-large-size);
   line-height: var(--font-large-line-height);
   margin: 1rem 0 0.5rem;
@@ -121,7 +232,6 @@
 }
 
 .responsiveTitle4 {
-  font-weight: 600;
   font-size: var(--font-base-size);
   line-height: var(--font-base-line-height);
   margin: 1rem 0 0.5rem;

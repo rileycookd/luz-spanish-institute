@@ -1,6 +1,7 @@
+  
 import { graphql } from "gatsby";
 
-export const PostInfo = graphql`
+export const PageInfo = graphql`
   fragment PageInfo on SanityPage {
     id
     navMenu {
