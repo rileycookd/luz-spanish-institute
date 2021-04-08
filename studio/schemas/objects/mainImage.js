@@ -1,34 +1,20 @@
+import Unsplash from 'part:sanity-plugin-asset-source-unsplash/image-asset-source'
+// import Default from 'part:sanity-plugin-media/asset-source'
+
 export default {
   name: 'mainImage',
+  title: 'Main image',
   type: 'image',
-  title: 'Image',
   options: {
-    hotspot: true
+    hotspot: true,
+    sources: [Unsplash]
   },
   fields: [
     {
-      name: 'caption',
-      type: 'string',
-      title: 'Caption',
-      options: {
-        isHighlighted: true
-      }
-    },
-    {
       name: 'alt',
+      title: 'Alternative text (for screen readers)',
       type: 'string',
-      title: 'Alternative text',
-      description: 'Important for SEO and accessibility.',
-      validation: Rule => Rule.error('You have to fill out the alternative text.').required(),
-      options: {
-        isHighlighted: true
-      }
+      description: 'Overrides the alt text from the media library',
     }
-  ],
-  preview: {
-    select: {
-      imageUrl: 'asset.url',
-      title: 'caption'
-    }
-  }
+  ]
 }

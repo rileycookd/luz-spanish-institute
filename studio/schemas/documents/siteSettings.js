@@ -1,13 +1,30 @@
+import { MdSettings } from 'react-icons/md'
+
 export default {
   name: 'siteSettings',
-  type: 'document',
   title: 'Site Settings',
-  __experimental_actions: ['update', /* 'create', 'delete', */ 'publish'],
+  type: 'document',
+  __experimental_actions: ['update', 'publish', 'create', 'delete'],
+  icon: MdSettings,
   fields: [
     {
       name: 'title',
-      type: 'string',
-      title: 'Title'
+      title: 'Site title',
+      type: 'string'
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'text'
+    },
+    {
+      name: 'keywords',
+      title: 'Keywords',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags'
+      }
     },
     {
       title: 'Open graph',
@@ -16,16 +33,17 @@ export default {
       type: 'openGraph'
     },
     {
-      type: 'color',
-      name: 'primaryColor',
-      title: 'Primary brand color',
-      description: 'Used to generate the primary accent color for websites, press materials, etc'
+      name: 'author',
+      title: 'Author',
+      type: 'string'
     },
     {
-      type: 'color',
-      name: 'secondaryColor',
-      title: 'Secondary brand color',
-      description: 'Used to generate the secondary accent color for websites, press materials, etc'
+      name: 'defaultNav',
+      title: 'Default nav menu',
+      type: 'reference',
+      to: [
+        { type: 'navigationMenu' }
+      ]
     }
   ]
 }

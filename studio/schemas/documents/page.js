@@ -1,12 +1,29 @@
+import { BsLayoutTextWindow } from 'react-icons/bs'
+
 export default {
-  type: 'document',
   name: 'page',
   title: 'Page',
+  icon: BsLayoutTextWindow,
+  type: 'document',
+  
+  liveEdit: false,
+  // Uncomment the next line to remove the pages document type from the create-menus.
+  // __experimental_actions: ['update', 'publish', /* 'create', 'delete' */],
+  fieldsets: [
+    { 
+      name: 'header', 
+      title: 'Header', 
+      options: {
+        collapsible: true,
+        collapsed: false
+      }
+    }
+  ],
   fields: [
     {
       name: 'title',
-      type: 'string',
-      title: 'Title',
+      title: 'Page title',
+      type: 'string'
     },
     {
       name: 'navMenu',
@@ -22,13 +39,12 @@ export default {
       title: 'Page sections',
       description: 'Add, edit, and reorder sections',
       of: [
-        { type: 'pricing' },
-        { type: 'uiComponentRef' },
         { type: 'hero' },
-        { type: 'infoRows' },
-        { type: 'ctaColumns' },
-        { type: 'ctaPlug' },
+        { type: 'testimonialGroup' },
+        { type: 'infoBlock' },
+        { type: 'classTypesList' },
+        { type: 'form' },
       ],
     },
-  ],
+  ]
 }

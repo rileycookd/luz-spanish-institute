@@ -1,6 +1,9 @@
+import { MdLink } from 'react-icons/md'
+
 export default {
   title: 'Call to action',
   name: 'cta',
+  icon: MdLink,
   type: 'object',
   fieldsets: [
     {
@@ -13,7 +16,8 @@ export default {
     {
       title: 'Title',
       name: 'title',
-      type: 'string'
+      type: 'string',
+      description: 'This will be the button or link text'
     },
     {
       title: 'Landing page',
@@ -42,7 +46,7 @@ export default {
       type: 'string',
       options: {
         layout: 'radio',
-        list: ['button', 'link']
+        list: ['small button', 'large button', 'link']
       }
     }
   ],
