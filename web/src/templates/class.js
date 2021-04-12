@@ -69,12 +69,9 @@ export const query = graphql`
       }
     }
 
-    navMenu: sanityNavigationMenu(_id: {eq: "d78e535a-02d3-4ff8-b91a-cadd014f4c60"}) {
-      ...NavMenu
-    }
-
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
       title
+      _rawDefaultNav(resolveReferences: {maxDepth: 10})
     }
   }
 `;
@@ -107,8 +104,8 @@ const ClassType = (props) => {
   }
 
   const navMenu = (data || {}).navMenu;
-  const menuItems = navMenu && (navMenu._rawItems || []);
-  const menuCtas = navMenu && (navMenu._rawCtas || []);
+  const menuItems = site && (site._rawDefaultNav.items || []);
+  const menuCtas = site && (site._rawDefaultNav.ctas || []);
 
   const classType = (data || {}).classType;
   const { subtitle, image, _rawDescription } = classType;
