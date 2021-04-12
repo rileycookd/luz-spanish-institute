@@ -1,10 +1,10 @@
 import React, { useRef, useState, useLayoutEffect } from 'react'
 import * as styles from './page-header.module.css'
+import * as tabStyles from './tab-component.module.css'
 import CTALinkList from './cta-link-list'
-import ContactBar from './contact-bar'
-import { TabList, Tab } from './tab-component'
 import { buildImageObj, cn } from "../lib/helpers"
 import { imageUrlFor } from "../lib/image-url"
+import { Link } from 'gatsby'
 
 function PageHeader ({ navigation, title, subtitle, image, tabs, sharedPath }) {
 
@@ -39,11 +39,20 @@ function PageHeader ({ navigation, title, subtitle, image, tabs, sharedPath }) {
           )}
         </div>
         {tabs && (
-          <TabList sharedPath={sharedPath}>
+          <ul className={tabStyles.tabList}>
             {tabs.map((t) => (
-              <Tab link={t.slug.current}>{t.title}</Tab>
+              <li>
+                <Link 
+                  className={tabStyles.tab}
+                  activeClassName={tabStyles.active}
+                  partiallyActive={true}
+                  to={`${sharedPath ? sharedPath : ''}${t.slug.current}`}
+                >
+                    {t.title}
+                </Link>
+              </li>
             ))}
-          </TabList>
+          </ul>
         )}
         {image && (
           <div className={styles.imageContainer}>

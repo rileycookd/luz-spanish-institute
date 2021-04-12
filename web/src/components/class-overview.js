@@ -1,5 +1,6 @@
 import React from 'react'
 import * as styles from './class-overview.module.css'
+import * as tabStyles from './tab-component.module.css'
 import { IoTimeOutline as DurationIcon } from 'react-icons/io5'
 import { AiOutlineDollar as MoneyIcon } from 'react-icons/ai'
 import { BsPeople as StudentsIcon } from 'react-icons/bs'
@@ -10,8 +11,9 @@ import BlockText from './block-text'
 import Testimonial from './testimonial'
 import Pricing from './pricing'
 import FAQ from './faq'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import { TabList, Tab, Tabs, TabPanel } from './tab-component'
+// import { TabList, Tab, Tabs, TabPanel } from './tab-component'
 
 
 function ClassOverview ({ 
@@ -82,15 +84,18 @@ function ClassOverview ({
           .url()}
         alt={image.alt}
       />
-    <Tabs>
-      <TabList theme="dark" >
-        <Tab>Overview</Tab>
-        <Tab>Pricing</Tab>
+    <Tabs className={tabStyles.root}
+      selectedTabClassName={tabStyles.active}>
+      <TabList className={cn(tabStyles.tabList, tabStyles.dark)}>
+        <Tab 
+          className={cn(tabStyles.tab, tabStyles.dark)}
+        >Overview</Tab>
+        <Tab className={cn(tabStyles.tab, tabStyles.dark)}>Pricing</Tab>
         {testimonial && (
-          <Tab>Reviews</Tab>
+          <Tab className={cn(tabStyles.tab, tabStyles.dark)}>Reviews</Tab>
         )}
         {faq && (
-          <Tab>FAQ</Tab>
+          <Tab className={cn(tabStyles.tab, tabStyles.dark)}>FAQ</Tab>
         )}
       </TabList>
 

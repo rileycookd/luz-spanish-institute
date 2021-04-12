@@ -1,8 +1,8 @@
 @import '../styles/vars.css';
 
 .root {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  row-gap: 3rem;
 }
 
 .tab-title {
@@ -15,6 +15,7 @@
 }
 
 .table {
+  width: 100%;
   border-collapse: collapse;
 }
 

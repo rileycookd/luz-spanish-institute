@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import * as styles from './pricing.module.css'
+import * as tabStyles from './tab-component.module.css'
 import { cn } from '../lib/helpers'
 
 import CTALink from './CTALink'
-import { TabList, Tab, Tabs, TabPanel } from './tab-component'
+import { TabList, Tab, Tabs, TabPanel } from 'react-tabs'
 
 import { IoAdd as AddIcon, IoRemove as SubtractIcon } from 'react-icons/io5'
 
@@ -64,8 +65,32 @@ function Pricing ({ classType, base, packages, min, max, maxDiscount, sizeDiscou
     packagePrices.unshift(basePrices)
   }
 
+  const renderPricingTable = (pp) => (
+    <table className={styles.table}>
+      <thead>
+        <tr>
+          <th className={styles.tableHeader}>Class</th>
+          <th className={styles.tableHeader}>Time</th>
+          <th className={styles.tableHeader}>Quantity</th>
+          <th className={styles.tableHeader}>Price</th>
+        </tr>
+      </thead>  
+      <tbody className={styles.tableBody}>
+        {pp.map(p => (
+          <tr className={styles.tableRow}>
+            <td className={styles.tableCell} data-column="Class">{classType}</td>
+            <td className={styles.tableCell} data-column="Time">{`${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`}</td>
+            <td className={styles.tableCell} data-column="Quantity">{p.quantity}</td>
+            <td className={styles.tableCell} data-column="Price"><span className={styles.accent}>{`$${p.price}`}</span></td>
+            <td className={styles.tableCell}><CTALink kind="small button" route="/register" title="Enroll" /></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+
   return (
-    <>
+    <div className={styles.root}>
       {(!max || max > 1) && (
         <div className={styles.inputGroup}>
           <label className={styles.inputNumberLabel} for="class-size">Choose class size:</label>
@@ -98,77 +123,6 @@ function Pricing ({ classType, base, packages, min, max, maxDiscount, sizeDiscou
           </div>
         </div>
       )}
-      {packagePrices.length > 1 && (
-        <Tabs>
-          <TabList theme="pricing">
-            <Tab>
-              <h6 className={styles.tabTitle}>Single</h6>
-              <p className={styles.tabSubtitle}>1 class</p>
-            </Tab>
-            {packages.map(p => (
-              <Tab>
-                <h6 className={styles.tabTitle}>{p.title}</h6>
-                <p className={styles.tabSubtitle}>{`${p.quantity} classes`}</p>
-              </Tab>
-            ))}
-          </TabList>
-
-          {packagePrices.map(pp => (
-            <TabPanel>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th className={styles.tableHeader}>Class</th>
-                    <th className={styles.tableHeader}>Time</th>
-                    <th className={styles.tableHeader}>Quantity</th>
-                    <th className={styles.tableHeader}>Price</th>
-                  </tr>
-                </thead>  
-                <tbody className={styles.tableBody}>
-                  {pp.map(p => (
-                    <tr className={styles.tableRow}>
-                      <td className={styles.tableCell} data-column="Class">{classType}</td>
-                      <td className={styles.tableCell} data-column="Time">{`${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`}</td>
-                      <td className={styles.tableCell} data-column="Quantity">{p.quantity}</td>
-                      <td className={styles.tableCell} data-column="Price"><span className={styles.accent}>{`$${p.price}`}</span></td>
-                      <td className={styles.tableCell}><CTALink kind="small button" route="/register" title="Enroll" /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TabPanel>
-          ))}   
-        </Tabs>
-      )}
-      {packagePrices.length === 1 && (
-        <Tabs>
-          {packagePrices.map(pp => (
-            <TabPanel>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th className={styles.tableHeader}>Class</th>
-                    <th className={styles.tableHeader}>Time</th>
-                    <th className={styles.tableHeader}>Quantity</th>
-                    <th className={styles.tableHeader}>Price</th>
-                  </tr>
-                </thead>  
-                <tbody className={styles.tableBody}>
-                  {pp.map(p => (
-                    <tr className={styles.tableRow}>
-                      <td className={styles.tableCell} data-column="Class">{classType}</td>
-                      <td className={styles.tableCell} data-column="Time">{`${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`}</td>
-                      <td className={styles.tableCell} data-column="Quantity">{p.quantity}</td>
-                      <td className={styles.tableCell} data-column="Price"><span className={styles.accent}>{`$${p.price}`}</span></td>
-                      <td className={styles.tableCell}><CTALink kind="small button" route="/register" title="Enroll" /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TabPanel>
-          ))}   
-        </Tabs>
-      )}
       {(!max || max > 1) && (
         <label className={styles.toggleSwitchLabel} for="price-toggle">
           Price per student
@@ -185,7 +139,34 @@ function Pricing ({ classType, base, packages, min, max, maxDiscount, sizeDiscou
           Total price
         </label>
       )}
-    </>
+      {packagePrices.length > 1 && (
+        <Tabs className={tabStyles.rootPricing} selectedTabClassName={tabStyles.active}>
+          <TabList className={tabStyles.tabListPricing}>
+            <Tab className={tabStyles.tabPricing}>
+              <h6 className={styles.tabTitle}>Single</h6>
+              <p className={styles.tabSubtitle}>1 class</p>
+            </Tab>
+            {packages.map(p => (
+              <Tab className={tabStyles.tabPricing}>
+                <h6 className={styles.tabTitle}>{p.title}</h6>
+                <p className={styles.tabSubtitle}>{`${p.quantity} classes`}</p>
+              </Tab>
+            ))}
+          </TabList>
+
+          {packagePrices.map(pp => (
+            <TabPanel>
+              {renderPricingTable(pp)}
+            </TabPanel>
+          ))}   
+        </Tabs>
+      )}
+      {packagePrices.length === 1 && (
+        <>
+          {renderPricingTable(packagePrices[0])}
+        </>
+      )}
+    </div>
   )
 }
 
