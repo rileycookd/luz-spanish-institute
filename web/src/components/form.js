@@ -34,6 +34,7 @@ export function Form ({ onSubmit, name, method, action, children }) {
 
    // Handles the post process to Netlify so we can access their serverless functions
    const handlePost = (formData, event) => {
+    console.log(formData)
     fetch(`/`, {
       method: method,
       headers: { "Content-Type": "application/x-www-form-urlencoded" },

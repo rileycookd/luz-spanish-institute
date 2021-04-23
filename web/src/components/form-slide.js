@@ -46,7 +46,7 @@ function FormSlide (props) {
           <InputField
             value={nameValue}
             label="Full name:"
-            name="full-name"
+            name="name"
             placeholder="Your full name" 
             type="text"
             onChange={(e) => setNameValue(e.target.value)}
@@ -76,14 +76,14 @@ function FormSlide (props) {
           <SelectField
             value={classTypeValue}
             label="Class type:"
-            name="class-type"
+            name="classType"
             options={["Private lessons", "Group lessons", "Conversation club"]}
             onChange={(e) => setClassTypeValue(e.target.value)}
           />
           <SelectField
             value={spanishLevelValue}
             label="Spanish level:"
-            name="spanish-level"
+            name="level"
             options={["Not sure", "Beginner", "Intermediate", "Advanced"]}
             onChange={(e) => setSpanishLevelValue(e.target.value)}
           />
@@ -92,14 +92,14 @@ function FormSlide (props) {
           <SelectField
             value={durationValue}
             label="Class duration:"
-            name="class-duration"
+            name="duration"
             options={["1 hour", "1.5 hours", "2 hours"]}
             onChange={(e) => setDurationValue(e.target.value)}
           />
           <SelectField
             value={quantityValue}
             label="Quantity:"
-            name="class-quantity"
+            name="quantity"
             options={["1 class", "8 classes", "30 classes"]}
             onChange={(e) => setQuantityValue(e.target.value)}
           />
@@ -107,7 +107,7 @@ function FormSlide (props) {
             <SelectField
               value={frequencyValue}
               label="Frequency:"
-              name="class-frequency"
+              name="frequency"
               options={["1x a week", "2x a week", "3x a week"]}
               onChange={(e) => setFrequencyValue(e.target.value)}
             />

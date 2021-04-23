@@ -25,7 +25,6 @@ exports.handler = async function (event, context, callback) {
       frequency: payload.data.frequency
     }
     const result = await client.create(registrationForm).catch((err) => console.log(err))
-    console.log(result);
   }
   callback(null, {
     statusCode: 200,
