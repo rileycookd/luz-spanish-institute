@@ -112,7 +112,7 @@ export function Form ({ onSubmit, name, method, action, children }) {
   return(
     <form 
       className={styles.root} 
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(handlePost)}
       name={name}
       method={method}
       action={action}
