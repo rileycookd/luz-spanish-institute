@@ -17,7 +17,7 @@
 
 .form-section-title {
   composes: title6 from './typography.module.css';
-  color: var(--color-text-light);
+  color: var(--color-primary);
 }
 
 .form-row {

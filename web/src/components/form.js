@@ -1,16 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as styles from './form.module.css'
 import { button, buttonLarge, buttonSecondary } from './CTALink.module.css'
 import { cn } from '../lib/helpers'
 import { useForm } from "react-hook-form"
 
 
-export function Form ({onSubmit, name, method, action, children}) {
+export function Form ({ onSubmit, name, method, action, children }) {
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [totalSteps, setTotalSteps] = useState(3);
+  const [totalSteps, setTotalSteps] = useState(1);
 
   const { register, handleSubmit, errors, reset } = useForm()
+
+  const stepCustomProps = { 
+    currentStep: currentStep,
+    register: register
+  }
+
+  useEffect(() => {
+    console.log(totalSteps)
+    let numSteps = React.Children.toArray(children).length;
+    setTotalSteps(numSteps)
+  }, [totalSteps]);
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
   const encode = (data) => {
@@ -86,7 +97,7 @@ export function Form ({onSubmit, name, method, action, children}) {
   let stepCounter = 0;
   const childrenWithProps = React.Children.map(children, (child) => {
 
-    if (React.isValidElement(child) && child.type.name === "Step") {
+    if (React.isValidElement(child)) {
       stepCounter++
       return React.cloneElement(child, { 
         currentStep: currentStep,
@@ -97,12 +108,11 @@ export function Form ({onSubmit, name, method, action, children}) {
   
     return child;
   });
-
     
   return(
     <form 
       className={styles.root} 
-      onSubmit={handleSubmit(handlePost)}
+      onSubmit={onSubmit}
       name={name}
       method={method}
       action={action}
@@ -116,12 +126,12 @@ export function Form ({onSubmit, name, method, action, children}) {
         type="hidden"
         name="formId"
         value={name}
-        ref={register()}
+        ref={register}
       />
 
       {childrenWithProps}
 
-      <input tabIndex="-1" name="got-ya" ref={register()} />
+      <input tabIndex="-1" name="got-ya" ref={register} />
       
       <div className={styles.formFooter}>
         <div className={styles.formFooterInfo}>
@@ -152,7 +162,7 @@ export const InputField = ({ register, value, label, name, placeholder, type, on
       className={styles.input}
       placeholder={placeholder}
       onChange={onChange}
-      ref={register()}
+      ref={register}
     />
     {children}
   </div>
@@ -161,10 +171,10 @@ export const InputField = ({ register, value, label, name, placeholder, type, on
 export const SelectField = ({ register, value, label, name, options, onChange }) => (
   <div className={styles.inputGroup}>
     {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
-    <select className={styles.select} id={name} name={name} value={value} onChange={onChange} ref={register()}>
+    <select className={styles.select} id={name} name={name} value={value} onChange={onChange} ref={register}>
       <option disabled hidden defaultValue>Select your level</option>
-      {options && options.map((o) => (
-        <option value={o}>{o}</option>
+      {options && options.map((o, i) => (
+        <option key={`${name}-${i}`} value={o}>{o}</option>
       ))}
     </select>
   </div>
@@ -180,7 +190,7 @@ export const Step = ({title, children, step, currentStep, register}) => {
     }
   
     return child;
-  });
+  }); 
 
   return (
     <div className={styles.formSection} style={currentStep !== step ? {display: 'none'} : {}}>

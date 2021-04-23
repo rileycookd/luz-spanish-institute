@@ -4,7 +4,6 @@ import { ImArrowRight2 as ArrowIcon } from 'react-icons/im'
 import CTALink from './CTALink'
 
 function CTALinkList ({links, innerRef}) {
-  console.log(links)
   
   return (
     <div ref={innerRef} className={styles.root}>

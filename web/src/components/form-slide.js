@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import * as styles from './form-slide.module.css'
 import { Form, Step, InputField, SelectField } from '../components/form'
 
-import { RegistrationReducer, DefaultRegistration } from '../reducers/registration-reducer'
+// import { RegistrationReducer, DefaultRegistration } from '../reducers/registration-reducer'
 
 import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIcon } from 'react-icons/io5'
 
@@ -82,7 +82,7 @@ function FormSlide (props) {
           />
           <SelectField
             value={spanishLevelValue}
-            label="Spanish level"
+            label="Spanish level:"
             name="spanish-level"
             options={["Not sure", "Beginner", "Intermediate", "Advanced"]}
             onChange={(e) => setSpanishLevelValue(e.target.value)}
@@ -91,14 +91,14 @@ function FormSlide (props) {
         <Step title="Scheduling">
           <SelectField
             value={durationValue}
-            label="Class duration"
+            label="Class duration:"
             name="class-duration"
             options={["1 hour", "1.5 hours", "2 hours"]}
             onChange={(e) => setDurationValue(e.target.value)}
           />
           <SelectField
             value={quantityValue}
-            label="Quantity"
+            label="Quantity:"
             name="class-quantity"
             options={["1 class", "8 classes", "30 classes"]}
             onChange={(e) => setQuantityValue(e.target.value)}
@@ -106,13 +106,13 @@ function FormSlide (props) {
           {quantityValue !== "1 class" && quantityValue !== "" && (
             <SelectField
               value={frequencyValue}
-              label="Frequency"
+              label="Frequency:"
               name="class-frequency"
               options={["1x a week", "2x a week", "3x a week"]}
               onChange={(e) => setFrequencyValue(e.target.value)}
             />
           )}
-        </Step>
+        </Step> 
       </Form>
     </div>
   )
