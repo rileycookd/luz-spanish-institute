@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import GraphQLErrorList from '../components/graphql-error-list'
+import { mapEdgesToNodes } from '../lib/helpers'
 
 import Layout from '../containers/layout'
 import SEO from '../components/seo'
@@ -26,7 +27,33 @@ export const query = graphql`
       facebook
       linkedin
       instagram
-    } 
+    }
+
+    classTypes: allSanityClassType {
+      edges {
+        node {
+          title
+          min
+          max
+          sizeDiscount
+          pricing {
+            duration
+            price
+            _key
+            _type
+          }
+          packages {
+            discount
+            quantity
+            title
+            _type
+            _key
+          }
+          order
+          maxDiscount
+        }
+      }
+    }
   }    
 `
 
@@ -40,7 +67,7 @@ const RegisterPage = props => {
       </Layout>
     )
   }
-
+  
   const site = (data || {}).site
   // const company = (data || {}).company
 
@@ -53,15 +80,20 @@ const RegisterPage = props => {
   const menuItems = site._rawDefaultNav && (site._rawDefaultNav.items || []);
   const menuCtas = site._rawDefaultNav && (site._rawDefaultNav.ctas || []);
 
+  const classTypes = (data || {}).classTypes.edges
+    ? mapEdgesToNodes(data.classTypes)
+    : []
+  classTypes.sort((a, b) => a.order - b.order); 
+
   return (
-    <Layout navMenuItems={menuItems} navMenuCtas={menuCtas}>
+    <Layout>
       <SEO
           title="Register for classes"
           description={site.description}
           keywords={site.keywords}
         />
       <Container>
-        <FormSlide />
+        <FormSlide classTypes={classTypes} />
       </Container>
     </Layout>
   )
