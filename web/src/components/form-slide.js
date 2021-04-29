@@ -10,20 +10,21 @@ function FormSlide ({ classTypes }) {
 
   const classTypeTitles = classTypes.map(c => c.title)
 
-  // FORM FIELD STATES
+  // FORM FIELD STATE
   // Step 1
   const [nameValue, setNameValue] = useState("")
   const [emailValue, setEmailValue] = useState("")
   const [locationValue, setLocationValue] = useState("")
   // Step 2
   const [classTypeValue, setClassTypeValue] = useState(classTypeTitles[0])
-  const [spanishLevelValue, setSpanishLevelValue] = useState("")
+  const [spanishLevelValue, setSpanishLevelValue] = useState("Not sure")
   const [classSizeValue, setClassSizeValue] = useState("1")
   // Step 3
   const [durationValue, setDurationValue] = useState(`${classTypes[0].pricing[0].duration / 60} hour${classTypes[0].pricing[0].duration / 60 > 1 ? 's' : ''}`)
-  const [frequencyValue, setFrequencyValue] = useState("")
+  const [frequencyValue, setFrequencyValue] = useState("1x a week")
   const [quantityValue, setQuantityValue] = useState("1 class")
-
+  
+  // COMPONENT STATE
   const [currentClassType, setCurrentClassType] = useState(classTypes[0])
   const [estimatedPrice, setEstimatedPrice] = useState('—')
 

@@ -1,8 +1,31 @@
+import { FaChalkboardTeacher } from 'react-icons/fa'
+
 export default {
   name: "registrationForm",
   title: "Registrations",
+  icon: FaChalkboardTeacher,
   type: "document",
+  initialValue: () => ({
+    submitDate: new Date().toISOString()
+  }),
   fields: [
+    {
+      title: 'Submitted date',
+      name: 'submitDate',
+      type: 'datetime',
+      readOnly: true,
+      options: {
+        dateFormat: 'DD-MM-YYYY',
+        timeFormat: 'HH:mm',
+        timeStep: 15,
+        calendarTodayLabel: 'Today'
+      }
+    },
+    {
+      title: 'Payment recieved?',
+      name: 'payment',
+      type: 'boolean',
+    },
     {
       name: "name",
       title: "Full name",
@@ -29,6 +52,11 @@ export default {
       type: "string",
     },
     {
+      name: "classSize",
+      title: "Class Size",
+      type: "string",
+    },
+    {
       name: "duration",
       title: "Duration",
       type: "string",
@@ -44,4 +72,23 @@ export default {
       type: "string",
     },
   ],
+  preview: {
+    select: {
+      name: 'name',
+      classType: 'classType',
+      quantity: 'quantity',
+      classSize: 'classSize',
+    },
+    prepare ({ name, classType, quantity, classSize }) {
+      let classSizeString = ''
+      if(classSize) {
+        classSizeString = `${classSize} student${Number(classSize) > 1 ? 's' : ''}`
+      }
+
+      return {
+        title: name,
+        subtitle: `${classType}: ${quantity}${classSizeString ? `, ${classSizeString}` : ''}`
+      }
+    }
+  }
 }

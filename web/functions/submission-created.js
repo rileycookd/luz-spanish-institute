@@ -15,11 +15,13 @@ exports.handler = async function (event, context, callback) {
   if (isRegistrationForm) {
     const registrationForm = {
       _type: "registrationForm",
+      submitDate: new Date().toISOString(),
       name: payload.data.name,
       email: payload.data.email,
       location: payload.data.location,
       classType: payload.data.classType,
       level: payload.data.level,
+      classSize: payload.data.classSize,
       duration: payload.data.duration,
       quantity: payload.data.quantity,
       frequency: payload.data.frequency
