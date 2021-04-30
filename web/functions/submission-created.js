@@ -13,6 +13,7 @@ exports.handler = async function (event, context, callback) {
   const isRegistrationForm = payload.data.formId === "registration-form"
   // Build the document JSON and submit it to SANITY
   if (isRegistrationForm) {
+    console.log(payload.data)
     const registrationForm = {
       _type: "registrationForm",
       submitDate: new Date().toISOString(),

@@ -53,7 +53,13 @@
 }
 
 .cost-indicator-cost {
+  composes: title6 from './typography.module.css';
+  font-weight: 400;
   color: var(--color-primary);
+
+  @nest & > span {
+    color: var(--color-grey-medium);
+  }
 }
 
 .form-buttons {

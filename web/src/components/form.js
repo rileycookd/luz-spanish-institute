@@ -7,7 +7,7 @@ import CTALink from './CTALink'
 import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 
 
-export function Form ({ estimatedCost, onSubmit, name, method, action, children }) {
+export function Form ({ estimatedCost, pricePerStudent, onSubmit, name, method, action, children }) {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(1);
@@ -61,7 +61,7 @@ export function Form ({ estimatedCost, onSubmit, name, method, action, children 
  
   const _next = (e) => {
     e.preventDefault()
-
+    errors ? console.log(errors) : ''
     currentStep >= totalSteps - 1
     ? setCurrentStep(totalSteps)
     : setCurrentStep(currentStep + 1)
@@ -160,7 +160,7 @@ export function Form ({ estimatedCost, onSubmit, name, method, action, children 
               <div className={styles.costIndicator}>
                 <h4 className={styles.costIndicatorTitle}>Estimated cost: </h4>
                 <p className={styles.costIndicatorCost}>
-                  {estimatedCost}
+                  {`$${estimatedCost} USD`}{pricePerStudent !== 0 && <span>{` ($${pricePerStudent} per student)`}</span>}
                 </p>
               </div>
               <p className={styles.costIndicatorSubtitle}>We will contact you to confirm enrollment before payment</p>

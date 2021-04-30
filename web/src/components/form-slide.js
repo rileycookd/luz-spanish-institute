@@ -26,8 +26,8 @@ function FormSlide ({ classTypes }) {
   
   // COMPONENT STATE
   const [currentClassType, setCurrentClassType] = useState(classTypes[0])
-  const [estimatedPrice, setEstimatedPrice] = useState('—')
-
+  const [estimatedPrice, setEstimatedPrice] = useState(0)
+  const [pricePerStudent, setPricePerStudent] = useState(0)
 
   let classTypeDurations = currentClassType.pricing.map(p => (
     `${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`
@@ -38,23 +38,27 @@ function FormSlide ({ classTypes }) {
     classTypePackages.push(`${p.quantity} class${p.quantity > 1 ? 'es' : ''}`)
   ))
 
-  let { pricing, packages, min, max, maxDiscount, sizeDiscount } = currentClassType
-  let currentSizeDiscount = 0;
-  if (sizeDiscount && classSizeValue > min) {
-    currentSizeDiscount = sizeDiscount * (classSizeValue - min);
-    if(currentSizeDiscount > maxDiscount) {
-      currentSizeDiscount = maxDiscount / 100;
-    } else {
-      currentSizeDiscount = currentSizeDiscount / 100;
+  const calculateSizeDiscount = () => {
+    let { min, maxDiscount, sizeDiscount } = currentClassType
+    let currentSizeDiscount = 0;
+    if (sizeDiscount && classSizeValue > min) {
+      currentSizeDiscount = sizeDiscount * (classSizeValue - min);
+      if(currentSizeDiscount > maxDiscount) {
+        currentSizeDiscount = maxDiscount / 100;
+      } else {
+        currentSizeDiscount = currentSizeDiscount / 100;
+      }
     }
+    return currentSizeDiscount
   }
 
   const calculateBasePrice = (basePrice) => {
+    let { min } = currentClassType
     let classPrice = basePrice;
-    if(sizeDiscount && classSizeValue > min) {
+    let currentSizeDiscount = calculateSizeDiscount()
+    if(currentSizeDiscount && classSizeValue > min) {
       classPrice = classPrice - (classPrice * (currentSizeDiscount))
     }
-    classPrice = classPrice * classSizeValue;
     return classPrice;
   }
 
@@ -83,7 +87,8 @@ function FormSlide ({ classTypes }) {
       let currentPackage = currentClassType.packages[currentPackageIndex]
       newCalculatedPrice = calculatePackagePrice(newCalculatedPrice, currentPackage.quantity, currentPackage.discount)
     }
-    setEstimatedPrice(newCalculatedPrice)
+    setEstimatedPrice(newCalculatedPrice * classSizeValue)
+    setPricePerStudent(newCalculatedPrice)
   }, [currentClassType, quantityValue, durationValue, classSizeValue])
 
   return (
@@ -100,7 +105,9 @@ function FormSlide ({ classTypes }) {
         name="registration-form"
         method="POST"
         action="/success/"
-        estimatedCost={(Math.round((estimatedPrice + Number.EPSILON) * 100) / 100).toFixed(2)}
+        estimatedCost={estimatedPrice ? (Math.round((estimatedPrice + Number.EPSILON) * 100) / 100).toFixed(2): '—'}
+        pricePerStudent={Number(classSizeValue) > 1 ? (Math.round((pricePerStudent + Number.EPSILON) * 100) / 100).toFixed(2) : 0}
+
       >
         <Step title="Class selection">
           <SelectField
