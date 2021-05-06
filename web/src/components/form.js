@@ -6,14 +6,19 @@ import { useForm } from "react-hook-form"
 import CTALink from './CTALink'
 import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 
+// NOTES: Should unregister: false if you want to use disabled inputs
 
-export function Form ({ estimatedCost, pricePerStudent, onSubmit, name, method, action, children }) {
+export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit, name, method, action, children }) {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(1);
   const [formStatus, setFormStatus] = useState('default')
+  console.log(currentStep)
+  console.log(totalSteps)
 
-  const { register, handleSubmit, errors, reset } = useForm()
+  const { watch, register, handleSubmit, setValue, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
+  console.log(errors)
+  console.log(isValid)
 
   const stepCustomProps = { 
     currentStep: currentStep,
@@ -88,7 +93,7 @@ export function Form ({ estimatedCost, pricePerStudent, onSubmit, name, method, 
     if(currentStep < totalSteps){
       const nextButtonText = currentStep === (totalSteps - 1) ? 'Confirm' : 'Next step'
       return (
-        <button className={cn(button, buttonLarge)} onClick={(e) => _next(e)}>{nextButtonText}</button>
+        <button disabled={!isValid} className={cn(button, buttonLarge)} onClick={(e) => _next(e)}>{nextButtonText}</button>
       )
     }
     return null;
@@ -113,7 +118,10 @@ export function Form ({ estimatedCost, pricePerStudent, onSubmit, name, method, 
         currentStep: currentStep,
         step: stepCounter,
         totalSteps: totalSteps,
-        register: register
+        register: register,
+        errors: errors,
+        setValue: setValue,
+        getValues: getValues
       });
     }
   
@@ -153,7 +161,7 @@ export function Form ({ estimatedCost, pricePerStudent, onSubmit, name, method, 
 
           {childrenWithProps}
 
-          <input tabIndex="-1" name="got-ya" ref={register} />
+          {currentStep === totalSteps && <input tabIndex="-1" name="got-ya" ref={register} />}
           
           <div className={styles.formFooter}>
             <div className={styles.formFooterInfo}>
@@ -195,63 +203,103 @@ export function Form ({ estimatedCost, pricePerStudent, onSubmit, name, method, 
   )
 }
 
-export const InputField = ({ register, value, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+export const InputField = ({ register, readOnly, disabled, pattern, setValue, defaultValue, getValues, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+
+  const currentValue = getValues(name)
+  if(type === "number" && min && Number(currentValue) < min) { 
+    setValue(name, min)
+    callback(min)
+  }
+
+  if(type === "number" && max && Number(currentValue) > max) {
+    setValue(name, max)
+    callback(max)
+  } 
+  const errorMessageValue = errorMessage ? errorMessage : "Please enter a valid value"
+  const defaultValueCheck = defaultValue < min ? min : defaultValue
 
   const increment = e => {
     e.stopPropagation()
     e.preventDefault()
-    let numValue = Number(value)
-    if(!max || numValue < max) callback((numValue + 1).toString())
+    if(!max || currentValue < max) {
+      console.log("TEST:", getValues(name))
+      setValue(name, (Number(currentValue) + 1).toString())
+      callback(Number(currentValue) + 1)
+    }
   }
 
   const decrement = e => {
     e.stopPropagation()
     e.preventDefault()
-    
-    if(!min || value > min) callback(value - 1)
+    if(!min || currentValue > min) {
+      callback(Number(currentValue) - 1)
+      setValue(name, (Number(currentValue) - 1).toString())
+    }
   }
+  console.log(typeof pattern)
 
   return (
-    <div className={styles.inputGroup}>
-      {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
-      {type === "number" && <SubtractIcon onClick={(e) => decrement (e)} className={(value == min || value == '') ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
-      <input
-        id={name}
-        type={type}
-        value={value}
-        name={name}
-        min={min}
-        max={max}
-        className={styles.input}
-        placeholder={placeholder}
-        onChange={onChange}
-        ref={register}
-        style={(children || type === "number") ? {paddingLeft: '3.5rem'} : {}}
-      />
-      {children}
-      {type === "number" && <AddIcon onClick={(e) => increment(e)} className={value == max ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
+    <div className={styles.inputWrapper}>
+      <div className={styles.inputGroup}>
+        {type === "number" && !disabled && !readOnly && <SubtractIcon onClick={(e) => decrement (e)} className={(currentValue == min || currentValue == '') ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
+        <input
+          id={name}
+          type={type}
+          name={name}
+          min={min}
+          max={max}
+          readOnly={readOnly}
+          disabled={disabled}
+          defaultValue={defaultValueCheck}
+          className={styles.input}
+          placeholder={placeholder}
+          onChange={onChange}
+          ref={register({
+            pattern: {
+              value: pattern,
+              message: errorMessageValue
+            },
+            required: {
+              value: true,
+              pattern: pattern,
+              message: errorMessageValue,
+            }
+          })}
+          style={(children || type === "number") ? {paddingLeft: '3.5rem'} : {}}
+        />
+        {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
+        {children}
+        {type === "number" && !disabled && !readOnly && <AddIcon onClick={(e) => increment(e)} className={currentValue == max ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
+      </div>
+      <p className={styles.inputError}>{errors && errors[name] && errors[name].message} </p>
     </div>
   )
 };
 
-export const SelectField = ({ register, value, label, name, options, onChange }) => (
-  <div className={styles.inputGroup}>
-    {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
-    <select className={styles.select} id={name} name={name} value={value} onChange={onChange} ref={register}>
-      <option disabled hidden defaultValue>Select your level</option>
-      {options && options.map((o, i) => (
-        <option key={`${name}-${i}`} value={o}>{o}</option>
-      ))}
-    </select>
-  </div>
+export const SelectField = ({ register, disabled, value, label, name, options, onChange }) => (
+  <div className={styles.inputWrapper}>
+    <div className={styles.inputGroup}>
+      <select className={styles.select} disabled={disabled} id={name} name={name} value={value} onChange={onChange} ref={register}>
+        <option disabled hidden defaultValue>Select your level</option>
+        {options && options.map((o, i) => (
+          <option key={`${name}-${i}`} value={o}>{o}</option>
+        ))}
+      </select>
+      {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
+    </div>
+    <p className={styles.inputError}> </p>
+  </div>        
 )
 
-export const Step = ({title, children, step, currentStep, register, totalSteps}) => {
+export const Step = ({title, errors, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, { 
-        register: register
+        register: register,
+        errors: errors,
+        setValue: setValue,
+        getValues: getValues
       });
     }
   
@@ -259,12 +307,16 @@ export const Step = ({title, children, step, currentStep, register, totalSteps})
   }); 
 
   return (
-    <div className={styles.formSection} style={currentStep !== step && currentStep !== totalSteps ? {display: 'none'} : {}}>
-      <h2 className={styles.formSectionTitle}>{title}</h2>
-      <div className={styles.formRow}>
-        {childrenWithProps}
+    <>
+    {currentStep >= step && (
+      <div className={styles.formSection} style={currentStep !== step && currentStep !== totalSteps ? {display: 'none'} : {}}>
+        <h2 className={styles.formSectionTitle}>{title}</h2>
+        <div className={styles.formRow}>
+          {childrenWithProps}
+        </div>
       </div>
-    </div>
+    )}
+    </>
   )
 }
 

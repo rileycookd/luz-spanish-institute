@@ -3,10 +3,17 @@
 .root {
   display: grid;
   grid-template-columns: .25fr .75fr;
-  height: 100vh;
+  align-items: center;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.form {
+  padding: 8rem 0;
 }
 
 .side-panel {
+  height: 100%;
   position: relative;
 }
 

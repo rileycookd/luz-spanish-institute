@@ -30,6 +30,12 @@
       background-color: var(--color-accent-dark);
     }
   }
+
+  @nest &:disabled, &[disabled] {
+    background-color: var(--color-grey-medium);
+    opacity: .5;
+    cursor: not-allowed;
+  }
 }
 
 .button-small {
