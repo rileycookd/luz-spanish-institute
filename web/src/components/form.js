@@ -13,12 +13,9 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(1);
   const [formStatus, setFormStatus] = useState('default')
-  console.log(currentStep)
-  console.log(totalSteps)
+  const [renderHoneyPot, setRenderHoneyPot] = useState(false)
 
-  const { watch, register, handleSubmit, setValue, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
-  console.log(errors)
-  console.log(isValid)
+  const { register, handleSubmit, setValue, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
   const stepCustomProps = { 
     currentStep: currentStep,
@@ -26,9 +23,9 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
   }
 
   useEffect(() => {
-    console.log(totalSteps)
     let numSteps = React.Children.toArray(children).length + 1;
     setTotalSteps(numSteps)
+    setRenderHoneyPot(true)
   }, [totalSteps]);
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
@@ -66,7 +63,6 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
  
   const _next = (e) => {
     e.preventDefault()
-    errors ? console.log(errors) : ''
     currentStep >= totalSteps - 1
     ? setCurrentStep(totalSteps)
     : setCurrentStep(currentStep + 1)
@@ -161,8 +157,8 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
 
           {childrenWithProps}
 
-          {currentStep === totalSteps && <input tabIndex="-1" name="got-ya" ref={register} />}
-          
+          {renderHoneyPot && currentStep === totalSteps && <input tabIndex="-1" name="got-ya" ref={register} />}
+
           <div className={styles.formFooter}>
             <div className={styles.formFooterInfo}>
               <div className={styles.costIndicator}>
@@ -222,7 +218,6 @@ export const InputField = ({ register, readOnly, disabled, pattern, setValue, de
     e.stopPropagation()
     e.preventDefault()
     if(!max || currentValue < max) {
-      console.log("TEST:", getValues(name))
       setValue(name, (Number(currentValue) + 1).toString())
       callback(Number(currentValue) + 1)
     }
@@ -236,7 +231,6 @@ export const InputField = ({ register, readOnly, disabled, pattern, setValue, de
       setValue(name, (Number(currentValue) - 1).toString())
     }
   }
-  console.log(typeof pattern)
 
   return (
     <div className={styles.inputWrapper}>

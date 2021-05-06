@@ -63,7 +63,6 @@ function FormSlide ({ classTypes }) {
   }
 
   const calculatePackagePrice = (basePrice, quantity, discount) => {
-    console.log(basePrice, quantity, discount)
     let classPrice = basePrice * quantity;
     if(discount) {
       classPrice = classPrice - (classPrice * (discount / 100));
