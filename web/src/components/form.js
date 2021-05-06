@@ -13,7 +13,6 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(1);
   const [formStatus, setFormStatus] = useState('default')
-  const [renderHoneyPot, setRenderHoneyPot] = useState(false)
 
   const { register, handleSubmit, setValue, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
@@ -25,7 +24,6 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
   useEffect(() => {
     let numSteps = React.Children.toArray(children).length + 1;
     setTotalSteps(numSteps)
-    setRenderHoneyPot(true)
   }, [totalSteps]);
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
@@ -157,7 +155,7 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
 
           {childrenWithProps}
 
-          {renderHoneyPot && currentStep === totalSteps && <input tabIndex="-1" name="got-ya" ref={register} />}
+          <input tabIndex="-1" name="got-ya" ref={register} />
 
           <div className={styles.formFooter}>
             <div className={styles.formFooterInfo}>
@@ -199,7 +197,7 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
   )
 }
 
-export const InputField = ({ register, readOnly, disabled, pattern, setValue, defaultValue, getValues, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+export const InputField = ({ register, currentStep, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
 
   const currentValue = getValues(name)
   if(type === "number" && min && Number(currentValue) < min) { 
@@ -248,7 +246,7 @@ export const InputField = ({ register, readOnly, disabled, pattern, setValue, de
           className={styles.input}
           placeholder={placeholder}
           onChange={onChange}
-          ref={register({
+          {...(currentStep >= step && { ref: register({
             pattern: {
               value: pattern,
               message: errorMessageValue
@@ -258,7 +256,7 @@ export const InputField = ({ register, readOnly, disabled, pattern, setValue, de
               pattern: pattern,
               message: errorMessageValue,
             }
-          })}
+          })} )}
           style={(children || type === "number") ? {paddingLeft: '3.5rem'} : {}}
         />
         {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
@@ -270,7 +268,7 @@ export const InputField = ({ register, readOnly, disabled, pattern, setValue, de
   )
 };
 
-export const SelectField = ({ register, disabled, value, label, name, options, onChange }) => (
+export const SelectField = ({ register, currentStep, step, disabled, value, label, name, options, onChange }) => (
   <div className={styles.inputWrapper}>
     <div className={styles.inputGroup}>
       <select className={styles.select} disabled={disabled} id={name} name={name} value={value} onChange={onChange} ref={register}>
@@ -293,7 +291,9 @@ export const Step = ({title, errors, getValues, setValue, children, step, curren
         register: register,
         errors: errors,
         setValue: setValue,
-        getValues: getValues
+        getValues: getValues,
+        currentStep: currentStep,
+        step: step
       });
     }
   
@@ -301,16 +301,12 @@ export const Step = ({title, errors, getValues, setValue, children, step, curren
   }); 
 
   return (
-    <>
-    {currentStep >= step && (
-      <div className={styles.formSection} style={currentStep !== step && currentStep !== totalSteps ? {display: 'none'} : {}}>
-        <h2 className={styles.formSectionTitle}>{title}</h2>
-        <div className={styles.formRow}>
-          {childrenWithProps}
-        </div>
+    <div className={styles.formSection} style={currentStep !== step && currentStep !== totalSteps ? {display: 'none'} : {}}>
+      <h2 className={styles.formSectionTitle}>{title}</h2>
+      <div className={styles.formRow}>
+        {childrenWithProps}
       </div>
-    )}
-    </>
+    </div>
   )
 }
 
