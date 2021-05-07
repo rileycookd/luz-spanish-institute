@@ -8,9 +8,7 @@ import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 
 // NOTES: Should unregister: false if you want to use disabled inputs
 
-export function Form ({ currentStep, confirmStep, setCurrentStep, totalSteps, name, method, action, children }) {
-
-  const [formStatus, setFormStatus] = useState('default')
+export function Form ({ currentStep, confirmStep, formStatus, setFormStatus, setCurrentStep, totalSteps, name, method, action, children }) {
 
   const { watch, register, handleSubmit, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
@@ -117,58 +115,36 @@ export function Form ({ currentStep, confirmStep, setCurrentStep, totalSteps, na
   });
     
   return(
-    <>
-      {formStatus === 'default' && (
-        <form 
-          className={styles.root} 
-          onSubmit={handleSubmit(handlePost)}
-          name={name}
-          method={method}
-          action={action}
-          data-netlify="true"
-          netlify-honeypot="got-ya"
-        >
+    <form 
+      className={styles.root} 
+      onSubmit={handleSubmit(handlePost)}
+      name={name}
+      method={method}
+      action={action}
+      data-netlify="true"
+      netlify-honeypot="got-ya"
+    >
 
-          <input type="hidden" name="form-name" value={name} />
-          <input
-            type="hidden"
-            name="formId"
-            value={name}
-            ref={register}
-          />
+      <input type="hidden" name="form-name" value={name} />
+      <input
+        type="hidden"
+        name="formId"
+        value={name}
+        ref={register}
+      />
 
-          {childrenWithProps}
+      {childrenWithProps}
 
-          {currentStep === totalSteps && confirmStep}
+      {currentStep === totalSteps && confirmStep}
 
-          <input tabIndex="-1" name="got-ya" ref={register} />
-  
-          <div className={styles.formButtons}>
-            {previousButton()}
-            {nextButton()}
-            {submitButton()}
-          </div>
-        </form>
-      )}
-      {formStatus === 'success' && (
-        <div className={styles.root} style={{justifyItems: 'center', textAlign: 'center'}}>
-        <div className={styles.formSection}>
-          <h1 className={styles.formTitle}>Thanks for enrolling!</h1>
-          <p>Check your email for a confirmation of your registration. We’ll contact you soon to confirm your enrollment and schedule your classes. </p>
-        </div>    
-        <CTALink kind="small button" route="/" title="Go home" />
+      <input tabIndex="-1" name="got-ya" ref={register} />
+
+      <div className={styles.formButtons}>
+        {previousButton()}
+        {nextButton()}
+        {submitButton()}
       </div>
-      )}
-      {formStatus === 'error' && (
-        <div className={styles.root} style={{justifyItems: 'center', textAlign: 'center'}}>
-          <div className={styles.formSection}>
-            <h1 className={styles.formTitle}>Hm... something went wrong</h1>
-            <p>We’re sorry! We couldn’t complete your registration at this time. You can try again or contact us directly.</p>
-          </div>    
-          <button className={cn(button, buttonSmall)} onClick={() => window.location.reload()}>Try again</button> 
-        </div>
-      )}
-    </>
+    </form>
   )
 }
 

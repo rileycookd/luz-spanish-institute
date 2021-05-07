@@ -1,5 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import * as styles from './form-slide.module.css'
+import { cn } from '../lib/helpers'
+import { button, buttonSmall, buttonLarge, buttonSecondary } from './CTALink.module.css'
+import CTALink from './CTALink'
+import { Link } from 'gatsby'
+import { altOption } from './cta-form.module.css'
 import { Form, Step, InputField, SelectField, StepNavigation } from '../components/form'
 
 // import { RegistrationReducer, DefaultRegistration } from '../reducers/registration-reducer'
@@ -30,6 +35,8 @@ function FormSlide ({ classTypes }) {
   const [pricePerStudent, setPricePerStudent] = useState(0)
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(4);
+  const [formStatus, setFormStatus] = useState('default')
+
 
   let classTypeDurations = currentClassType.pricing.map(p => (
     `${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`
@@ -148,116 +155,144 @@ function FormSlide ({ classTypes }) {
   return (
     <div className={styles.root}>
       <div className={styles.formNavigation}>
-        <StepNavigation steps={['Class selection', 'Scheduling', 'Student info']} currentStep={currentStep} totalSteps={totalSteps} />
+        {formStatus === 'default' && (
+          <StepNavigation steps={['Class selection', 'Scheduling', 'Student info']} currentStep={currentStep} totalSteps={totalSteps} />
+        )}
+        {formStatus === 'error' && (
+          <h2 className={styles.formNavigationStatus}>Resistration unsuccessful</h2>
+        )}
+        {formStatus === 'success' && (
+          <h2 className={styles.formNavigationStatus}>Resistration successful</h2>
+        )}
       </div>
-      <div className={styles.content}>
-        <div className={styles.sidePanel}>
-          <div className={styles.sidePanelContent}>
-            <h1 className={styles.formTitle}>Start your Spanish journey today</h1>
-            <div className={styles.costIndicator}>
-              <h4 className={styles.costIndicatorTitle}>Estimated cost: </h4>
-              <p className={styles.costIndicatorCost}>
-                {`$${formatTotalPrice()} USD`}{formatPricePerStudent() !== 0 && <span>{` ($${formatPricePerStudent()} per student)`}</span>}
-              </p>
+      {formStatus === 'default' && (
+        <div className={styles.content}>
+          <div className={styles.sidePanel}>
+            <div className={styles.sidePanelContent}>
+              <h1 className={styles.formTitle}>Start your Spanish journey today</h1>
+              <div className={styles.costIndicator}>
+                <h4 className={styles.costIndicatorTitle}>Estimated cost: </h4>
+                <p className={styles.costIndicatorCost}>
+                  {`$${formatTotalPrice()} USD`}{formatPricePerStudent() !== 0 && <span>{` ($${formatPricePerStudent()} per student)`}</span>}
+                </p>
+              </div>
+            </div>
+            <div className={styles.sidePanelFooter}>
+              <p className={styles.contactLink}>Questions? <span className={altOption}><Link to={'/contact'}>Contact us</Link></span></p>
+              <p className={styles.finePrint}>We will contact you to confirm enrollment before payment</p>
             </div>
           </div>
-          <div className={styles.sidePanelFooter}>
-
-          </div>
+          <Form 
+            // onSubmit={handlePost}
+            name="registration-form"
+            method="POST"
+            action="/success/"
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            totalSteps={totalSteps}
+            confirmStep={renderConfirmStep()}
+            formStatus={formStatus}
+            setFormStatus={setFormStatus}
+          >
+            <Step title="Class selection">
+              <SelectField
+                label="Class type:"
+                name="classType"
+                options={classTypeTitles}
+                onChange={(e) => setClassTypeValue(e.target.value)}
+              />
+              <SelectField
+                label="Spanish level:"
+                name="level"
+                options={["Not sure", "Beginner", "Intermediate", "Advanced"]}
+                onChange={(e) => setSpanishLevelValue(e.target.value)}
+              />
+              <InputField
+                readOnly={currentClassType.max === 1}
+                label="How many students?"
+                name="classSize"
+                type="number"
+                defaultValue={classSizeValue}
+                min={currentClassType.min || 1}
+                max={currentClassType.max || null}
+                callback={setClassSizeValue}
+                onChange={(e) => setClassSizeValue(e.target.value)}
+              />
+            </Step>
+            <Step title="Scheduling">
+              <SelectField
+                label="Class duration:"
+                name="duration"
+                options={classTypeDurations}
+                onChange={(e) => setDurationValue(e.target.value)}
+              />
+              <SelectField
+                label="Quantity:"
+                name="quantity"
+                options={classTypePackages}
+                onChange={(e) => setQuantityValue(e.target.value)}
+              />
+              <SelectField
+                defaultValue={frequencyValue}
+                label="Frequency:"
+                name="frequency"
+                options={classTypePackages.length > 1 ? ["1x a week", "2x a week", "3x a week"] : ["1x a week"]}
+                onChange={(e) => setFrequencyValue(e.target.value)}
+              />
+            </Step> 
+            <Step title="Student info">
+              <InputField
+                defaultValue={nameValue}
+                label="Full name:"
+                required={true}
+                errorMessage="Please enter your full name"
+                name="name"
+                placeholder="Your full name" 
+                type="text"
+                onChange={(e) => setNameValue(e.target.value)}
+              >
+                <NameIcon />
+              </InputField>
+              <InputField
+                defaultValue={emailValue}
+                label="Email:"
+                name="email"
+                placeholder="you@email.com" 
+                type="text"
+                errorMessage="Please enter a valid email"
+                pattern={/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/}
+                onChange={(e) => setEmailValue(e.target.value)}
+              >
+                <MailIcon />
+              </InputField>
+              <InputField
+                defaultValue={locationValue}
+                label="Where do you live?"
+                name="location"
+                errorMessage="Please enter your city and country"
+                placeholder="City, Country" 
+                type="text"
+                onChange={(e) => setLocationValue(e.target.value)}
+              ><LocationIcon /></InputField>
+            </Step>
+          </Form>
         </div>
-        <Form 
-          // onSubmit={handlePost}
-          name="registration-form"
-          method="POST"
-          action="/success/"
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-          totalSteps={totalSteps}
-          confirmStep={renderConfirmStep()}
-        >
-          <Step title="Class selection">
-            <SelectField
-              label="Class type:"
-              name="classType"
-              options={classTypeTitles}
-              onChange={(e) => setClassTypeValue(e.target.value)}
-            />
-            <SelectField
-              label="Spanish level:"
-              name="level"
-              options={["Not sure", "Beginner", "Intermediate", "Advanced"]}
-              onChange={(e) => setSpanishLevelValue(e.target.value)}
-            />
-            <InputField
-              readOnly={currentClassType.max === 1}
-              label="How many students?"
-              name="classSize"
-              type="number"
-              defaultValue={classSizeValue}
-              min={currentClassType.min || 1}
-              max={currentClassType.max || null}
-              callback={setClassSizeValue}
-              onChange={(e) => setClassSizeValue(e.target.value)}
-            />
-          </Step>
-          <Step title="Scheduling">
-            <SelectField
-              label="Class duration:"
-              name="duration"
-              options={classTypeDurations}
-              onChange={(e) => setDurationValue(e.target.value)}
-            />
-            <SelectField
-              label="Quantity:"
-              name="quantity"
-              options={classTypePackages}
-              onChange={(e) => setQuantityValue(e.target.value)}
-            />
-            <SelectField
-              defaultValue={frequencyValue}
-              label="Frequency:"
-              name="frequency"
-              options={classTypePackages.length > 1 ? ["1x a week", "2x a week", "3x a week"] : ["1x a week"]}
-              onChange={(e) => setFrequencyValue(e.target.value)}
-            />
-          </Step> 
-          <Step title="Student info">
-            <InputField
-              defaultValue={nameValue}
-              label="Full name:"
-              required={true}
-              errorMessage="Please enter your full name"
-              name="name"
-              placeholder="Your full name" 
-              type="text"
-              onChange={(e) => setNameValue(e.target.value)}
-            >
-              <NameIcon />
-            </InputField>
-            <InputField
-              defaultValue={emailValue}
-              label="Email:"
-              name="email"
-              placeholder="you@email.com" 
-              type="text"
-              errorMessage="Please enter a valid email"
-              pattern={/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/}
-              onChange={(e) => setEmailValue(e.target.value)}
-            >
-              <MailIcon />
-            </InputField>
-            <InputField
-              defaultValue={locationValue}
-              label="Where do you live?"
-              name="location"
-              errorMessage="Please enter your city and country"
-              placeholder="City, Country" 
-              type="text"
-              onChange={(e) => setLocationValue(e.target.value)}
-            ><LocationIcon /></InputField>
-          </Step>
-        </Form>
-      </div>
+      )}
+      {formStatus === 'success' && (
+        <div className={styles.formResult} style={{justifyItems: 'center', textAlign: 'center'}}>
+          <h1 className={styles.formTitle}>Thanks for enrolling!</h1>
+          <p>Check your email for a confirmation of your registration. We’ll contact you soon to confirm your enrollment and schedule your classes. </p>
+          <CTALink kind="small button" route="/" title="Go home" />
+        </div>
+      )}
+      {formStatus === 'error' && (
+        <div className={styles.formResult} style={{justifyItems: 'center', textAlign: 'center'}}>
+          <h1 className={styles.formTitle}>Hm... something went wrong</h1>
+          <p>We’re sorry! We couldn’t complete your registration at this time. You can try again or contact us directly.</p>   
+          <button className={cn(button, buttonSmall)} onClick={() => window.location.reload()}>Try again</button> 
+        </div>
+      )}
+      
     </div>
   )
 }

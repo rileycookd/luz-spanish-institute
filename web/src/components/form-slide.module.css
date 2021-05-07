@@ -9,9 +9,15 @@
 
 .form-navigation {
   display: flex;
+  justify-content: center;
   width: 100%;
   padding: 3rem 20%;
   background-color: var(--color-primary-medium);
+}
+
+.form-navigation-status {
+  color: var(--color-grey-medium);
+  composes: title5 from './typography.module.css';
 }
 
 .content {
@@ -28,11 +34,27 @@
 
 .side-panel {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .side-panel-content {
   display: grid;
   row-gap: 2rem;
+}
+
+.side-panel-footer {
+  display: grid;
+  row-gap: 1rem;
+}
+
+.contact-link {
+  color: var(--color-primary);
+}
+
+.fine-print {
+  color: var(--color-grey-medium);
 }
 
 .cost-indicator {
@@ -78,4 +100,12 @@
 .confirm-input-title {
   composes: title6 from './typography.module.css';
   padding-right: 1rem;
+}
+
+.form-result {
+  max-width: 600px;
+  padding-top: 4rem;
+  display: grid;
+  align-items: center;
+  row-gap: 2rem;
 }
