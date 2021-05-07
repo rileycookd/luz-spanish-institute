@@ -208,39 +208,37 @@ export const InputField = ({ register, currentStep, unregister, step, readOnly, 
   }
 
   return (
-    <div className={styles.inputWrapper}>
-      <div className={styles.inputGroup}>
-        {type === "number" && !disabled && !readOnly && <SubtractIcon onClick={(e) => decrement (e)} className={(currentValue == min || currentValue == '') ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
-        <input
-          id={name}
-          type={type}
-          name={name}
-          min={min}
-          max={max}
-          readOnly={readOnly}
-          disabled={disabled}
-          defaultValue={defaultValueCheck}
-          className={styles.input}
-          placeholder={placeholder}
-          onChange={onChange}
-          {...(currentStep >= step && { ref: register({
-            pattern: {
-              value: pattern,
-              message: errorMessageValue
-            },
-            required: {
-              value: true,
-              pattern: pattern,
-              message: errorMessageValue,
-            }
-          })} )}
-          style={(children || type === "number") ? {paddingLeft: '3.5rem'} : {}}
-        />
-        {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
-        {children}
-        {type === "number" && !disabled && !readOnly && <AddIcon onClick={(e) => increment(e)} className={currentValue == max ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
-      </div>
+    <div className={styles.inputGroup}>
+      {type === "number" && !disabled && !readOnly && <SubtractIcon onClick={(e) => decrement (e)} className={(currentValue == min || currentValue == '') ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
+      <input
+        id={name}
+        type={type}
+        name={name}
+        min={min}
+        max={max}
+        readOnly={readOnly}
+        disabled={disabled}
+        defaultValue={defaultValueCheck}
+        className={errors && errors[name] ? cn(styles.error, styles.input) : styles.input}
+        placeholder={placeholder}
+        onChange={onChange}
+        {...(currentStep >= step && { ref: register({
+          pattern: {
+            value: pattern,
+            message: errorMessageValue
+          },
+          required: {
+            value: true,
+            pattern: pattern,
+            message: errorMessageValue,
+          }
+        })} )}
+        style={(children || type === "number") ? {paddingLeft: '3.5rem'} : {}}
+      />
+      {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
       <p className={styles.inputError}>{errors && errors[name] && errors[name].message}</p>
+      {children}
+      {type === "number" && !disabled && !readOnly && <AddIcon onClick={(e) => increment(e)} className={currentValue == max ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
     </div>
   )
 };
