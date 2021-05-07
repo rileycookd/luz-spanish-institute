@@ -8,23 +8,16 @@ import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 
 // NOTES: Should unregister: false if you want to use disabled inputs
 
-export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit, name, method, action, children }) {
+export function Form ({ currentStep, setCurrentStep, totalSteps, name, method, action, children }) {
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [totalSteps, setTotalSteps] = useState(1);
   const [formStatus, setFormStatus] = useState('default')
 
-  const { register, handleSubmit, setValue, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
+  const { watch, register, handleSubmit, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
   const stepCustomProps = { 
     currentStep: currentStep,
     register: register
   }
-
-  useEffect(() => {
-    let numSteps = React.Children.toArray(children).length + 1;
-    setTotalSteps(numSteps)
-  }, [totalSteps]);
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
   const encode = (data) => {
@@ -115,19 +108,13 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
         register: register,
         errors: errors,
         setValue: setValue,
-        getValues: getValues
+        getValues: getValues,
+        unregister: unregister
       });
     }
   
     return child;
   });
-
-  let stepNames = []
-  children.map((c) => {
-    c.props && c.props.title && (
-      stepNames.push(c.props.title)
-    )
-  })
     
   return(
     <>
@@ -141,9 +128,6 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
           data-netlify="true"
           netlify-honeypot="got-ya"
         >
-          <h1 className={styles.formTitle}>Start your Spanish journey today</h1>
-
-          <StepNavigation steps={stepNames} currentStep={currentStep} totalSteps={totalSteps} />
 
           <input type="hidden" name="form-name" value={name} />
           <input
@@ -156,22 +140,11 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
           {childrenWithProps}
 
           <input tabIndex="-1" name="got-ya" ref={register} />
-
-          <div className={styles.formFooter}>
-            <div className={styles.formFooterInfo}>
-              <div className={styles.costIndicator}>
-                <h4 className={styles.costIndicatorTitle}>Estimated cost: </h4>
-                <p className={styles.costIndicatorCost}>
-                  {`$${estimatedCost} USD`}{pricePerStudent !== 0 && <span>{` ($${pricePerStudent} per student)`}</span>}
-                </p>
-              </div>
-              <p className={styles.costIndicatorSubtitle}>We will contact you to confirm enrollment before payment</p>
-            </div>
-            <div className={styles.formButtons}>
-              {previousButton()}
-              {nextButton()}
-              {submitButton()}
-            </div>
+  
+          <div className={styles.formButtons}>
+            {previousButton()}
+            {nextButton()}
+            {submitButton()}
           </div>
         </form>
       )}
@@ -197,7 +170,9 @@ export function Form ({ onInputChange, estimatedCost, pricePerStudent, onSubmit,
   )
 }
 
-export const InputField = ({ register, currentStep, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+export const InputField = ({ register, currentStep, unregister, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+
+  if(currentStep < step) unregister(name)
 
   const currentValue = getValues(name)
   if(type === "number" && min && Number(currentValue) < min) { 
@@ -263,7 +238,7 @@ export const InputField = ({ register, currentStep, step, readOnly, disabled, pa
         {children}
         {type === "number" && !disabled && !readOnly && <AddIcon onClick={(e) => increment(e)} className={currentValue == max ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
       </div>
-      <p className={styles.inputError}>{errors && errors[name] && errors[name].message} </p>
+      <p className={styles.inputError}>{errors && errors[name] && errors[name].message}</p>
     </div>
   )
 };
@@ -279,11 +254,11 @@ export const SelectField = ({ register, currentStep, step, disabled, value, labe
       </select>
       {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
     </div>
-    <p className={styles.inputError}> </p>
+    <p className={styles.inputError}></p>
   </div>        
 )
 
-export const Step = ({title, errors, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
+export const Step = ({title, errors, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
@@ -293,7 +268,8 @@ export const Step = ({title, errors, getValues, setValue, children, step, curren
         setValue: setValue,
         getValues: getValues,
         currentStep: currentStep,
-        step: step
+        step: step,
+        unregister: unregister
       });
     }
   
@@ -303,7 +279,7 @@ export const Step = ({title, errors, getValues, setValue, children, step, curren
   return (
     <div className={styles.formSection} style={currentStep !== step && currentStep !== totalSteps ? {display: 'none'} : {}}>
       <h2 className={styles.formSectionTitle}>{title}</h2>
-      <div className={styles.formRow}>
+      <div className={styles.formSectionInputs}>
         {childrenWithProps}
       </div>
     </div>
@@ -311,7 +287,10 @@ export const Step = ({title, errors, getValues, setValue, children, step, curren
 }
 
 export const StepNavigation = ({steps, currentStep, totalSteps}) => {
-  steps.push('Confirm')
+
+
+  if(!steps.includes('Confirm')) steps.push('Confirm')
+
   return(
     <div className={styles.formNavigation}>
       {steps && steps.map((s, i) => (

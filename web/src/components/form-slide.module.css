@@ -1,28 +1,59 @@
 @import '../styles/vars.css';
 
 .root {
-  display: grid;
-  grid-template-columns: .25fr .75fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  height: 100%;
+  height: 100vh;
 }
 
-.form {
-  padding: 8rem 0;
+.form-navigation {
+  display: flex;
+  width: 100%;
+  padding: 3rem 20%;
+  background-color: var(--color-primary-medium);
+}
+
+.content {
+  max-width: 1200px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  column-gap: 4rem;
+  width: 100%;
+  height: 100%;
+  align-content: center;
 }
 
 .side-panel {
   height: 100%;
-  position: relative;
 }
 
-.side-panel-overlay {
-  z-index: 1;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(var(--color-primary-rgb), .8);
+.side-panel-content {
+  display: grid;
+  row-gap: 2rem;
+}
+
+.cost-indicator {
+  display: grid;
+  row-gap: .5rem;
+}
+
+.cost-indicator-title {
+  composes: title6 from './typography.module.css';
+  margin-right: 1rem;
+}
+
+.cost-indicator-subtitle {
+  color: var(--color-grey-medium);
+}
+
+.cost-indicator-cost {
+  composes: title6 from './typography.module.css';
+  font-weight: 400;
+  color: var(--color-primary);
+
+  @nest & > span {
+    color: var(--color-grey-medium);
+  }
 }

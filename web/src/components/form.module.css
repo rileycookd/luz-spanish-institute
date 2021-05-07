@@ -1,7 +1,7 @@
 @import '../styles/vars.css';
 
 .root {
-  margin: auto var(--padding-x);
+  width: 100%;
   display: grid;
   row-gap: 3rem;
 }
@@ -21,9 +21,8 @@
   color: var(--color-primary);
 }
 
-.form-row {
+.form-section-inputs {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   column-gap: 1rem;
 }
 
@@ -37,29 +36,6 @@
 .form-footer-info {
   display: grid;
   row-gap: 1rem;
-}
-
-.cost-indicator {
-  display: flex;
-}
-
-.cost-indicator-title {
-  composes: title6 from './typography.module.css';
-  margin-right: 1rem;
-}
-
-.cost-indicator-subtitle {
-  color: var(--color-grey-medium);
-}
-
-.cost-indicator-cost {
-  composes: title6 from './typography.module.css';
-  font-weight: 400;
-  color: var(--color-primary);
-
-  @nest & > span {
-    color: var(--color-grey-medium);
-  }
 }
 
 .form-buttons {
@@ -78,10 +54,11 @@
 
 .form-navigation-step {
   width: 100%;
+  min-width: max-content;
   display: grid;
   row-gap: .5rem;
   justify-items: center;
-  color: var(--color-text-light);
+  color: var(--color-grey-medium);
   transition: color .2s ease-out;
 
   @nest &:first-child > .form-navigation-step-icon::before, 
@@ -146,7 +123,6 @@
   padding-left: .5rem;
   composes: small from './typography.module.css';
   color: var(--color-error);
-  white-space: pre-wrap;
 }
 
 .input-group {

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import * as styles from './form-slide.module.css'
-import { Form, Step, InputField, SelectField } from '../components/form'
+import { Form, Step, InputField, SelectField, StepNavigation } from '../components/form'
 
 // import { RegistrationReducer, DefaultRegistration } from '../reducers/registration-reducer'
 
@@ -28,6 +28,8 @@ function FormSlide ({ classTypes }) {
   const [currentClassType, setCurrentClassType] = useState(classTypes[0])
   const [estimatedPrice, setEstimatedPrice] = useState(0)
   const [pricePerStudent, setPricePerStudent] = useState(0)
+  const [currentStep, setCurrentStep] = useState(1);
+  const [totalSteps, setTotalSteps] = useState(4);
 
   let classTypeDurations = currentClassType.pricing.map(p => (
     `${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`
@@ -37,6 +39,14 @@ function FormSlide ({ classTypes }) {
   currentClassType.packages.map(p => (
     classTypePackages.push(`${p.quantity} class${p.quantity > 1 ? 'es' : ''}`)
   ))
+
+  const formatTotalPrice = () => {
+    return estimatedPrice ? (Math.round((estimatedPrice + Number.EPSILON) * 100) / 100).toFixed(2): '—'
+  }
+
+  const formatPricePerStudent = () => {
+    return Number(classSizeValue) > 1 ? (Math.round((pricePerStudent + Number.EPSILON) * 100) / 100).toFixed(2) : 0
+  }
 
   const calculateSizeDiscount = () => {
     let { min, maxDiscount, sizeDiscount } = currentClassType
@@ -91,22 +101,32 @@ function FormSlide ({ classTypes }) {
 
   return (
     <div className={styles.root}>
-      <div className={styles.sidePanel} style={
-        {
-          backgroundImage: "url(https://source.unsplash.com/random/1920x1080)"
-        }
-      }>
-        <div className={styles.sidePanelOverlay}></div>
+      <div className={styles.formNavigation}>
+        <StepNavigation steps={['Class selection', 'Scheduling', 'Student info']} currentStep={currentStep} totalSteps={totalSteps} />
       </div>
-      <div className={styles.form}>
+      <div className={styles.content}>
+        <div className={styles.sidePanel}>
+          <div className={styles.sidePanelContent}>
+            <h1 className={styles.formTitle}>Start your Spanish journey today</h1>
+            <div className={styles.costIndicator}>
+              <h4 className={styles.costIndicatorTitle}>Estimated cost: </h4>
+              <p className={styles.costIndicatorCost}>
+                {`$${formatTotalPrice()} USD`}{formatPricePerStudent() !== 0 && <span>{` ($${formatPricePerStudent()} per student)`}</span>}
+              </p>
+            </div>
+          </div>
+          <div className={styles.sidePanelFooter}>
+
+          </div>
+        </div>
         <Form 
           // onSubmit={handlePost}
           name="registration-form"
           method="POST"
           action="/success/"
-          estimatedCost={estimatedPrice ? (Math.round((estimatedPrice + Number.EPSILON) * 100) / 100).toFixed(2): '—'}
-          pricePerStudent={Number(classSizeValue) > 1 ? (Math.round((pricePerStudent + Number.EPSILON) * 100) / 100).toFixed(2) : 0}
-
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          totalSteps={totalSteps}
         >
           <Step title="Class selection">
             <SelectField
