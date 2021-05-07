@@ -8,7 +8,7 @@ import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 
 // NOTES: Should unregister: false if you want to use disabled inputs
 
-export function Form ({ currentStep, setCurrentStep, totalSteps, name, method, action, children }) {
+export function Form ({ currentStep, confirmStep, setCurrentStep, totalSteps, name, method, action, children }) {
 
   const [formStatus, setFormStatus] = useState('default')
 
@@ -138,6 +138,8 @@ export function Form ({ currentStep, setCurrentStep, totalSteps, name, method, a
           />
 
           {childrenWithProps}
+
+          {currentStep === totalSteps && confirmStep}
 
           <input tabIndex="-1" name="got-ya" ref={register} />
   
@@ -277,7 +279,7 @@ export const Step = ({title, errors, unregister, getValues, setValue, children, 
   }); 
 
   return (
-    <div className={styles.formSection} style={currentStep !== step && currentStep !== totalSteps ? {display: 'none'} : {}}>
+    <div className={styles.formSection} style={currentStep !== step ? {display: 'none'} : {}}>
       <h2 className={styles.formSectionTitle}>{title}</h2>
       <div className={styles.formSectionInputs}>
         {childrenWithProps}

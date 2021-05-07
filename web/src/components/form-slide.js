@@ -62,6 +62,52 @@ function FormSlide ({ classTypes }) {
     return currentSizeDiscount
   }
 
+  const renderConfirmStep = () => {
+    return (
+      <>
+        <h2 className={styles.confirmStepTitle}>Please confirm your registration details</h2>
+        <div className={styles.confirmContainer}>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Class:</h5>
+            <p className={styles.confirmInputValue}>{classTypeValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Level:</h5>
+            <p className={styles.confirmInputValue}>{spanishLevelValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Size:</h5>
+            <p className={styles.confirmInputValue}>{classSizeValue} student{classSizeValue > 1 ? 's' : ''}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Duration:</h5>
+            <p className={styles.confirmInputValue}>{durationValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Quantity:</h5>
+            <p className={styles.confirmInputValue}>{quantityValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Frequency:</h5>
+            <p className={styles.confirmInputValue}>{frequencyValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Name:</h5>
+            <p className={styles.confirmInputValue}>{nameValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Email:</h5>
+            <p className={styles.confirmInputValue}>{emailValue}</p>
+          </div>
+          <div className={styles.confirmInput}>
+            <h5 className={styles.confirmInputTitle}>Location:</h5>
+            <p className={styles.confirmInputValue}>{locationValue}</p>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   const calculateBasePrice = (basePrice) => {
     let { min } = currentClassType
     let classPrice = basePrice;
@@ -127,6 +173,7 @@ function FormSlide ({ classTypes }) {
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
           totalSteps={totalSteps}
+          confirmStep={renderConfirmStep()}
         >
           <Step title="Class selection">
             <SelectField
