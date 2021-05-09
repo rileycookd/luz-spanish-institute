@@ -1,6 +1,7 @@
 @import '../styles/vars.css';
 
 .root {
+  align-self: start;
   position: relative;
   background-color: var(--color-white);
   color: var(--color-black);

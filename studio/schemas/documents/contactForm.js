@@ -1,8 +1,23 @@
 export default {
-  name: "contactFormSubmission",
+  name: "contactForm",
   title: "Contact form submissions",
   type: "document",
+  initialValue: () => ({
+    submitDate: new Date().toISOString()
+  }),
   fields: [
+    {
+      title: 'Submitted date',
+      name: 'submitDate',
+      type: 'datetime',
+      readOnly: true,
+      options: {
+        dateFormat: 'DD-MM-YYYY',
+        timeFormat: 'HH:mm',
+        timeStep: 15,
+        calendarTodayLabel: 'Today'
+      }
+    },
     {
       name: "name",
       title: "Name",
@@ -12,16 +27,6 @@ export default {
       name: "email",
       title: "Email",
       type: "string",
-    },
-    {
-      name: 'company',
-      title: 'Company',
-      type: 'string',
-    },
-    {
-      name: 'subject',
-      title: 'Subject',
-      type: 'string'
     },
     {
       name: "message",

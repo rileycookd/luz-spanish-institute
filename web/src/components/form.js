@@ -8,7 +8,7 @@ import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 
 // NOTES: Should unregister: false if you want to use disabled inputs
 
-export function Form ({ currentStep, confirmStep, formStatus, setFormStatus, setCurrentStep, totalSteps, name, method, action, children }) {
+export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus, setCurrentStep, totalSteps, name, method, action, children }) {
 
   const { watch, register, handleSubmit, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
@@ -87,7 +87,7 @@ export function Form ({ currentStep, confirmStep, formStatus, setFormStatus, set
   const submitButton = () => {
     if(currentStep === (totalSteps)){
       return (
-        <button type="submit" className={cn(button, buttonLarge)}>Enroll</button>
+        <button disabled={!isValid} type="submit" className={cn(button, buttonLarge)}>{cta}</button>
       )
     }
     // ...else render nothing
@@ -219,6 +219,42 @@ export const InputField = ({ register, currentStep, unregister, step, readOnly, 
   )
 };
 
+export const TextareaField = ({ register, currentStep, unregister, step, readOnly, disabled, pattern, defaultValue, errors, errorMessage, label, name, placeholder, type, onChange }) => {
+
+  if(currentStep < step) unregister(name)
+
+  const errorMessageValue = errorMessage ? errorMessage : "Please enter a valid value"
+
+  return (
+    <div className={styles.inputGroup}>
+      <textarea
+        id={name}
+        type={type}
+        name={name}
+        readOnly={readOnly}
+        disabled={disabled}
+        defaultValue={defaultValue}
+        className={errors && errors[name] ? cn(styles.error, styles.input) : styles.input}
+        placeholder={placeholder}
+        onChange={onChange}
+        {...(currentStep >= step && { ref: register({
+          pattern: {
+            value: pattern,
+            message: errorMessageValue
+          },
+          required: {
+            value: true,
+            pattern: pattern,
+            message: errorMessageValue,
+          }
+        })} )}
+      />
+      {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
+      <p className={styles.inputError}>{errors && errors[name] && errors[name].message}</p>
+    </div>
+  )
+};
+
 export const SelectField = ({ register, currentStep, step, disabled, value, label, name, options, onChange }) => (
   <div className={styles.inputWrapper}>
     <div className={styles.inputGroup}>
@@ -234,7 +270,7 @@ export const SelectField = ({ register, currentStep, step, disabled, value, labe
   </div>        
 )
 
-export const Step = ({title, errors, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
+export const Step = ({title, errors, style, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
@@ -254,7 +290,7 @@ export const Step = ({title, errors, unregister, getValues, setValue, children, 
 
   return (
     <div className={styles.formSection} style={currentStep !== step ? {display: 'none'} : {}}>
-      <h2 className={styles.formSectionTitle}>{title}</h2>
+      <h2 className={style === "dark" ? cn(styles.formSectionTitle, styles.dark) : styles.formSectionTitle}>{title}</h2>
       <div className={styles.formSectionInputs}>
         {childrenWithProps}
       </div>

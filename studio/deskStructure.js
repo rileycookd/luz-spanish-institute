@@ -4,7 +4,7 @@ import { IoHome } from 'react-icons/io5'
 import pageBuilder from './src/structure/page-builder'
 import forms from './src/structure/forms'
 
-const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactFormSubmission', 'media.tag', 'registrationForm', 'category']
+const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'category']
 
 export default () =>
   S.list()

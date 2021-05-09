@@ -17,6 +17,13 @@ export default S.listItem()
           .child(
             S.documentTypeList('registrationForm')
               .title('Registration inbox')   
+          ),
+        S.listItem()
+          .title('Messages')
+          .icon(ContactIcon)
+          .child(
+            S.documentTypeList('contactForm')
+              .title('Contact form inbox')   
           )
       ])
   )

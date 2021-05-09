@@ -193,6 +193,7 @@ function FormSlide ({ classTypes }) {
             confirmStep={renderConfirmStep()}
             formStatus={formStatus}
             setFormStatus={setFormStatus}
+            cta="Enroll"
           >
             <Step title="Class selection">
               <SelectField

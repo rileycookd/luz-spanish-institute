@@ -19,6 +19,10 @@
 .form-section-title {
   composes: title6 from './typography.module.css';
   color: var(--color-primary);
+
+  @nest &.dark {
+    color: var(--color-grey-medium);
+  }
 }
 
 .form-section-inputs {
@@ -101,6 +105,10 @@
 /* ++++++++++++++ */
 /*  INPUT STYLES  */
 /* ++++++++++++++ */
+
+textarea {
+  resize: none;
+}
 
 .input-group {
   display: flex;
