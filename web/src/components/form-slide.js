@@ -5,11 +5,13 @@ import { button, buttonSmall, buttonLarge, buttonSecondary } from './CTALink.mod
 import CTALink from './CTALink'
 import { Link } from 'gatsby'
 import { altOption } from './cta-form.module.css'
-import { Form, Step, InputField, SelectField, StepNavigation } from '../components/form'
+import { Form, Step, InputField, SelectField, StepNavigation, SelectSearchField } from '../components/form'
 
 // import { RegistrationReducer, DefaultRegistration } from '../reducers/registration-reducer'
 
 import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIcon } from 'react-icons/io5'
+import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb";
+import { render } from 'react-dom'
 
 function FormSlide ({ classTypes }) {
 
@@ -34,8 +36,9 @@ function FormSlide ({ classTypes }) {
   const [estimatedPrice, setEstimatedPrice] = useState(0)
   const [pricePerStudent, setPricePerStudent] = useState(0)
   const [currentStep, setCurrentStep] = useState(1);
-  const [totalSteps, setTotalSteps] = useState(4);
+  const [totalSteps, setTotalSteps] = useState(5);
   const [formStatus, setFormStatus] = useState('default')
+
 
 
   let classTypeDurations = currentClassType.pricing.map(p => (
@@ -72,7 +75,8 @@ function FormSlide ({ classTypes }) {
   const renderConfirmStep = () => {
     return (
       <>
-        <h2 className={styles.confirmStepTitle}>Please confirm your registration details</h2>
+        <div></div>
+        {/* <h2 className={styles.confirmStepTitle}>Please confirm your registration details</h2>
         <div className={styles.confirmContainer}>
           <div className={styles.confirmInput}>
             <h5 className={styles.confirmInputTitle}>Class:</h5>
@@ -110,7 +114,7 @@ function FormSlide ({ classTypes }) {
             <h5 className={styles.confirmInputTitle}>Location:</h5>
             <p className={styles.confirmInputValue}>{locationValue}</p>
           </div>
-        </div>
+        </div> */}
       </>
     )
   }
@@ -152,11 +156,31 @@ function FormSlide ({ classTypes }) {
     setPricePerStudent(newCalculatedPrice)
   }, [currentClassType, quantityValue, durationValue, classSizeValue])
 
+  const rawTimeZones = getTimeZones();
+  const timeZoneOptions = rawTimeZones.map(t => ({label: t.rawFormat, value: t.name}))
+
+  const renderSchedulerInputs = () => {
+    let numberPattern = /\d+/g;
+    let frequencyNumber = Number(frequencyValue.match(numberPattern)[0])
+    const schedulerInputs = [];
+
+    for (let i = 1; i <= frequencyNumber; i++) {
+      schedulerInputs.push(
+        <SelectField
+          label={`Class ${i}:`}
+          name={`classSchedule${i}`}
+          options={[{value: '1', label: 'Monday 8:00 - 9:30am'}, {value: '2' , label: 'Monday 10:30 - 12:00pm'}]}
+        />
+      );
+    }
+    return schedulerInputs;
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.formNavigation}>
         {formStatus === 'default' && (
-          <StepNavigation steps={['Class selection', 'Scheduling', 'Student info']} currentStep={currentStep} totalSteps={totalSteps} />
+          <StepNavigation steps={['Class selection', 'Package', 'Scheduling', 'Student info']} currentStep={currentStep} totalSteps={totalSteps} />
         )}
         {formStatus === 'error' && (
           <h2 className={styles.formNavigationStatus}>Resistration unsuccessful</h2>
@@ -199,14 +223,15 @@ function FormSlide ({ classTypes }) {
               <SelectField
                 label="Class type:"
                 name="classType"
-                options={classTypeTitles}
-                onChange={(e) => setClassTypeValue(e.target.value)}
+                defaultValue={{value: classTypeTitles[0], label: classTypeTitles[0]}}
+                options={classTypeTitles.map(t => ({label: t, value: t}))}
+                onChange={value => setClassTypeValue(value.value)}
               />
               <SelectField
                 label="Spanish level:"
                 name="level"
-                options={["Not sure", "Beginner", "Intermediate", "Advanced"]}
-                onChange={(e) => setSpanishLevelValue(e.target.value)}
+                onChange={value => setSpanishLevelValue(value.value)}
+                options={[{value: "Not sure", label: "Not sure"}, {value: "Beginner", label: "Beginner"}, {value: "Intermediate", label: "Intermediate"}, {value: "Advanced", label: "Advanced"}]}
               />
               <InputField
                 readOnly={currentClassType.max === 1}
@@ -220,32 +245,42 @@ function FormSlide ({ classTypes }) {
                 onChange={(e) => setClassSizeValue(e.target.value)}
               />
             </Step>
-            <Step title="Scheduling">
+            <Step title="Package">
+
               <SelectField
-                label="Class duration:"
-                name="duration"
-                options={classTypeDurations}
-                onChange={(e) => setDurationValue(e.target.value)}
-              />
-              <SelectField
-                label="Quantity:"
+                label="Choose your package:"
                 name="quantity"
-                options={classTypePackages}
-                onChange={(e) => setQuantityValue(e.target.value)}
+                options={classTypePackages.map(p => ({value: p, label: p}))}
+                onChange={(value) => setQuantityValue(value.value)}
               />
               <SelectField
                 defaultValue={frequencyValue}
-                label="Frequency:"
+                label="How many classes per week?"
                 name="frequency"
-                options={classTypePackages.length > 1 ? ["1x a week", "2x a week", "3x a week"] : ["1x a week"]}
-                onChange={(e) => setFrequencyValue(e.target.value)}
+                options={classTypePackages.length > 1 ? [{value: "1 per week", label: "1 per week"}, {value: "2 per week", label: "2 per week"}, {value: "3 per week", label: "3 per week"}] : [{value: "1 per week", label: "1 per week"}]}
+                onChange={(value) => setFrequencyValue(value.value)}
               />
+              <SelectField
+                label="Class length:"
+                name="duration"
+                options={classTypeDurations.map(d => ({value: d, label: d}))}
+                onChange={(value) => setDurationValue(value.value)}
+              />
+            </Step>
+            <Step title="Scheduling">
+              <SelectField 
+                // placeholder="Search..." 
+                label="Select your timezone:" 
+                name="timezone"
+                isSearchable={true}
+                options={timeZoneOptions} /> 
+              {renderSchedulerInputs()} 
             </Step> 
             <Step title="Student info">
               <InputField
                 defaultValue={nameValue}
                 label="Full name:"
-                required={true}
+                isRequired={true}
                 errorMessage="Please enter your full name"
                 name="name"
                 placeholder="Your full name" 
@@ -258,6 +293,7 @@ function FormSlide ({ classTypes }) {
                 defaultValue={emailValue}
                 label="Email:"
                 name="email"
+                isRequired={true}
                 placeholder="you@email.com" 
                 type="text"
                 errorMessage="Please enter a valid email"
@@ -270,6 +306,7 @@ function FormSlide ({ classTypes }) {
                 defaultValue={locationValue}
                 label="Where do you live?"
                 name="location"
+                isRequired={true}
                 errorMessage="Please enter your city and country"
                 placeholder="City, Country" 
                 type="text"

@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react'
 import * as styles from './form.module.css'
 import { button, buttonSmall, buttonLarge, buttonSecondary } from './CTALink.module.css'
 import { cn } from '../lib/helpers'
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import CTALink from './CTALink'
 import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
+import Select from 'react-select'
 
 // NOTES: Should unregister: false if you want to use disabled inputs
 
 export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus, setCurrentStep, totalSteps, name, method, action, children }) {
 
-  const { watch, register, handleSubmit, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
-  const stepCustomProps = { 
-    currentStep: currentStep,
-    register: register
-  }
+  const { watch, control, register, handleSubmit, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
+
+  console.log(currentStep)
+
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
   const encode = (data) => {
@@ -107,7 +107,9 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
         errors: errors,
         setValue: setValue,
         getValues: getValues,
-        unregister: unregister
+        unregister: unregister,
+        control: control,
+        Controller: Controller
       });
     }
   
@@ -144,11 +146,14 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
         {nextButton()}
         {submitButton()}
       </div>
+      {/* <pre>{JSON.stringify(watch(), null, 2)}</pre>
+      <div>{JSON.stringify(errors)}</div>
+      <div>{isValid.toString()}</div> */}
     </form>
   )
 }
 
-export const InputField = ({ register, currentStep, unregister, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+export const InputField = ({ register, control, Controller, currentStep, unregister, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, isRequired, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
 
   if(currentStep < step) unregister(name)
 
@@ -204,7 +209,7 @@ export const InputField = ({ register, currentStep, unregister, step, readOnly, 
             message: errorMessageValue
           },
           required: {
-            value: true,
+            value: isRequired,
             pattern: pattern,
             message: errorMessageValue,
           }
@@ -219,7 +224,7 @@ export const InputField = ({ register, currentStep, unregister, step, readOnly, 
   )
 };
 
-export const TextareaField = ({ register, currentStep, unregister, step, readOnly, disabled, pattern, defaultValue, errors, errorMessage, label, name, placeholder, type, onChange }) => {
+export const TextareaField = ({ register, control, Controller, currentStep, unregister, step, readOnly, disabled, pattern, defaultValue, errors, errorMessage, label, name, placeholder, type, onChange }) => {
 
   if(currentStep < step) unregister(name)
 
@@ -255,22 +260,125 @@ export const TextareaField = ({ register, currentStep, unregister, step, readOnl
   )
 };
 
-export const SelectField = ({ register, currentStep, step, disabled, value, label, name, options, onChange }) => (
-  <div className={styles.inputWrapper}>
-    <div className={styles.inputGroup}>
-      <select className={styles.select} disabled={disabled} id={name} name={name} value={value} onChange={onChange} ref={register}>
-        <option disabled hidden defaultValue>Select your level</option>
-        {options && options.map((o, i) => (
-          <option key={`${name}-${i}`} value={o}>{o}</option>
-        ))}
-      </select>
-      {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
-    </div>
-    <p className={styles.inputError}></p>
-  </div>        
-)
+export const SelectField = ({ control, isSearchable, Controller, currentStep, step, defaultValue, placeholder, disabled, value, label, name, options, onChange }) => {
+  const customStyles = {
+    valueContainer: (provided, state) => ({
+      ...provided,
+      border: 'none',
+      outline: 'none',
+      padding: '2.5rem 1.5rem 2rem 1.5rem',
+    }),
+    container: (provided, state) => ({
+      ...provided,
+      width: '100%'
+    }),
+    placeholder: (provided, state) => ({
+      ...provided,
+      top: 'calc(50% + .5rem)'
+    }),
+    input: (provided, state) => ({
+      ...provided,
+      margin: 0,
+      paddingBottom: 0,
+      paddingTop: '.5rem'
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      padding: '0 1.5rem'
+    }),
+    indicatorSeparator: (provided, state) => ({
+      ...provided,
+      backgroundColor: '#e5e5e5'
+    }),
+    singleValue: (provided, state) => ({
+      ...provided,
+      top: 'calc(50% + .5rem)',
+      fontFamily: 'Montserrat',
+      fontWeight: 700,
+      fontSize: '14px'
+    })
+  }
 
-export const Step = ({title, errors, style, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
+  return (
+    <div className={styles.inputWrapper}>
+      <div className={styles.inputGroup}>
+        <Controller
+          control={control}
+          name={name}
+          shouldUnregister={true}
+          defaultValue={defaultValue} 
+          render={( ) => ( 
+            <Select 
+              disabled={disabled} 
+              isSearchable={isSearchable}
+              defaultValue={defaultValue} 
+              onChange={onChange} 
+              placeholder={placeholder ? placeholder : 'select...'} 
+              options={options} 
+              styles={customStyles}
+            /> 
+          )}
+        />
+        
+        {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
+      </div>
+      <p className={styles.inputError}></p>
+    </div>   
+  )
+}
+
+export const SelectSearchField = ({options, placeholder, disabled, onChange, value, register, name, label}) => {
+  const customStyles = {
+    valueContainer: (provided, state) => ({
+      ...provided,
+      border: 'none',
+      outline: 'none',
+      padding: '2.5rem 1.5rem 2rem 1.5rem',
+    }),
+    container: (provided, state) => ({
+      ...provided,
+      width: '100%'
+    }),
+    placeholder: (provided, state) => ({
+      ...provided,
+      top: 'calc(50% + .5rem)'
+    }),
+    input: (provided, state) => ({
+      ...provided,
+      margin: 0,
+      paddingBottom: 0,
+      paddingTop: '.5rem'
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      padding: '0 1.5rem'
+    }),
+    indicatorSeparator: (provided, state) => ({
+      ...provided,
+      backgroundColor: '#e5e5e5'
+    }),
+    singleValue: (provided, state) => ({
+      ...provided,
+      top: 'calc(50% + .5rem)',
+      fontFamily: 'Montserrat',
+      fontWeight: 700,
+      fontSize: '14px'
+    })
+  }
+
+  return (
+    <div className={styles.inputWrapper}>
+      <div className={styles.inputGroup}>
+        <Select disabled={disabled} id={name} name={name} value={value} onChange={onChange} ref={register}placeholder={placeholder ? placeholder : 'Select...'} options={options} styles={customStyles}/> 
+        {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
+      </div>
+      <p className={styles.inputError}></p>
+    </div>   
+  )
+}
+
+
+export const Step = ({title, errors, control, style, Controller, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
@@ -281,7 +389,9 @@ export const Step = ({title, errors, style, unregister, getValues, setValue, chi
         getValues: getValues,
         currentStep: currentStep,
         step: step,
-        unregister: unregister
+        unregister: unregister,
+        control: control,
+        Controller: Controller,
       });
     }
   

@@ -138,7 +138,6 @@ textarea {
   composes: titlesub from './typography.module.css';
   font-weight: 400;
   position: absolute;
-  z-index: 3;
   top: .75rem;
   left: 1.5rem;
   color: var(--color-primary);
@@ -154,6 +153,7 @@ textarea {
 }
 
 .input {
+  transition: box-shadow .1s ease-out;
   height: max-content;
   border: 1px solid var(--color-grey-light);
   color: var(--color-primary);
@@ -166,8 +166,14 @@ textarea {
     color: var(--color-text-light);
   }
 
-  @nest &:not(:placeholder-shown):not(.error) {
-    @nest & ~ svg {
+  @nest &.error {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--color-error);
+  }
+
+  @nest &:not(:placeholder-shown) {
+
+    @nest &:not(.error) ~ svg {
       fill: var(--color-secondary);
     }
   }
@@ -193,6 +199,11 @@ textarea {
       color: var(--color-grey-medium);
     }
   }
+
+  @nest &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-secondary);
+  }
 }
 
 .input-number-control {
@@ -213,6 +224,7 @@ input[name='got-ya'] {
 }
 
 .select {
+  transition: box-shadow .1s ease-out;
   cursor: pointer;
   display: block;
   position: relative;
@@ -256,6 +268,11 @@ input[name='got-ya'] {
 }
 
 .select:active {
+}
+
+.select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-secondary);
 }
 
 /* Set options to normal weight */
