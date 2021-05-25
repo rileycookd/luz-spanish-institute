@@ -25,7 +25,8 @@
     "mux-input",
     "google-analytics",
     "@sanity/production-preview",
-    "order-documents"
+    "order-documents",
+    "autocomplete-tags"
   ],
   "parts": [
     {

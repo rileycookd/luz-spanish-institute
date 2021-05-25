@@ -1,0 +1,91 @@
+.root {
+  padding: 16px 0 16px 0;
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  @nest & > p {
+    margin: 10px 0 0 0;
+  }
+}
+
+.inputs {
+  margin-bottom: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: center;
+
+  @nest & > button {
+    padding: 0;
+    border: none;
+    outline: none;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @nest &:hover {
+      background: none;
+      color: currentColor;
+    }
+
+    @nest & > svg {
+      width: 24px;
+      height: 24px;
+      color: currentColor;
+    }
+
+  }
+
+  @nest & > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+  }
+
+  @nest & > button {
+    margin-left: 16px;
+  }
+}
+
+.daycheck {
+  min-width: 80px;
+  max-width: 80px;
+  padding-right: 32px;
+  display: flex;
+  margin-top: 10px;
+
+  @nest & > label {
+    margin-left: 8px;
+  }
+}
+
+.control {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  @nest & > button {
+    margin-top: 10px;
+    height: max-content;
+    padding: 0;
+    border: none;
+    outline: none;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @nest &:hover {
+      background: none;
+      color: currentColor;
+    }
+
+    @nest & > svg {
+      width: 24px;
+      height: 24px;
+      color: currentColor;
+    }
+  } 
+}

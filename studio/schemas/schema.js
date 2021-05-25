@@ -6,7 +6,7 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 
 // document schemas
 import navMenu from './documents/navMenu'
-import category from './documents/category'
+import language from './documents/language'
 import page from './documents/page'
 import siteSettings from './documents/siteSettings'
 import route from './documents/route'
@@ -16,6 +16,7 @@ import contactForm from './documents/contactForm'
 import registrationForm from'./documents/registrationForm'
 import faq from './documents/faq'
 import testimonial from './documents/testimonial'
+import teacher from './documents/teacher'
 
 
 
@@ -24,6 +25,7 @@ import * as blocks from './blocks'
 // Object types
 import { instagram, videoEmbed } from './objects/embeds'
 import cta from './objects/cta'
+import availability from './objects/availability'
 import mainImage from './objects/mainImage'
 import blockContent from './objects/blockContent'
 import blockText from './objects/blockText'
@@ -60,7 +62,7 @@ export default createSchema({
       siteSettings,
       navMenu,
       page,
-      category,
+      language,
       mainImage,
       instagram,
       videoEmbed,
@@ -68,6 +70,7 @@ export default createSchema({
       companyInfo,
       contactForm,
       registrationForm,
+      teacher,
       faq,
       testimonial,
       blockContent,
@@ -75,6 +78,7 @@ export default createSchema({
       classDiscount,
       classPricing,
       ctaGroup,
+      availability,
       ctaLabel,
       description,
       questionAnswer,
