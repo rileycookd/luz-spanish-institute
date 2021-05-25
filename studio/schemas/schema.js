@@ -42,6 +42,7 @@ import openGraph from './objects/openGraph'
 import questionAnswer from './objects/questionAnswer'
 import quote from './objects/quote'
 import latex from './latex'
+import timeRange from './objects/timeRange'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -83,6 +84,7 @@ export default createSchema({
       description,
       questionAnswer,
       quote,
+      timeRange,
       blockText
     ])
     .concat(allBlocks),

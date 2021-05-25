@@ -1,4 +1,5 @@
 import { IoMdPerson } from 'react-icons/io'
+import availability from '../objects/availability'
 
 export default {
   name: 'teacher',
@@ -31,7 +32,33 @@ export default {
     {
       name: 'availability',
       title: 'Availability',
-      type: 'availability'
+      type: 'array',
+      description: 'Add available days and times',
+      of: [
+        { type: 'availability' }
+      ],
+      validation: Rule => Rule.custom(availability => {
+      
+        var days = availability.map(d => ( d.day ))
+        var isDuplicate = days.some((item, idx) => { 
+            return days.indexOf(item) != idx 
+        });
+        return isDuplicate
+          ? 'Days cannot be repeated'
+          : true
+
+        
+        // const emptyPaths = emptyBlocks.map(
+        //   (block, index) => [{_key: block._key}] || [index]
+        // )
+    
+        // return emptyPaths.length === 0
+        //   ? true
+        //   : {
+        //       message: 'Paragraph cannot be empty',
+        //       paths: emptyPaths
+        //     }
+      })
     }
   ]
 }
