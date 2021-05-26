@@ -12,10 +12,7 @@ import Select from 'react-select'
 export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus, setCurrentStep, totalSteps, name, method, action, children }) {
 
 
-  const { watch, control, register, handleSubmit, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
-
-  console.log(currentStep)
-
+  const { watch, control, register, handleSubmit, setError, clearErrors, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
   const encode = (data) => {
@@ -25,6 +22,7 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
       )
       .join("&")
   }
+
 
    // Handles the post process to Netlify so we can access their serverless functions
    const handlePost = (formData, event) => {
@@ -109,7 +107,9 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
         getValues: getValues,
         unregister: unregister,
         control: control,
-        Controller: Controller
+        Controller: Controller,
+        setError: setError,
+        clearErrors: clearErrors
       });
     }
   
@@ -154,8 +154,6 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
 }
 
 export const InputField = ({ register, control, Controller, currentStep, unregister, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, isRequired, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
-
-  if(currentStep < step) unregister(name)
 
   const currentValue = getValues(name)
   if(type === "number" && min && Number(currentValue) < min) { 
@@ -260,7 +258,16 @@ export const TextareaField = ({ register, control, Controller, currentStep, unre
   )
 };
 
-export const SelectField = ({ control, isSearchable, Controller, currentStep, step, defaultValue, placeholder, disabled, value, label, name, options, onChange }) => {
+export const SelectField = ({ control, isRequired, clearErrors, error, errors, setError, isSearchable, unregister, Controller, currentStep, step, defaultValue, placeholder, disabled, label, name, options, handleChange }) => {
+
+  useEffect(() => {
+    if(error && error.message) {
+      setError(name, error)
+    } else {
+      clearErrors(name)
+    }
+  }, [error])
+
   const customStyles = {
     valueContainer: (provided, state) => ({
       ...provided,
@@ -298,6 +305,10 @@ export const SelectField = ({ control, isSearchable, Controller, currentStep, st
       fontSize: '14px'
     })
   }
+
+  const firstValue = defaultValue 
+    ? options.find(c => c.value === defaultValue.value).value 
+    : ''
 
   return (
     <div className={styles.inputWrapper}>
@@ -305,15 +316,21 @@ export const SelectField = ({ control, isSearchable, Controller, currentStep, st
         <Controller
           control={control}
           name={name}
+          rules={{ required: isRequired }}
           shouldUnregister={true}
-          defaultValue={defaultValue} 
-          render={( ) => ( 
+          defaultValue={firstValue}
+          render={({ onChange, value, name, ref }) => ( 
             <Select 
+              innerRef={ref}
               disabled={disabled} 
               isSearchable={isSearchable}
-              defaultValue={defaultValue} 
-              onChange={onChange} 
-              placeholder={placeholder ? placeholder : 'select...'} 
+              defaultValue={firstValue}
+              value={options.find(c => c.value === value)}
+              onChange={(val) => {
+                onChange(val.value)
+                if(handleChange) handleChange(val.value)
+              }} 
+              placeholder={placeholder ? placeholder : isSearchable ? 'search...' : 'select...'} 
               options={options} 
               styles={customStyles}
             /> 
@@ -321,64 +338,13 @@ export const SelectField = ({ control, isSearchable, Controller, currentStep, st
         />
         
         {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
+        <p className={styles.inputError}>{errors && errors[name] && errors[name].message}</p>
       </div>
-      <p className={styles.inputError}></p>
     </div>   
   )
 }
 
-export const SelectSearchField = ({options, placeholder, disabled, onChange, value, register, name, label}) => {
-  const customStyles = {
-    valueContainer: (provided, state) => ({
-      ...provided,
-      border: 'none',
-      outline: 'none',
-      padding: '2.5rem 1.5rem 2rem 1.5rem',
-    }),
-    container: (provided, state) => ({
-      ...provided,
-      width: '100%'
-    }),
-    placeholder: (provided, state) => ({
-      ...provided,
-      top: 'calc(50% + .5rem)'
-    }),
-    input: (provided, state) => ({
-      ...provided,
-      margin: 0,
-      paddingBottom: 0,
-      paddingTop: '.5rem'
-    }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      padding: '0 1.5rem'
-    }),
-    indicatorSeparator: (provided, state) => ({
-      ...provided,
-      backgroundColor: '#e5e5e5'
-    }),
-    singleValue: (provided, state) => ({
-      ...provided,
-      top: 'calc(50% + .5rem)',
-      fontFamily: 'Montserrat',
-      fontWeight: 700,
-      fontSize: '14px'
-    })
-  }
-
-  return (
-    <div className={styles.inputWrapper}>
-      <div className={styles.inputGroup}>
-        <Select disabled={disabled} id={name} name={name} value={value} onChange={onChange} ref={register}placeholder={placeholder ? placeholder : 'Select...'} options={options} styles={customStyles}/> 
-        {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
-      </div>
-      <p className={styles.inputError}></p>
-    </div>   
-  )
-}
-
-
-export const Step = ({title, errors, control, style, Controller, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
+export const Step = ({title, errors, control, clearErrors, setError, style, Controller, unregister, getValues, setValue, children, step, currentStep, register, totalSteps}) => {
 
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
@@ -392,6 +358,8 @@ export const Step = ({title, errors, control, style, Controller, unregister, get
         unregister: unregister,
         control: control,
         Controller: Controller,
+        setError: setError,
+        clearErrors: clearErrors
       });
     }
   
@@ -402,7 +370,7 @@ export const Step = ({title, errors, control, style, Controller, unregister, get
     <div className={styles.formSection} style={currentStep !== step ? {display: 'none'} : {}}>
       <h2 className={style === "dark" ? cn(styles.formSectionTitle, styles.dark) : styles.formSectionTitle}>{title}</h2>
       <div className={styles.formSectionInputs}>
-        {childrenWithProps}
+        {currentStep >= step ? childrenWithProps : ''}
       </div>
     </div>
   )

@@ -14,6 +14,10 @@ exports.handler = async function (event, context, callback) {
   const isContactForm = payload.data.formId === "contact-form"
   // Build the document JSON and submit it to SANITY
   if (isRegistrationForm) {
+    weeklySchedule=[];
+    if(payload.data.classSchedule1) weeklySchedule.push(payload.data.classSchedule1)
+    if(payload.data.classSchedule2) weeklySchedule.push(payload.data.classSchedule2)
+    if(payload.data.classSchedule3) weeklySchedule.push(payload.data.classSchedule3)
     const registrationForm = {
       _type: "registrationForm",
       submitDate: new Date().toISOString(),
@@ -25,7 +29,9 @@ exports.handler = async function (event, context, callback) {
       classSize: payload.data.classSize,
       duration: payload.data.duration,
       quantity: payload.data.quantity,
-      frequency: payload.data.frequency
+      frequency: payload.data.frequency,
+      timezone: payload.data.timezone,
+      schedule: weeklySchedule
     }
     const result = await client.create(registrationForm).catch((err) => console.log(err))
   }

@@ -13,7 +13,7 @@ export default {
       title: 'Full name'
     },
     {
-      title: 'Languages',
+      title: 'Languages taught',
       name: 'languages',
       type: 'array',
       options: {

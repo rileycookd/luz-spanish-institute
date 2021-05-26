@@ -13,23 +13,28 @@ import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIc
 import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb";
 import { render } from 'react-dom'
 
-function FormSlide ({ classTypes }) {
+function FormSlide ({ classTypes, teachers }) {
 
   const classTypeTitles = classTypes.map(c => c.title)
 
   // FORM FIELD STATE
-  // Step 1
+  // Step Student Info
   const [nameValue, setNameValue] = useState("")
   const [emailValue, setEmailValue] = useState("")
   const [locationValue, setLocationValue] = useState("")
-  // Step 2
+  // Step Class type
   const [classTypeValue, setClassTypeValue] = useState(classTypeTitles[0])
   const [spanishLevelValue, setSpanishLevelValue] = useState("Not sure")
   const [classSizeValue, setClassSizeValue] = useState("1")
-  // Step 3
-  const [durationValue, setDurationValue] = useState(`${classTypes[0].pricing[0].duration / 60} hour${classTypes[0].pricing[0].duration / 60 > 1 ? 's' : ''}`)
+  // Step Class info
+  const [durationValue, setDurationValue] = useState(classTypes[0].pricing[0].duration)
   const [frequencyValue, setFrequencyValue] = useState("1x a week")
   const [quantityValue, setQuantityValue] = useState("1 class")
+  // Step Schedule
+  const [timezoneValue, setTimeZoneValue] = useState("")
+  const [classSchedule1Value, setClassSchedule1Value] = useState("")
+  const [classSchedule2Value, setClassSchedule2Value] = useState("")
+  const [classSchedule3Value, setClassSchedule3Value] = useState("")
 
   // COMPONENT STATE
   const [currentClassType, setCurrentClassType] = useState(classTypes[0])
@@ -38,13 +43,14 @@ function FormSlide ({ classTypes }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(5);
   const [formStatus, setFormStatus] = useState('default')
+  const [classScheduleError, setClassScheduleError] = useState({})
 
 
 
   let classTypeDurations = currentClassType.pricing.map(p => (
-    `${p.duration / 60} hour${p.duration / 60 > 1 ? 's' : ''}`
+     p.duration
   ))
-
+    
   let classTypePackages = ['1 class']
   currentClassType.packages.map(p => (
     classTypePackages.push(`${p.quantity} class${p.quantity > 1 ? 'es' : ''}`)
@@ -138,10 +144,24 @@ function FormSlide ({ classTypes }) {
   }
 
   useEffect(() => {
-    setDurationValue(`${classTypes.filter(c => c.title === classTypeValue)[0].pricing[0].duration / 60} hour${classTypes[0].pricing[0].duration / 60 > 1 ? 's' : ''}`|| '1 hour')
+    setDurationValue(classTypes.filter(c => c.title === classTypeValue)[0].pricing[0].duration)
     setQuantityValue('1 class')
     setCurrentClassType(classTypes.filter(c => c.title === classTypeValue)[0])
   }, [classTypeValue]);
+
+  useEffect(() => {
+    let classDay1 = classSchedule1Value.substr(0, classSchedule1Value.indexOf(':'))
+    let classDay2 = (classSchedule2Value.substr(0, classSchedule2Value.indexOf(':')))
+    let classDay3 = (classSchedule3Value.substr(0, classSchedule3Value.indexOf(':')))
+    if ((classDay2 && classDay1 === classDay2) || (classDay3 && classDay1 === classDay3) || (classDay3 &&classDay2 === classDay3)) {
+      setClassScheduleError({
+        type: "manual",
+        message: "Classes must be on different days"
+      })
+    } else {
+      setClassScheduleError({})
+    }
+  }, [classSchedule1Value, classSchedule2Value, classSchedule3Value])
 
   useEffect(() => {
     let newCalculatedPrice = calculateBasePrice(
@@ -158,23 +178,73 @@ function FormSlide ({ classTypes }) {
 
   const rawTimeZones = getTimeZones();
   const timeZoneOptions = rawTimeZones.map(t => ({label: t.rawFormat, value: t.name}))
+  
+  const addMinutesToTime = (time, minsAdd) => {
+    const z = (n) => (
+      (n<10? '0':'') + n
+    )
+    let bits = time.split(':');
+    let mins = bits[0]*60 + +bits[1] + +minsAdd;
+    return z(mins%(24*60)/60 | 0) + ':' + z(mins%60);  
+  } 
+
+  const addClassIntervals = (start, end, day) => {
+    let classTimes = []
+    let dayName = day[0].toUpperCase() + day.substring(1) + 's'
+    let startNum = addMinutesToTime(start, durationValue)
+    let currentInterval = start
+    const convertToNumber = (str) => Number(str.replace(/:/g, ''))
+    while(convertToNumber(startNum) < convertToNumber(end)) {
+      let endTime = addMinutesToTime(currentInterval, durationValue)
+      classTimes.push(`${dayName}: ${currentInterval}-${endTime}`)
+      currentInterval = endTime
+      startNum = addMinutesToTime(startNum, durationValue)
+    }
+    return classTimes
+  }
+
+  const teacherAvailability = (teacher) => (
+    teacher.availability.map(d => {
+      let day = d.day
+      let times = d.availableTimes.map(t => {
+        return addClassIntervals(t.start, t.end, day)
+      })
+      let options = times.flat(2).map(t => (
+        {value: t, label: t}
+      ))
+      return {label: day, options: options}
+    })
+  )
+
+  const luzAvailabilityOptions = teacherAvailability(teachers[0]).flat(3)
 
   const renderSchedulerInputs = () => {
     let numberPattern = /\d+/g;
     let frequencyNumber = Number(frequencyValue.match(numberPattern)[0])
     const schedulerInputs = [];
+    const onChangeHandlers = [(v) => setClassSchedule1Value(v), (v) => setClassSchedule2Value(v), (v) => setClassSchedule3Value(v)]
 
     for (let i = 1; i <= frequencyNumber; i++) {
+      
       schedulerInputs.push(
         <SelectField
           label={`Class ${i}:`}
+          isRequired={true}
+          error={classScheduleError}
+          handleChange={onChangeHandlers[i-1]}
           name={`classSchedule${i}`}
-          options={[{value: '1', label: 'Monday 8:00 - 9:30am'}, {value: '2' , label: 'Monday 10:30 - 12:00pm'}]}
+          options={luzAvailabilityOptions}
         />
       );
     }
     return schedulerInputs;
   }
+
+  const classPackageOptions = classTypePackages.map(p => ({value: p, label: p}))
+  const classFrequencyOptions = quantityValue !== '1 class' ? [{value: "1 per week", label: "1 per week"}, {value: "2 per week", label: "2 per week"}, {value: "3 per week", label: "3 per week"}] : [{value: "1 per week", label: "1 per week"}]
+  let classDurationOptions = classTypeDurations.map(d => (
+    { label: `${d / 60} hour${d / 60 > 1 ? 's' : ''}`, value: d }
+  ))
 
   return (
     <div className={styles.root}>
@@ -225,12 +295,13 @@ function FormSlide ({ classTypes }) {
                 name="classType"
                 defaultValue={{value: classTypeTitles[0], label: classTypeTitles[0]}}
                 options={classTypeTitles.map(t => ({label: t, value: t}))}
-                onChange={value => setClassTypeValue(value.value)}
+                handleChange={value => setClassTypeValue(value)}
               />
               <SelectField
                 label="Spanish level:"
                 name="level"
-                onChange={value => setSpanishLevelValue(value.value)}
+                defaultValue={{value: "Not sure", label: "Not sure"}}
+                handleChange={value => setSpanishLevelValue(value)}
                 options={[{value: "Not sure", label: "Not sure"}, {value: "Beginner", label: "Beginner"}, {value: "Intermediate", label: "Intermediate"}, {value: "Advanced", label: "Advanced"}]}
               />
               <InputField
@@ -250,21 +321,24 @@ function FormSlide ({ classTypes }) {
               <SelectField
                 label="Choose your package:"
                 name="quantity"
-                options={classTypePackages.map(p => ({value: p, label: p}))}
-                onChange={(value) => setQuantityValue(value.value)}
+                defaultValue={classPackageOptions[0]}
+                options={classPackageOptions}
+                handleChange={(value) => setQuantityValue(value)}
               />
               <SelectField
                 defaultValue={frequencyValue}
                 label="How many classes per week?"
                 name="frequency"
-                options={classTypePackages.length > 1 ? [{value: "1 per week", label: "1 per week"}, {value: "2 per week", label: "2 per week"}, {value: "3 per week", label: "3 per week"}] : [{value: "1 per week", label: "1 per week"}]}
-                onChange={(value) => setFrequencyValue(value.value)}
+                defaultValue={classFrequencyOptions[0]}
+                options={classFrequencyOptions}
+                handleChange={(value) => setFrequencyValue(value)}
               />
               <SelectField
                 label="Class length:"
                 name="duration"
-                options={classTypeDurations.map(d => ({value: d, label: d}))}
-                onChange={(value) => setDurationValue(value.value)}
+                defaultValue={classDurationOptions[0]}
+                options={classDurationOptions}
+                handleChange={(value) => setDurationValue(value)}
               />
             </Step>
             <Step title="Scheduling">
@@ -272,6 +346,7 @@ function FormSlide ({ classTypes }) {
                 // placeholder="Search..." 
                 label="Select your timezone:" 
                 name="timezone"
+                isRequired={true}
                 isSearchable={true}
                 options={timeZoneOptions} /> 
               {renderSchedulerInputs()} 

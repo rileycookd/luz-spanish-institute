@@ -29,6 +29,22 @@ export const query = graphql`
       instagram
     }
 
+    teachers: allSanityTeacher {
+      edges {
+        node {
+          availability {
+            day
+            availableTimes {
+              _key
+              _type
+              start
+              end
+            }
+          }
+        }
+      }
+    }
+
     classTypes: allSanityClassType {
       edges {
         node {
@@ -85,6 +101,10 @@ const RegisterPage = props => {
     : []
   classTypes.sort((a, b) => a.order - b.order); 
 
+  const teachers = (data || {}).teachers.edges
+    ? mapEdgesToNodes(data.teachers)
+    : []
+
   return (
     <Layout>
       <SEO
@@ -93,7 +113,7 @@ const RegisterPage = props => {
           keywords={site.keywords}
         />
       <Container>
-        <FormSlide classTypes={classTypes} />
+        <FormSlide classTypes={classTypes} teachers={teachers} />
       </Container>
     </Layout>
   )

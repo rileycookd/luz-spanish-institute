@@ -147,7 +147,6 @@ textarea {
   position: absolute;
   bottom: .5rem;
   left: 1.5rem;
-  z-index: 3;
   composes: small from './typography.module.css';
   color: var(--color-error);
 }
