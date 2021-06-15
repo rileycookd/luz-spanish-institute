@@ -1,4 +1,42 @@
+import ComputedField from 'sanity-plugin-computed-field'
 import { FaChalkboardTeacher } from 'react-icons/fa'
+import { parseISO, format } from 'date-fns'
+
+const formatPrice = (price) => {
+  return (Math.round((price + Number.EPSILON) * 100) / 100).toFixed(2)
+}
+
+const calculateSizeDiscount = (classSize, min, sizeDiscount, maxDiscount) => {
+  let currentSizeDiscount = 0;
+  if (sizeDiscount && classSize > min) {
+    currentSizeDiscount = sizeDiscount * (classSize - min);
+    if(currentSizeDiscount > maxDiscount) {
+      currentSizeDiscount = maxDiscount / 100;
+    } else {
+      currentSizeDiscount = currentSizeDiscount / 100;
+    }
+  }
+  return currentSizeDiscount
+}
+
+const calculateBasePrice = (basePrice, classSize, min, sizeDiscount, maxDiscount) => {
+  let classPrice = basePrice * classSize;
+  if(sizeDiscount && classSize > min) {
+    let calculatedSizeDiscount = calculateSizeDiscount(classSize, min, sizeDiscount, maxDiscount)
+    classPrice = classPrice - (classPrice * (calculatedSizeDiscount))
+  }
+  return classPrice;
+}
+
+const calculatePackagePrice = (basePrice, quantity, discount) => {
+  let classPrice = basePrice * quantity;
+  if(discount) {
+    classPrice = classPrice - (classPrice * (discount / 100));
+  }
+  return classPrice
+}
+
+
 
 export default {
   name: "registrationForm",
@@ -27,6 +65,48 @@ export default {
       fieldset: 'admin',
     },
     {
+      name: "price", 
+      title: 'Amount due',
+      type: "string", //"number" or "text" or "string" or "boolean"
+      inputComponent: ComputedField,
+      options: {
+        editable: true,
+        buttonText: "Recalculate",
+        documentQuerySelection: `
+          _id,
+          quantity,
+          classSize,
+          duration,
+          "classType": *[_type == "classType" && title == ^.classType  && !(_id in path("drafts.**"))] {
+            pricing,
+            min,
+            sizeDiscount,
+            maxDiscount,
+            packages
+          }
+        `,
+        reduceQueryResult: (r) => {
+          const { min, sizeDiscount, maxDiscount, pricing, packages } = r.classType[0]
+          const quantity = Number(r.quantity.match(/\d+/)[0])
+          const discount = packages.filter(p => p.quantity === quantity)[0].discount
+          let basePrice = pricing.filter(p => p.duration === Number(r.duration))[0].price
+          let calculatedBasePrice = calculateBasePrice(
+            basePrice, 
+            Number(r.classSize), 
+            min, 
+            sizeDiscount, 
+            maxDiscount
+          )
+          if(quantity && quantity > 0) {
+            return `$${formatPrice(calculatePackagePrice(calculatedBasePrice, quantity, discount))} USD`
+          } else {
+            return `$${formatPrice(calculatedBasePrice)} USD`
+          }
+        }
+      },
+      fieldset: 'admin'
+    },
+    {
       title: 'Payment recieved?',
       name: 'payment',
       type: 'boolean',
@@ -37,6 +117,35 @@ export default {
       name: 'teacher',
       type: 'reference',
       to: { type: 'teacher' },
+      fieldset: 'admin',
+      description: 'Only displaying teachers in applicant\'s target language',
+      options: {
+        filter: ({document}) => {
+          // Always make sure to check for document properties
+          // before attempting to use them
+          if (!document.language) {
+            return;
+
+          }
+          return {
+            filter: '_type == "teacher" && $language in languages[].language->.title',
+            params: {
+              language: document.language
+            }
+          }
+        }
+      }
+    },
+    {
+      title: 'Related students',
+      description: 'Choose an existing student (create a new student first if needed)',
+      name: 'students',
+      type: 'array',
+      of: [
+        { 
+          type: 'reference',
+          to: { type: 'student' },},
+      ],
       fieldset: 'admin',
     },
     {
@@ -56,6 +165,12 @@ export default {
       title: "Location",
       type: "string",
       fieldset: 'application',
+    },
+    {
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+      fieldset: 'application'
     },
     {
       name: "classType",
@@ -115,16 +230,19 @@ export default {
       classType: 'classType',
       quantity: 'quantity',
       classSize: 'classSize',
+      date: 'submitDate'
     },
-    prepare ({ name, classType, quantity, classSize }) {
+    prepare ({ name, date, classType, quantity, classSize }) {
       let classSizeString = ''
+      let parsedDate = parseISO(date)
+      let formattedDate = format(parsedDate, "dd/MM/yy")
       if(classSize) {
         classSizeString = `${classSize} student${Number(classSize) > 1 ? 's' : ''}`
       }
 
       return {
-        title: name,
-        subtitle: `${classType}: ${quantity}${classSizeString ? `, ${classSizeString}` : ''}`
+        title: `${name}`,
+        subtitle: `${formattedDate}: ${classType}, ${quantity}${classSizeString ? `, ${classSizeString}` : ''}`
       }
     }
   }

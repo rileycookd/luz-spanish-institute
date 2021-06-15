@@ -24,6 +24,12 @@
   background-color: var(--color-accent);
   color: var(--color-primary);
   transition: background-color .1s ease-out;
+  -webkit-user-select: none;    /* Safari */
+  -webkit-touch-callout: none;  /* iOS Safari */
+  -khtml-user-select: none;     /* Konqueror HTML */
+  -ms-user-select: none;        /* Internet Explorer/Edge */
+  -moz-user-select: none;       /* Old versions of Firefox */
+   user-select: none;           /* Non-prefixed version*/
 
   @media (hover: hover) {
     @nest &:hover {

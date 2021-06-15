@@ -1,14 +1,19 @@
+
+import timezones from "@vvo/tzdb/raw-time-zones.json";
 import { MdBusiness } from 'react-icons/md'
+
+const timeZoneOptions = timezones.map(t => `${t.name}`)
 
 export default {
   name: 'companyInfo',
   title: 'Company Info',
   type: 'document',
-  // __experimental_actions: ['update', 'publish', /* 'create', 'delete' */],
+  __experimental_actions: ['update', 'publish', /* 'create', 'delete' */],
   icon: MdBusiness,
   fieldsets: [
     {name: 'contact', title: 'Contact info', options: { collapsible: true, collapsed: false, columns: 2 }},
-    {name: 'social', title: 'Social media urls', options: { collapsible: true, collapsed: false, columns: 2 }}
+    {name: 'scheduling', title: 'Scheduling', options: { collapsible: true, collapsed: false, columns: 1 }},
+    {name: 'social', title: 'Social media urls', options: { collapsible: true, collapsed: false, columns: 2 }},
   ],
   fields: [
     {
@@ -32,6 +37,16 @@ export default {
       title: 'Phone',
       type: 'string',
       fieldset: 'contact'
+    },
+    {
+      name: 'timezone',
+      title: 'Timezone',
+      type: 'string',
+      fieldset: 'scheduling',
+      options: {
+        list: timeZoneOptions
+      },
+      validation: Rule => Rule.required()
     },
     {
       name: 'address1',

@@ -22,6 +22,7 @@ export const query = graphql`
     company: sanityCompanyInfo {
       phone
       email
+      timezone
       _rawDescription
       name
       facebook
@@ -96,6 +97,10 @@ const RegisterPage = props => {
   const menuItems = site._rawDefaultNav && (site._rawDefaultNav.items || []);
   const menuCtas = site._rawDefaultNav && (site._rawDefaultNav.ctas || []);
 
+  const timezone = (data || {}).company
+    ? data.company.timezone
+    : "America/Santiago"
+
   const classTypes = (data || {}).classTypes.edges
     ? mapEdgesToNodes(data.classTypes)
     : []
@@ -113,7 +118,7 @@ const RegisterPage = props => {
           keywords={site.keywords}
         />
       <Container>
-        <FormSlide classTypes={classTypes} teachers={teachers} />
+        <FormSlide classTypes={classTypes} timezone={timezone} teachers={teachers} />
       </Container>
     </Layout>
   )

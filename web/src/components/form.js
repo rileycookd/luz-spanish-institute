@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as styles from './form.module.css'
 import { button, buttonSmall, buttonLarge, buttonSecondary } from './CTALink.module.css'
-import { cn } from '../lib/helpers'
+import { cn, arrayFindWithAttr } from '../lib/helpers'
 import { useForm, Controller } from "react-hook-form"
 import CTALink from './CTALink'
 import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
@@ -306,9 +306,12 @@ export const SelectField = ({ control, isRequired, clearErrors, error, errors, s
     })
   }
 
-  const firstValue = defaultValue 
-    ? options.find(c => c.value === defaultValue.value).value 
-    : ''
+  let firstValue = ''
+  if(defaultValue) {
+    defaultValue.value 
+      ? firstValue = options.find(c => c.value === defaultValue.value).value 
+      : firstValue = options[arrayFindWithAttr(options, 'value', defaultValue)]
+  }
 
   return (
     <div className={styles.inputWrapper}>
@@ -323,7 +326,7 @@ export const SelectField = ({ control, isRequired, clearErrors, error, errors, s
             <Select 
               innerRef={ref}
               disabled={disabled} 
-              isSearchable={isSearchable}
+              isSearchable={isSearchable ? true : false}
               defaultValue={firstValue}
               value={options.find(c => c.value === value)}
               onChange={(val) => {

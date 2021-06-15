@@ -17,6 +17,9 @@ import registrationForm from'./documents/registrationForm'
 import faq from './documents/faq'
 import testimonial from './documents/testimonial'
 import teacher from './documents/teacher'
+import student from './documents/student'
+import company from './documents/company'
+import level from './documents/level'
 
 
 
@@ -43,6 +46,8 @@ import questionAnswer from './objects/questionAnswer'
 import quote from './objects/quote'
 import latex from './latex'
 import timeRange from './objects/timeRange'
+import languageLevelGroup from './objects/languageLevelGroup'
+import classDayTime from './objects/classDayTime'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -69,14 +74,19 @@ export default createSchema({
       videoEmbed,
       classType,
       companyInfo,
+      classDayTime,
       contactForm,
       registrationForm,
       teacher,
+      level,
       faq,
       testimonial,
+      languageLevelGroup,
       blockContent,
       figure,
       classDiscount,
+      company,
+      student,
       classPricing,
       ctaGroup,
       availability,

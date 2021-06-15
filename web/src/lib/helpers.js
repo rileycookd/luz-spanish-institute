@@ -45,3 +45,12 @@ export function toPlainText(blocks) {
     })
     .join("\n\n");
 }
+
+export function arrayFindWithAttr(array, attr, value) {
+  for(var i = 0; i < array.length; i += 1) {
+      if(array[i][attr] === value) {
+          return i;
+      }
+  }
+  return -1;
+}

@@ -3,6 +3,8 @@ import * as styles from './form-slide.module.css'
 import { cn } from '../lib/helpers'
 import { button, buttonSmall, buttonLarge, buttonSecondary } from './CTALink.module.css'
 import CTALink from './CTALink'
+import { differenceInDays } from 'date-fns'
+import { getTimezoneOffset } from 'date-fns-tz'
 import { Link } from 'gatsby'
 import { altOption } from './cta-form.module.css'
 import { Form, Step, InputField, SelectField, StepNavigation, SelectSearchField } from '../components/form'
@@ -13,7 +15,7 @@ import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIc
 import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb";
 import { render } from 'react-dom'
 
-function FormSlide ({ classTypes, teachers }) {
+function FormSlide ({ classTypes, teachers, timezone}) {
 
   const classTypeTitles = classTypes.map(c => c.title)
 
@@ -44,7 +46,8 @@ function FormSlide ({ classTypes, teachers }) {
   const [totalSteps, setTotalSteps] = useState(5);
   const [formStatus, setFormStatus] = useState('default')
   const [classScheduleError, setClassScheduleError] = useState({})
-
+  const [timeOffsetDiff, setTimeOffsetDiff] = useState(0)
+  const [availabilityValues, setAvailabilityValues] = useState([])
 
 
   let classTypeDurations = currentClassType.pricing.map(p => (
@@ -175,9 +178,6 @@ function FormSlide ({ classTypes, teachers }) {
     setEstimatedPrice(newCalculatedPrice * classSizeValue)
     setPricePerStudent(newCalculatedPrice)
   }, [currentClassType, quantityValue, durationValue, classSizeValue])
-
-  const rawTimeZones = getTimeZones();
-  const timeZoneOptions = rawTimeZones.map(t => ({label: t.rawFormat, value: t.name}))
   
   const addMinutesToTime = (time, minsAdd) => {
     const z = (n) => (
@@ -188,17 +188,31 @@ function FormSlide ({ classTypes, teachers }) {
     return z(mins%(24*60)/60 | 0) + ':' + z(mins%60);  
   } 
 
+  const convertToMinutes = (time) => {
+    let bits = time.split(':')
+    return Number((+bits[0]) * 60 + (+bits[1]))
+  }
+
+
   const addClassIntervals = (start, end, day) => {
+
     let classTimes = []
+    let days = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"]
     let dayName = day[0].toUpperCase() + day.substring(1) + 's'
-    let startNum = addMinutesToTime(start, durationValue)
+    let offsetDayName = dayName
+    let startMinutes = convertToMinutes(start)
+    let endMinutes = convertToMinutes(end)
+    if(endMinutes < startMinutes) endMinutes = endMinutes + 1440
     let currentInterval = start
-    const convertToNumber = (str) => Number(str.replace(/:/g, ''))
-    while(convertToNumber(startNum) < convertToNumber(end)) {
+    while(startMinutes <= endMinutes) {
+      convertToMinutes(currentInterval) < convertToMinutes(start) 
+        ? offsetDayName = days[days.indexOf(dayName) + 1]
+        : offsetDayName = dayName
       let endTime = addMinutesToTime(currentInterval, durationValue)
-      classTimes.push(`${dayName}: ${currentInterval}-${endTime}`)
+      classTimes.push(`${offsetDayName}: ${currentInterval}-${endTime}`)
       currentInterval = endTime
-      startNum = addMinutesToTime(startNum, durationValue)
+      startMinutes = startMinutes + durationValue
+      
     }
     return classTimes
   }
@@ -207,16 +221,40 @@ function FormSlide ({ classTypes, teachers }) {
     teacher.availability.map(d => {
       let day = d.day
       let times = d.availableTimes.map(t => {
-        return addClassIntervals(t.start, t.end, day)
+        let offsetStart = addMinutesToTime(t.start, -timeOffsetDiff)
+        let offsetEnd = addMinutesToTime(t.end, -timeOffsetDiff)
+        return addClassIntervals(offsetStart, offsetEnd, day)
       })
-      let options = times.flat(2).map(t => (
-        {value: t, label: t}
-      ))
-      return {label: day, options: options}
+      return times.flat(2)
     })
   )
 
-  const luzAvailabilityOptions = teacherAvailability(teachers[0]).flat(3)
+  const rawTimeZones = getTimeZones();
+  const timeZoneOptions = rawTimeZones.map(t => ({label: t.rawFormat, value: t.name}))
+
+  useEffect(() => {
+    if(timezoneValue) {
+      let originalTimeOffset = getTimezoneOffset(timezone, new Date()) / 60000
+      let convertedTimeOffset = getTimezoneOffset(timezoneValue, new Date()) / 60000
+      setTimeOffsetDiff(originalTimeOffset - convertedTimeOffset)
+    }
+  }, [timezoneValue])
+
+  useEffect(() => {
+    let options = teacherAvailability(teachers[0]).flat(3)
+    let convertedOptions = []
+    if(availabilityValues.length) {
+      convertedOptions = availabilityValues.map((v, i) => (
+        {value: v.value, label: options[i]}
+      ))
+    } else {
+      convertedOptions = options.map(o => (
+        {value: o, label: o}
+      ))
+    }
+    console.log("UPDATE:", convertedOptions)
+    setAvailabilityValues(convertedOptions)
+  }, [timeOffsetDiff, durationValue])
 
   const renderSchedulerInputs = () => {
     let numberPattern = /\d+/g;
@@ -233,7 +271,7 @@ function FormSlide ({ classTypes, teachers }) {
           error={classScheduleError}
           handleChange={onChangeHandlers[i-1]}
           name={`classSchedule${i}`}
-          options={luzAvailabilityOptions}
+          options={availabilityValues}
         />
       );
     }
@@ -319,7 +357,7 @@ function FormSlide ({ classTypes, teachers }) {
             <Step title="Package">
 
               <SelectField
-                label="Choose your package:"
+                label="How many classes?"
                 name="quantity"
                 defaultValue={classPackageOptions[0]}
                 options={classPackageOptions}
@@ -327,7 +365,7 @@ function FormSlide ({ classTypes, teachers }) {
               />
               <SelectField
                 defaultValue={frequencyValue}
-                label="How many classes per week?"
+                label="Classes per week?"
                 name="frequency"
                 defaultValue={classFrequencyOptions[0]}
                 options={classFrequencyOptions}
@@ -343,10 +381,11 @@ function FormSlide ({ classTypes, teachers }) {
             </Step>
             <Step title="Scheduling">
               <SelectField 
-                // placeholder="Search..." 
                 label="Select your timezone:" 
                 name="timezone"
                 isRequired={true}
+                defaultValue={Intl.DateTimeFormat().resolvedOptions().timeZone}
+                handleChange={(value) => setTimeZoneValue(value)}
                 isSearchable={true}
                 options={timeZoneOptions} /> 
               {renderSchedulerInputs()} 

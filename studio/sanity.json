@@ -26,7 +26,8 @@
     "google-analytics",
     "@sanity/production-preview",
     "order-documents",
-    "autocomplete-tags"
+    "autocomplete-tags",
+    "computed-field"
   ],
   "parts": [
     {

@@ -97,9 +97,8 @@ const timeList = [
   {value: "23:45", title: "23:45"},
 ]
 
-const verifyRange = timeRange => {
-  const { start, end } = timeRange
-  console.log(timeRange)
+const verifyRange = fields => {
+  const { start, end } = fields
   if(Number(end.replace(/:/g, '')) < Number(start.replace(/:/g, ''))) {
     return  'End time must be later than start time'
   } else {

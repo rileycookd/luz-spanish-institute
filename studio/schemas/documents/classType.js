@@ -63,17 +63,17 @@ export default {
       ]
     },
     {
-      name: 'max',
-      title: 'Max students',
-      type: 'number',
-      description: '(Optional) Enter the max limit of students',
-      fieldset: 'classSize'
-    },
-    {
       name: 'min',
       title: 'Min students',
       type: 'number',
       description: '(Optional) Enter the minimum number of students',
+      fieldset: 'classSize'
+    },
+    {
+      name: 'max',
+      title: 'Max students',
+      type: 'number',
+      description: '(Optional) Enter the max limit of students',
       fieldset: 'classSize'
     },
     {
