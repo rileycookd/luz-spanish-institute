@@ -7,15 +7,17 @@ import schema from 'part:@sanity/base/schema';
 import { MdSettings } from 'react-icons/md'
 import { FaHandHoldingUsd } from 'react-icons/fa'
 import { CgBrowser } from 'react-icons/cg'
-import { IoHome} from 'react-icons/io5'
+import { IoHome } from 'react-icons/io5'
 import pageBuilder from './src/structure/page-builder'
 import forms from './src/structure/forms'
 import staff from './src/structure/staff'
 import clients from './src/structure/clients'
 import marketing from './src/structure/marketing';
 import admin from './src/structure/admin'
+import resources from './src/structure/resources'
 
-const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'faq', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'category', 'language', 'level', 'teacher', 'company', 'student']
+
+const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'faq', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'category', 'language', 'level', 'teacher', 'company', 'student', 'resource', 'quiz']
 
 // Add incoming references to all documents in Studio
 
@@ -177,5 +179,7 @@ export default () =>
               pageBuilder,
             ])
         ), 
+      resources,
+
       ...S.documentTypeListItems().filter(listItem => !hiddenTypes.includes(listItem.getId())),
     ])

@@ -53,6 +53,17 @@ export default {
     {
       type: 'quote'
     },
+    {
+      type: 'exampleBlock'
+    },
+    {
+      type: 'excerptBlock'
+    },
+    {
+      title: "Quiz",
+      type: 'reference',
+      to: [{ type: "quiz" }],
+    },
     // {
     //   type: 'youtube'
     // }

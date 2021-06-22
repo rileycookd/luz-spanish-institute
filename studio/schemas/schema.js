@@ -20,6 +20,9 @@ import teacher from './documents/teacher'
 import student from './documents/student'
 import company from './documents/company'
 import level from './documents/level'
+import resource from './documents/resource'
+import quiz from './documents/quiz'
+import category from './documents/category'
 
 
 
@@ -48,6 +51,16 @@ import latex from './latex'
 import timeRange from './objects/timeRange'
 import languageLevelGroup from './objects/languageLevelGroup'
 import classDayTime from './objects/classDayTime'
+import exampleBlock from './objects/exampleBlock'
+import excerptBlock from './objects/excerptBlock'
+import quizMultipleChoice from './objects/quizMultipleChoice'
+import questionMultipleChoice from './objects/questionMultipleChoice'
+import quizFillBlank from './objects/quizFillBlank'
+import optionMultipleChoice from './objects/optionMultipleChoice'
+import optionCategory from './objects/optionCategory'
+import quizCategories from './objects/quizCategories'
+import quizFillBlankText from './objects/quizFillBlankText'
+import quizOrdering from './objects/quizOrdering'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -76,6 +89,7 @@ export default createSchema({
       companyInfo,
       classDayTime,
       contactForm,
+      resource,
       registrationForm,
       teacher,
       level,
@@ -86,8 +100,11 @@ export default createSchema({
       figure,
       classDiscount,
       company,
+      category,
       student,
       classPricing,
+      exampleBlock,
+      excerptBlock,
       ctaGroup,
       availability,
       ctaLabel,
@@ -95,7 +112,16 @@ export default createSchema({
       questionAnswer,
       quote,
       timeRange,
-      blockText
+      blockText,
+      quiz,
+      quizMultipleChoice,
+      questionMultipleChoice,
+      quizFillBlank,
+      optionMultipleChoice,
+      optionCategory,
+      quizCategories,
+      quizFillBlankText,
+      quizOrdering
     ])
     .concat(allBlocks),
 })

@@ -8,14 +8,14 @@ export default {
     icon: InternalLinkIcon
   },
   fields: [
-    // {
-    //   name: 'reference',
-    //   type: 'reference',
-    //   title: 'Reference',
-    //   to: [
-    //     { type: 'post' },
-    //   ]
-    // },
+    {
+      name: 'reference',
+      type: 'reference',
+      title: 'Reference',
+      to: [
+        { type: 'resource' },
+      ]
+    },
     {
       title: 'Open in new tab',
       name: 'blank',
