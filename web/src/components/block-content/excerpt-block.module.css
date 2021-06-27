@@ -1,0 +1,13 @@
+@import '../../components/typography.module.css';
+
+.root {
+  display: flex;
+  justify-self: center;
+  width: 70%;
+
+  @nest & > p {
+    font-size: var(--font-article-size);
+    line-height: var(--font-article-line-height);
+    font-style: italic;
+  }
+}

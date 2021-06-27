@@ -17,8 +17,8 @@
   --font-xxlarge-size: calc(36 / var(--base-unit) * 1rem);
   --font-xxlarge-line-height: calc(52 / 36);
   --font-base-line-height-extra: calc(24 / var(--base-unit) * 1rem);
-  --font-article-size: calc(20 / var(--base-unit) * 1rem);
-  --font-article-line-height: calc(36 / 20);
+  --font-article-size: calc(19 / var(--base-unit) * 1rem);
+  --font-article-line-height: calc(32 / 19);
   --font-paragraph-main-size: (16 / var(--base-unit) * 1rem);
   --font-paragraph-main-line-height: calc(28 / 16);
   --font-title5-size: calc(18 / var(--base-unit) * 1rem);

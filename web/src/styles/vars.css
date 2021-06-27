@@ -58,6 +58,7 @@
 
   --shadow-main: 0 6px 20px rgba(var(--color-primary-rgb), .12);
   --shadow-dark: 0 4px 15px rgba(var(--color-primary-rgb), .4);
+  --shadow-shallow: 0 2px 4px rgba(var(--color-primary-rgb), .4);
 
   /* ~~~~~~~ */
   /* Padding */

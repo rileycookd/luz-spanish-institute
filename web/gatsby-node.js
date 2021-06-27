@@ -77,9 +77,45 @@ async function createClassTypePages (pathPrefix = "/", graphql, actions, reporte
   })
 }
 
+async function createResourcePages (pathPrefix = "/", graphql, actions, reporter) {
+  const { createPage } = actions
+  const result = await graphql(`
+    {
+      allSanityResource(filter: { slug: { current: { ne: null } } }) {
+        edges {
+          node {
+            id
+            slug {
+              current
+            }
+          }
+        }
+      }
+    }
+  `)
+
+
+  if (result.errors) throw result.errors
+
+  const resourceEdges = (result.data.allSanityResource || {}).edges || []
+
+  resourceEdges.forEach((edge) => {
+    const { id, slug = {}} = edge.node
+    const path = [pathPrefix, "resources/", slug.current, "/"].join("");
+
+    reporter.info(`Creating resource page: ${path}`)
+
+    createPage({
+      path,
+      component: require.resolve('./src/templates/resource.js'),
+      context: { id }
+    })
+  })
+}
+
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   await createLandingPages("/", graphql, actions, reporter);
   await createClassTypePages("/", graphql, actions, reporter);
-
+  await createResourcePages("/", graphql, actions, reporter);
 };

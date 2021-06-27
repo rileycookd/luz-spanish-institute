@@ -13,6 +13,7 @@ export default {
     {
       type: 'boolean',
       name: 'correct',
+      initialValue: false,
     }
   ],
   preview: {

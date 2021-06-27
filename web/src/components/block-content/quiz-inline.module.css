@@ -1,0 +1,76 @@
+@import '../typography.module.css';
+@import '../../styles/vars.css';
+
+.root {
+  background-color: var(--color-grey-xlight);
+  box-shadow: var(--shadow-shallow);
+  border-radius: var(--border-radius-default);
+  overflow: hidden;
+}
+
+.header {
+  background-color: var(--color-accent);
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+
+  @nest & > svg {
+    fill: var(--color-primary);
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.header-title {
+  composes: title5 from '../typography.module.css';
+}
+
+.quiz-header {
+  background-color: var(--color-white);
+  padding: 2rem;
+  box-shadow: var(--shadow-shallow);
+  border-radius: var(--border-radius-default);
+  display: grid;
+  row-gap: .5rem;
+}
+
+.quiz-meta {
+
+}
+
+.quiz-title {
+  color: var(--color-primary);
+  composes: title6 from '../typography.module.css';
+}
+
+.quiz-wrapper {
+  background-color: var(--color-grey-xlight);
+  max-height: 0px;
+  overflow: hidden;
+  display: grid;
+  row-gap: 3rem;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.trigger {
+  display: none;
+  @nest &:checked {
+    @nest & ~ svg {
+      transform: rotate(90deg);
+    }
+    @nest & ~ .quiz-wrapper {
+      max-height: max-content;
+      padding: 1rem;
+    }
+    @nest & ~ .header {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.submit {
+  box-shadow: var(--shadow-shallow);
+}

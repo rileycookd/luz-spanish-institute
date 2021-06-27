@@ -1,0 +1,7 @@
+@import '../../styles/vars.css';
+
+.root {
+  padding: 1.5rem;
+  background-color: var(--color-text-light);
+  border-radius: var(--border-radius-default);
+}

@@ -9,10 +9,14 @@ import styles from './post.module.css'
 
 
 function Post (props) {
-  const { _rawBody, authors, categories, title, mainImage, publishedAt, _updatedAt } = props
-  const wordCount = _rawBody.filter(child => child.children).map(child => child.children.map(child => child.text).join(" ")).join(" ").split(" ").length
-  const readTime = Math.round(wordCount / 200)
-  console.log(readTime);
+  const { 
+    _rawContent, 
+    author, 
+    categories, 
+    title, 
+    mainImage, 
+    _createdAt,
+    _updatedAt } = propsy
   
   return (
     <article className={styles.root}>
@@ -71,4 +75,4 @@ function Post (props) {
   )
 }
 
-export default Essay
+export default Post

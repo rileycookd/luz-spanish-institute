@@ -1,0 +1,59 @@
+@import '../typography.module.css';
+@import '../../styles/vars.css';
+
+.root {
+  display: grid;
+  row-gap: 2rem;
+}
+
+.title {
+  composes: title6 from '../typography.module.css';
+}
+
+.question-wrapper {
+}
+
+.question-title {
+  composes: title6 from '../typography.module.css';
+  margin-bottom: .5rem;
+}
+
+.options-wrapper {
+  display: flex;
+  flex-direction: column;
+  @nest & > *:not(:last-child) {
+    margin-bottom: .5rem;
+  }
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  cursor: pointer;
+  
+  @nest &.disabled {
+    pointer-events: none;
+  }
+
+  @nest &:checked ~ label.error {
+    color: var(--color-error);
+    font-weight: 700;
+  }
+}
+
+.label {
+  padding-left: .5rem;
+  cursor: pointer;
+
+  @nest &.disabled {
+    pointer-events: none;
+  }
+
+  @nest &.success {
+    color: var(--color-success);
+    font-weight: 700;
+  }
+}

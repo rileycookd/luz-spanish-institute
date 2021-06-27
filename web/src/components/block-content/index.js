@@ -1,13 +1,18 @@
 import BaseBlockContent from '@sanity/block-content-to-react'
 import React from 'react'
 import { format } from 'date-fns'
-import getYouTubeId from 'get-youtube-id'
-import YouTube from 'react-youtube'
+// import getYouTubeId from 'get-youtube-id'
+// import YouTube from 'react-youtube'
 import Figure from './figure'
 import Slideshow from './slideshow'
+import ExampleBlock from './example-block'
+import ExcerptBlock from './excerpt-block'
 import Quote from './quote'
+import QuizInline from './quiz-inline'
 
-import typography from '../typography.module.css'
+import { v4 as uuidv4 } from 'uuid';
+
+import * as typography from '../typography.module.css'
 
 const serializers = {
   marks: {
@@ -29,16 +34,16 @@ const serializers = {
     block (props) {
       switch (props.node.style) {
         case 'h1':
-          return <h1 className={typography.responsiveTitle1}>{props.children}</h1>
+          return <h1 className={typography.title2}>{props.children}</h1>
 
         case 'h2':
-          return <h2 className={typography.responsiveTitle2}>{props.children}</h2>
+          return <h2 className={typography.title3}>{props.children}</h2>
 
         case 'h3':
-          return <h3 className={typography.responsiveTitle3}>{props.children}</h3>
+          return <h3 className={typography.title4}>{props.children}</h3>
 
         case 'h4':
-          return <h4 className={typography.responsiveTitle4}>{props.children}</h4>
+          return <h4 className={typography.title5}>{props.children}</h4>
 
         case 'blockquote':
           return <blockquote className={typography.blockQuote}>{props.children}</blockquote>
@@ -50,17 +55,24 @@ const serializers = {
     figure (props) {
       return <Figure {...props.node} />
     },
-    slideshow (props) {
-      return <Slideshow {...props.node} />
+    exampleBlock (props) {
+      return <ExampleBlock {...props.node} />
+    },
+    excerptBlock (props) {
+      return <ExcerptBlock {...props.node} />
+    },
+    quiz (props) {
+      const blockKey = uuidv4();
+      return <QuizInline blockKey={blockKey} {...props.node} />
     },
     quote (props) {
       return <Quote {...props.node} />
     },
-    youtube: ({node}) => {
-      const { url } = node
-      const id = getYouTubeId(url)
-      return (<YouTube videoId={id} />)
-    }
+    // youtube: ({node}) => {
+    //   const { url } = node
+    //   const id = getYouTubeId(url)
+    //   return (<YouTube videoId={id} />)
+    // }
   }
 }
 

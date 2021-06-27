@@ -34,12 +34,47 @@ export const query = graphql`
       edges {
         node {
           availability {
-            day
-            availableTimes {
+            monday {
               _key
-              _type
-              start
               end
+              start
+              _type
+            }
+            tuesday {
+              _key
+              end
+              start
+              _type
+            }
+            wednesday {
+              _key
+              end
+              start
+              _type
+            }
+            thursday {
+              _key
+              end
+              start
+              _type
+            }
+            friday {
+              _key
+              end
+              start
+              _type
+            }
+            saturday {
+              _key
+              end
+              start
+              _type
+            }
+            sunday {
+              _key
+              end
+              start
+              _type
             }
           }
         }

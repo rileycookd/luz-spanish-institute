@@ -1,0 +1,53 @@
+@import '../typography.module.css';
+@import '../../styles/vars.css';
+
+/* Blank should all be equal and grow as you type */
+
+.root {
+  display: grid;
+  row-gap: 2rem;
+}
+
+.list {
+  list-style: none;
+  display: grid;
+  row-gap: 1rem;
+}
+
+.question-wrapper {
+  max-width: max-content;
+}
+
+.question-title {
+  composes: title6 from '../typography.module.css';
+  margin-bottom: .5rem;
+}
+
+.input {
+  height: 2rem;
+  padding: .5rem;
+  width: 5rem;
+  border: 2px solid var(--color-grey-light);
+  border-radius: var(--border-radius-medium);
+  outline: none;
+  
+  @nest &:focus {
+    box-shadow: 0 0 0 2px #2684FF;
+    border-color: #2684FF;
+  }
+
+  @nest &:disabled {
+    opacity: .7;
+    background-color: var(--color-grey-xxlight);
+  }
+
+  @nest &.success {
+    box-shadow: 0 0 0 2px var(--color-success);
+    border-color: var(--color-success);
+  }
+  
+  @nest &.error {
+    box-shadow: 0 0 0 2px var(--color-error);
+    border-color: var(--color-error);
+  }
+}

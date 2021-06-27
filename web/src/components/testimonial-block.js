@@ -3,6 +3,7 @@ import * as styles from './testimonial-block.module.css'
 import Testimonial from './testimonial'
 
 function TestimonialBlock ({testimonials, title}) {
+  console.log(testimonials)
   return (
     <div className={styles.root}>
       <div className={styles.container}>

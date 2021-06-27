@@ -15,6 +15,17 @@ export default {
       type: 'string',
     },
     {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      description: 'The relative route name (i.e. "my-quiz-name")',
+      options: {
+        source: 'title',
+        maxLength: 96
+      },
+      validation: Rule => Rule.required()
+    },
+    {
       name: 'locked',
       title: 'Members only',
       type: 'boolean',

@@ -1,0 +1,58 @@
+@import '../typography.module.css';
+@import '../../styles/vars.css';
+
+.root {
+  padding: 2rem;
+  border-radius: var(--border-radius-default);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-shallow);
+  display: grid;
+  row-gap: 2rem;
+
+  @nest &.error {
+    /* background-color: var(--color-success); */
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+svg {
+  margin-right: .75rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+svg.error {
+  fill: var(--color-error);
+}
+
+svg.success {
+  fill: var(--color-success);
+}
+
+.titles {
+  width: 100%;
+}
+
+.title {
+  composes: title6 from '../typography.module.css';
+}
+
+.instructions {
+  margin-top: .5rem;
+}
+
+.divider {
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-grey-xlight);
+}
+
+.result-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

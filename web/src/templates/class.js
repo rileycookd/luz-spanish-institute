@@ -44,12 +44,15 @@ export const query = graphql`
       sizeDiscount
       testimonial {
         _type
-        name
-        location
-        quote
-        picture {
-          ...SanityImage
+        student {
+          name
+          city
+          country
+          image {
+            ...SanityImage
+          }
         }
+        quote
       }
       faq {
         _rawQuestions(resolveReferences: {maxDepth: 10})
