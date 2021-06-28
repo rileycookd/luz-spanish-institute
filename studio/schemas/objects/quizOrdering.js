@@ -1,15 +1,16 @@
-import { GiChoice } from 'react-icons/gi'
+import { GoListOrdered } from 'react-icons/go'
 
 export default {
   name: 'quizOrdering',
   title: 'Ordering',
   type: 'object',
-  icon: GiChoice,
+  icon: GoListOrdered,
   fields: [
     {
       name: 'title',
       title: 'Title',
-      type: 'string'
+      type: 'string',
+      validation: Rule => Rule.required()
     },
     {
       name: 'instructions',
@@ -17,24 +18,23 @@ export default {
       type: 'string'
     },
     {
-      name: 'items',
-      description: 'Put all the parts in their correct order',
+      name: 'questions',
       type: 'array',
       of: [
-        { type: 'string' }
+        { type: 'questionOrdering' }
       ],
-      validation: Rule => Rule.required().min(2)
+      validation: Rule => Rule.required()
     },
   ],
   preview: {
     select: {
-      length: 'items'
+      length: 'questions'
     },
     prepare ({ length }) {
       const num = length ? length.length : 0
       return {
         title: 'Ordering',
-        subtitle: `${num} part${num !== 1 ? 's' : ''}`
+        subtitle: `${num} question${num !== 1 ? 's' : ''}`
       }
     }
   }

@@ -1,3 +1,68 @@
+@import '../typography.module.css';
+@import '../../styles/vars.css';
+
+
 .root {
-  
+  display: grid;
+  row-gap: 6rem;
+}
+
+.options-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.option {
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--shadow-shallow);
+  margin: .25rem;
+  /* transition: background-color .1s ease-in; */
+
+  @nest &:not(.disabled):not(.answer.select-mode):not(.selected):hover {
+    background-color: var(--color-grey-xlight);
+  }
+
+  @nest &.selected {
+    background-color: var(--color-grey-medium);
+  }
+
+  @nest &.answer.select-mode, &.answer.disabled {
+    opacity: .5;
+  }
+
+  @nest &.error {
+    background-color: var(--color-error);
+    color: var(--color-white);
+  }
+
+  @nest &.disabled {
+    opacity: .5;
+    cursor: default;
+  }
+}
+
+.answer-box {
+  margin: 0 .5rem 2rem .5rem;
+  min-height: 3rem;
+  padding-bottom: .5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 3px solid var(--color-grey-xlight);
+
+  @nest &.select-mode {
+    cursor: pointer;
+    border-bottom: 3px solid var(--color-grey-medium);
+  }
+
+  @nest &.error {
+    border-bottom: 3px solid var(--color-error);
+  }
+}
+
+.answer-placeholder {
+  color: var(--color-grey-medium);
 }

@@ -19,7 +19,7 @@ function QuizInline (props) {
     content,
   } = props
 
-  const [numCorrect, setNumCorrect] = useState(0);
+  const [totalNumCorrect, setTotalNumCorrect] = useState(0);
   const [totalNum, setTotalNum] = useState(0);
   const [quizNumAnswered, setQuizNumAnswered] = useState(0);
   const [isQuizFinished, setIsQuizFinished] = useState(false);
@@ -28,6 +28,9 @@ function QuizInline (props) {
     e.preventDefault();
     e.stopPropagation();
 
+    if(quizNumAnswered === totalNum) {
+      
+    }
     setIsQuizFinished(true)
   }
 
@@ -81,7 +84,13 @@ function QuizInline (props) {
           break;
         case "quizOrdering":
           el = (
-              <QuizOrdering {...c} blockKey={blockKey} />
+              <QuizOrdering
+                {...c} 
+                blockKey={blockKey} 
+                setTotalNum={setTotalNum} 
+                setQuizNumAnswered={setQuizNumAnswered} 
+                isQuizFinished={isQuizFinished}
+              />
           );
           break;
         default:
@@ -92,12 +101,20 @@ function QuizInline (props) {
           key={c._key} 
           {...c} 
           isQuizFinished={isQuizFinished} 
-          setNumCorrect={setNumCorrect}
+          setTotalNumCorrect={setTotalNumCorrect}
         >
           {el}
         </QuizWrapper>
       )
     });
+
+  const renderMeta = () => {
+    if(!isQuizFinished) {
+      return `${quizNumAnswered}/${totalNum} answered`
+    } else {
+      return `Total: ${totalNumCorrect}/${totalNum}`
+    }
+  }
 
 
   return (
@@ -110,19 +127,24 @@ function QuizInline (props) {
       <div className={styles.quizWrapper}>
         <div className={styles.quizHeader}>
           <h3 className={styles.quizTitle}>{title}</h3>
-          <p className={styles.quizMeta}>{quizNumAnswered}/{totalNum} answered</p>
+          <p className={styles.quizMeta}>{renderMeta()}</p>
         </div>
         {quizContent}
-        <button 
-          className={cn(
-            buttonStyles.button, 
-            buttonStyles.buttonLarge,
-            styles.submit
-          )}
-          onClick={(e) => handleSubmit(e)}
-        >
-          Finish
-        </button>
+        <div className={styles.quizFooter}>
+          <p className={styles.quizMeta}>{renderMeta()}</p>
+        </div>
+        {!isQuizFinished && (
+          <button 
+            className={cn(
+              buttonStyles.button, 
+              buttonStyles.buttonLarge,
+              styles.submit
+            )}
+            onClick={(e) => handleSubmit(e)}
+          >
+            Finish
+          </button>
+        )}  
       </div>
     </div>
   )

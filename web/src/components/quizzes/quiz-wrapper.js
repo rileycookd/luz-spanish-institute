@@ -9,13 +9,12 @@ function QuizWrapper (props) {
     instructions,
     children,
     isQuizFinished,
+    setTotalNumCorrect,
   } = props
 
   const [numPoints, setNumPoints] = useState(0)
   const [numCorrect, setNumCorrect] = useState(0)
-  const [isPerfect, setIsPerfect] = useState(false)
   const [childrenWithProps, setChildrenWithProps] = useState([])
-  const [wrapperStyle, setWrapperStyle] = useState(styles.root)
 
   useEffect(() => {
     setChildrenWithProps(React.Children.map(children, (child) => {
@@ -32,17 +31,13 @@ function QuizWrapper (props) {
   }, [children]) 
 
   useEffect(() => {
-    let styleObject = styles.root
     if(isQuizFinished) {
-      isPerfect
-      ? styleObject = cn(styles.root, styles.success)
-      : styleObject = cn(styles.root, styles.error)
+      setTotalNumCorrect(prevState => prevState + numCorrect)
     }
-    setWrapperStyle(styleObject)
   }, [isQuizFinished])
 
   return (
-    <div className={wrapperStyle}>      
+    <div className={styles.root}>      
       <div className={styles.titles}>
         {title && <h4 className={styles.title}>{title}</h4>}
         {instructions && <p className={styles.instructions}>{instructions}</p>}

@@ -61,6 +61,7 @@ import optionCategory from './objects/optionCategory'
 import quizCategories from './objects/quizCategories'
 import quizFillBlankText from './objects/quizFillBlankText'
 import quizOrdering from './objects/quizOrdering'
+import questionOrdering from './objects/questionOrdering'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -121,7 +122,8 @@ export default createSchema({
       optionCategory,
       quizCategories,
       quizFillBlankText,
-      quizOrdering
+      quizOrdering,
+      questionOrdering
     ])
     .concat(allBlocks),
 })

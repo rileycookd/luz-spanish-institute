@@ -71,6 +71,16 @@
   }
 }
 
+.quiz-footer {
+  background-color: var(--color-white);
+  padding: 2rem;
+  box-shadow: var(--shadow-shallow);
+  border-radius: var(--border-radius-default);
+  display: flex;
+  justify-content: flex-end;
+  row-gap: .5rem;
+}
+
 .submit {
   box-shadow: var(--shadow-shallow);
 }
