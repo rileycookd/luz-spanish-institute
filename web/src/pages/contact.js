@@ -23,10 +23,7 @@ export const query = graphql`
     } 
 
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
-      title
-      defaultNav {
-        ...NavMenu
-      }
+      ...SiteSettings
     }
   }
 `;
@@ -34,6 +31,8 @@ export const query = graphql`
 const ContactPage = (props) => {
 
   const { data, errors } = props;
+
+  console.log(data)
 
   if (errors) {
     return (
