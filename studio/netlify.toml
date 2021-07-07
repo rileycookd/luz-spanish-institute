@@ -10,5 +10,8 @@
   framework = "#custom"
   publish = "dist"
 
-  [functions]
-    directory = "netlify/functions"
+[build]
+  command = "npm run build"
+
+[functions]
+  directory = "netlify/functions"
