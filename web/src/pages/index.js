@@ -8,9 +8,7 @@ import Page from '../templates/page'
 export const query = graphql`
   query IndexPageQuery {
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
-      title
-      description
-      keywords
+      ...SiteSettings
     }
 
     company: sanityCompanyInfo {
@@ -51,7 +49,7 @@ const IndexPage = props => {
   }
 
   return (
-    <Page data={data} />
+    <Page data={data} pathname={props.location.pathname} />
   )
 }
 

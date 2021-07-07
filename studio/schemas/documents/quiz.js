@@ -1,3 +1,4 @@
+import SlugInput from 'sanity-plugin-better-slug'
 import { ImPencil2 } from 'react-icons/im'
 
 export default {
@@ -18,12 +19,21 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'The relative route name (i.e. "my-quiz-name")',
+      description: 'The relative route name (i.e. "my-resource-name")',
+      inputComponent: SlugInput,
       options: {
         source: 'title',
-        maxLength: 96
+        basePath: (document) => `${document.pathPrefix || 'quizzes'}`,
+        maxLength: 100,
       },
       validation: Rule => Rule.required()
+    },
+    {
+      name: 'pathPrefix',
+      title: 'pathPrefix',
+      hidden: true,
+      type: 'string',
+      initialValue: 'quizzes'
     },
     {
       name: 'locked',

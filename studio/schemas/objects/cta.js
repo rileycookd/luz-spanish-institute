@@ -27,6 +27,16 @@ export default {
       to: [{type: 'route'}]
     },
     {
+      title: 'Inner page',
+      name: 'innerPageRoute',
+      type: 'reference',
+      fieldset: 'link',
+      to: [
+        {type: 'resource'},
+        {type: 'classType'}
+      ]
+    },
+    {
       title: 'Path',
       name: 'route',
       fieldset: 'link',
@@ -55,12 +65,18 @@ export default {
       title: 'title',
       landingPage: 'landingPageRoute.slug.current',
       route: 'route',
-      link: 'link'
+      link: 'link',
+      innerPageRoute: 'innerPageRoute.slug.current',
+      innerPageTitle: 'innerPageRoute.title',
     },
-    prepare ({title, landingPage, route, link}) {
+    prepare ({title, landingPage, innerPageRoute, innerPageTitle, route, link}) {
+      const linkTitle = innerPageTitle || title || 'Missing title'
       let subtitle = 'Not set'
       if (landingPage) {
         subtitle = `Route: /${landingPage}`
+      }
+      if (innerPageRoute) {
+        subtitle = `Route: /${innerPageRoute}`
       }
       if (route) {
         subtitle = `Route: ${route}`
@@ -69,7 +85,7 @@ export default {
         subtitle = `External: ${link}`
       }
       return {
-        title,
+        title: linkTitle,
         subtitle
       }
     }

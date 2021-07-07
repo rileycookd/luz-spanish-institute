@@ -6,7 +6,7 @@ import { buildImageObj, cn } from "../lib/helpers"
 import { imageUrlFor } from "../lib/image-url"
 import { Link } from 'gatsby'
 
-function PageHeader ({ navigation, title, subtitle, image, tabs, sharedPath }) {
+function PageHeader ({ navigation, title, subtitle, image, tabs, sharedPath, propsAddedHeight }) {
 
   // Added height for absolute positioned content element
   const [addedHeight, setAddedHeight] = useState(0)
@@ -31,7 +31,7 @@ function PageHeader ({ navigation, title, subtitle, image, tabs, sharedPath }) {
 
   return (
     <div className={styles.root}>
-      <header className={styles.header} style={{height: `calc(100% + ${addedHeight}px`}}>
+      <header className={styles.header} style={{height: `calc(100% + ${addedHeight || propsAddedHeight}px`}}>
         <div className={styles.titles}>
           <h1 className={styles.title}>{title}</h1>
           {subtitle && (

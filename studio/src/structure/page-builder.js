@@ -3,6 +3,7 @@ import S from '@sanity/desk-tool/structure-builder'
 
 import { MdMenu } from "react-icons/md"
 import { BsWindow, BsCollectionFill } from 'react-icons/bs'
+import { RiLayoutBottom2Line } from "react-icons/ri"
 
 export default S.listItem()
   .title('Page Builder')
@@ -39,5 +40,10 @@ export default S.listItem()
               .menuItems(S.documentTypeList('page').getMenuItems())
               .filter('_type == "page" && _id != "homepage"')
           ),
+        S.listItem()
+          .title('Footers')
+          .icon(RiLayoutBottom2Line)
+          .schemaType('footer')
+          .child(S.documentTypeList('footer').title('Footers')),
       ])
   )

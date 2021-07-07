@@ -1,17 +1,26 @@
 @import '../styles/vars.css';
 
 .root {
-  padding: 1rem;
   color: var(--color-primary);
   text-decoration: none;
   composes: link from './typography.module.css';
   transition: color .1s linear;
 
+  @nest &:visited {
+    text-decoration: none;
+  }
+
   @media(hover: hover) {
     @nest &:hover {
-      color: var(--color-accent);
+      color: var(--color-secondary);
     }
   }
+
+  
+}
+
+.link {
+  padding: 1rem;
 }
 
 .button {

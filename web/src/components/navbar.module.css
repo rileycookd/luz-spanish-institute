@@ -10,6 +10,14 @@
   display: flex;
   justify-content: space-between;
   padding: 0 var(--padding-x);
+
+  @nest & > *:nth-child(2) {
+    justify-content: center;
+  }
+
+  @nest & > *:last-child {
+    justify-content: flex-end;
+  }
 }
 
 .logo {
@@ -28,19 +36,18 @@
   align-items: center;
 }
 
-.nav-main {
-  justify-content: center;
-}
-
-.nav-CTA {
-  justify-content: flex-end;
-}
 
 .link {
   display: flex;
+  height: 100%;
   align-items: center;
   color: var(--color-primary);
   composes: link from './typography.module.css';
+
+  @nest & > h3 {
+    color: currentColor;
+    cursor: default;
+  }
 
   @nest & > svg {
     margin-left: 4px;
@@ -48,6 +55,14 @@
     height: .8rem;
     fill: currentColor;
     stroke: currentColor;
+  }
+
+  @nest & > a {
+    padding: 1.5rem .75rem;
+
+    @nest &:hover {
+      color: var(--color-secondary);
+    }
   }
 }
 
@@ -59,9 +74,12 @@
   left: 0;
   top: 100%;
   width: 100%;
+  padding: 2rem var(--padding-x);
   justify-content: center;
-  background-color: var(--color-white);
+  background-color: var(--color-grey-xxlight);
   border-top: 1px solid var(--color-grey-xlight);
+  border-bottom: 1px solid var(--color-grey-xlight);
+  box-shadow: var(--shadow-main);
 
   @media(hover: hover) {
     @nest &:hover {
@@ -71,11 +89,16 @@
 }
 
 .dropdown {
-  padding: 1rem;
-  cursor: pointer;
+  padding: 0 .75rem;
+
+  @nest & > svg {
+    margin: 0;
+    margin-left: .2rem;
+  }
+
   @media(hover: hover) {
     @nest &:hover {
-      color: var(--color-accent);
+      color: var(--color-secondary);
 
       @nest & > .dropdown-menu {
         opacity: 1;
@@ -103,4 +126,68 @@
       }
     }
   }
+}
+
+.dropdown-menu-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 1rem;
+}
+
+.dropdown-cta {
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+
+  @nest &:hover {
+
+    @nest & > .dropdown-thumbnail {
+      opacity: .8;
+    }
+  }
+
+}
+
+.dropdown-thumbnail {
+  max-width: 100%;
+  border-radius: var(--border-radius-default) var(--border-radius-default) 0 0;
+  transition: .2s ease-out;
+
+  @nest & ~ .dropdown-title {
+    padding: .5rem 0;
+  }
+}
+
+.dropdown-title {
+  display: flex;
+  align-content: center;
+  align-self: flex-start;
+  color: currentColor;
+  composes: small from './typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 700;
+  text-decoration: none;
+
+  @nest & > span {
+    display: flex;
+    align-items: center;
+
+    @nest & > svg {
+      height: .8rem;
+      width: .8rem;
+      margin-left: .5rem;
+    }
+  }
+}
+
+.dropdown-menu-content-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-description {
+  composes: small from './typography.module.css';
+  font-family: var(--font-paragraph);
+  font-weight: 400;
+  color: var(--color-text-dark);
 }

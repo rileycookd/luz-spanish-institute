@@ -1620,7 +1620,7 @@
   version "1.1.2"
   resolved "https://registry.npmjs.org/@sanity/icons/-/icons-1.1.2.tgz#9ad5e24c8b0c744879c69463091070eaea56b735"
 
-"@sanity/image-url@^0.140.19":
+"@sanity/image-url@^0.140.19", "@sanity/image-url@^0.140.22":
   version "0.140.22"
   resolved "https://registry.npmjs.org/@sanity/image-url/-/image-url-0.140.22.tgz#7a65f56bb751f7b1c5dfacfadd34ee10fc4f0fde"
 
@@ -1917,6 +1917,21 @@
     react-popper "^2.2.5"
     react-refractor "^2.1.4"
 
+"@sanity/ui@^0.34.1":
+  version "0.34.4"
+  resolved "https://registry.npmjs.org/@sanity/ui/-/ui-0.34.4.tgz#cb01ea9384c355b9ce8fd2c834424668d5769565"
+  dependencies:
+    "@juggle/resize-observer" "^3.3.1"
+    "@popperjs/core" "^2.9.2"
+    "@reach/auto-id" "^0.15.0"
+    "@sanity/color" "^2.1.2"
+    "@sanity/icons" "^1.1.2"
+    framer-motion "^4.1.17"
+    popper-max-size-modifier "^0.2.0"
+    react-is "^17.0.2"
+    react-popper "^2.2.5"
+    react-refractor "^2.1.4"
+
 "@sanity/util@2.11.0", "@sanity/util@>= 2.5.0":
   version "2.11.0"
   resolved "https://registry.npmjs.org/@sanity/util/-/util-2.11.0.tgz#7697266a0cd2b170d7d52708a40b55fc85caec36"
@@ -2097,6 +2112,10 @@
 "@types/scheduler@*":
   version "0.16.1"
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
+
+"@types/speakingurl@^13.0.2":
+  version "13.0.2"
+  resolved "https://registry.npmjs.org/@types/speakingurl/-/speakingurl-13.0.2.tgz#865dc309b4d61ea333ade3171e916e341aa26137"
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
@@ -3904,7 +3923,7 @@ debounce@1.0.0:
   dependencies:
     date-now "1.0.1"
 
-debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
+debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
@@ -4823,13 +4842,13 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
+fast-deep-equal@3.1.3, fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
+
 fast-deep-equal@^1.0.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-1.1.0.tgz#c053477817c86b51daa853c81e059b733d023614"
-
-fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
-  version "3.1.3"
-  resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
 
 fast-glob@^3.0.3:
   version "3.2.5"
@@ -5297,6 +5316,10 @@ get-uri@^2.0.2:
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
+
+get-youtube-id@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/get-youtube-id/-/get-youtube-id-1.0.1.tgz#adb6f475e292d98f98ed5bfb530887656193e157"
 
 getpass@^0.1.1:
   version "0.1.7"
@@ -8245,7 +8268,7 @@ prompts@~2.3.2:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@~15.7.2:
+prop-types@15.7.2, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@~15.7.2:
   version "15.7.2"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -8678,6 +8701,14 @@ react-sortable-hoc@^1.11.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
+react-sortable-hoc@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/react-sortable-hoc/-/react-sortable-hoc-2.0.0.tgz#f6780d8aa4b922a21f3e754af542f032677078b7"
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    invariant "^2.2.4"
+    prop-types "^15.5.7"
+
 react-spinner@^0.2.6:
   version "0.2.7"
   resolved "https://registry.npmjs.org/react-spinner/-/react-spinner-0.2.7.tgz#ea3ca3375dd7a54edbb5cc01d17496a2e2fc14db"
@@ -8728,6 +8759,14 @@ react-transition-group@^4.3.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-youtube@^7.13.1:
+  version "7.13.1"
+  resolved "https://registry.npmjs.org/react-youtube/-/react-youtube-7.13.1.tgz#3b327599a687bf22e071468818522920b36bcb57"
+  dependencies:
+    fast-deep-equal "3.1.3"
+    prop-types "15.7.2"
+    youtube-player "5.5.2"
 
 react@^16.2.0:
   version "16.14.0"
@@ -9221,6 +9260,16 @@ sanity-plugin-autocomplete-tags@^1.0.1:
     react-select "^3.1.0"
     webpack "^5.1.0"
 
+sanity-plugin-better-slug@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/sanity-plugin-better-slug/-/sanity-plugin-better-slug-1.0.0.tgz#5fd8511f6fa4f4fed9248d3c8a6462f001d3fdef"
+  dependencies:
+    "@sanity/base" ">= 2.5.0"
+    "@sanity/ui" ">= 0.33.9"
+    "@sanity/util" ">= 2.5.0"
+    "@types/speakingurl" "^13.0.2"
+    speakingurl "^14.0.1"
+
 sanity-plugin-computed-field@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/sanity-plugin-computed-field/-/sanity-plugin-computed-field-1.0.1.tgz#5fabc3d8849e6ac3e69e56defd9af91d40b8c3c8"
@@ -9273,6 +9322,21 @@ sanity-plugin-order-documents@^0.0.17:
     react-dnd-html5-backend "^14.0.0"
     react-select "^4.3.0"
     react-tippy "^1.4.0"
+
+sanity-plugin-power-table@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.npmjs.org/sanity-plugin-power-table/-/sanity-plugin-power-table-0.0.14.tgz#633592b7a9c8ee6e560419c60f3c0e743421d419"
+  dependencies:
+    "@sanity/ui" "^0.34.1"
+    "@sanity/uuid" "^3.0.1"
+    react-icons "^4.2.0"
+    react-sortable-hoc "^2.0.0"
+
+sanity-plugin-social-preview@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.npmjs.org/sanity-plugin-social-preview/-/sanity-plugin-social-preview-0.1.5.tgz#4f1f10e9078b9906b6d0924f99f7c79d379efb07"
+  dependencies:
+    "@sanity/image-url" "^0.140.22"
 
 sax@~1.2.4:
   version "1.2.4"
@@ -9478,6 +9542,10 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
+sister@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/sister/-/sister-3.0.2.tgz#bb3e39f07b1f75bbe1945f29a27ff1e5a2f26be4"
+
 sisteransi@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
@@ -9603,6 +9671,10 @@ spdx-license-ids@^3.0.0:
 speakingurl@^13.0.0:
   version "13.0.0"
   resolved "https://registry.npmjs.org/speakingurl/-/speakingurl-13.0.0.tgz#266c52d2b47585375af058e4783c8d1097a2d3db"
+
+speakingurl@^14.0.1:
+  version "14.0.1"
+  resolved "https://registry.npmjs.org/speakingurl/-/speakingurl-14.0.1.tgz#f37ec8ddc4ab98e9600c1c9ec324a8c48d772a53"
 
 speedometer@~1.0.0:
   version "1.0.0"
@@ -10871,6 +10943,14 @@ yargs@~3.10.0:
 yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
+
+youtube-player@5.5.2:
+  version "5.5.2"
+  resolved "https://registry.npmjs.org/youtube-player/-/youtube-player-5.5.2.tgz#052b86b1eabe21ff331095ffffeae285fa7f7cb5"
+  dependencies:
+    debug "^2.6.6"
+    load-script "^1.0.0"
+    sister "^3.0.0"
 
 zip-stream@^4.1.0:
   version "4.1.0"

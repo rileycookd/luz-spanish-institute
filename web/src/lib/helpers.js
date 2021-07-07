@@ -54,3 +54,21 @@ export function arrayFindWithAttr(array, attr, value) {
   }
   return -1;
 }
+
+export function getClassSizeString(min, max) {
+  let minStudents = min ? min : '1'
+  let maxStudents = max ? `-${max}` : '+'
+  let classSize = `${minStudents}${max !== min ? maxStudents : ''} student${max > 1 ? 's' : ''}`
+  if(!max && !min) {
+    classSize = '1+ students'
+  }
+  return classSize
+}
+
+export function getClassStartingPrice(pricing) {
+  return pricing.map(p => {
+    return p.price
+  }).sort((a, b) => {
+    return a - b
+  })[0]
+}

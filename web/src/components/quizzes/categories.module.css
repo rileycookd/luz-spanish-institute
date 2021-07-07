@@ -20,7 +20,7 @@
   margin: .25rem;
   /* transition: background-color .1s ease-in; */
 
-  @nest &:not(.disabled):hover {
+  @nest &:not(.disabled):not(.selected):hover {
     background-color: var(--color-grey-xlight);
   }
 

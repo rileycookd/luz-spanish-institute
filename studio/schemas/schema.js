@@ -23,6 +23,7 @@ import level from './documents/level'
 import resource from './documents/resource'
 import quiz from './documents/quiz'
 import category from './documents/category'
+import footer from './documents/footer'
 
 
 
@@ -62,6 +63,11 @@ import quizCategories from './objects/quizCategories'
 import quizFillBlankText from './objects/quizFillBlankText'
 import quizOrdering from './objects/quizOrdering'
 import questionOrdering from './objects/questionOrdering'
+import youtube from './objects/youtube'
+import dropdownCta from './objects/dropdownCta'
+import dropdownCtaGroup from './objects/dropdownCtaGroup'
+import dropdownThumbnailCta from './objects/dropdownThumbnailCta'
+import dropdownMenu from './objects/dropdownMenu'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -123,7 +129,13 @@ export default createSchema({
       quizCategories,
       quizFillBlankText,
       quizOrdering,
-      questionOrdering
+      questionOrdering,
+      youtube,
+      dropdownCtaGroup,
+      dropdownCta,
+      dropdownThumbnailCta,
+      dropdownMenu,
+      footer
     ])
     .concat(allBlocks),
 })

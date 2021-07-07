@@ -1,3 +1,4 @@
+import SlugInput from 'sanity-plugin-better-slug'
 import { IoBriefcase } from 'react-icons/io5'
 
 export default {
@@ -8,6 +9,9 @@ export default {
   fieldsets: [
     { name: 'labels', title: 'Labels' }
   ],
+  initialValue: {
+    locked: false,
+  },
   fields: [
     {
       name: 'title',
@@ -15,15 +19,31 @@ export default {
       type: 'string',
     },
     {
+      name: 'siteUrl',
+      title: 'Site URL',
+      initialValue: 'https://ameliolanguageinstitute.com/resources',
+      type: 'url',
+      hidden: true
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       description: 'The relative route name (i.e. "my-resource-name")',
+      inputComponent: SlugInput,
       options: {
         source: 'title',
-        maxLength: 96
+        basePath: (document) => `${document.pathPrefix || 'resources'}`,
+        maxLength: 100,
       },
       validation: Rule => Rule.required()
+    },
+    {
+      name: 'pathPrefix',
+      title: 'pathPrefix',
+      hidden: true,
+      type: 'string',
+      initialValue: 'resources'
     },
     {
       name: 'description',
@@ -74,5 +94,10 @@ export default {
       title: 'Content',
       type: 'blockContent'
     },
+    {
+      name: 'image',
+      title: 'Main image',
+      type: 'mainImage'
+    }
   ]
 }

@@ -4,11 +4,13 @@
 .root {
   display: grid;
   justify-items: center;
-  row-gap: 3rem;
+  row-gap: 1.5rem;
 }
 
 .headline {
-  composes: title2 from './typography.module.css';
+  composes: title6 from './typography.module.css';
+  justify-self: start;
+  color: var(--color-grey-medium);
   overflow-wrap: break-word;
 
   @nest & a {
@@ -21,6 +23,7 @@
   width: 100%;
   border-radius: 3px;
   display: grid;
+  row-gap: 1rem;
   box-shadow: var(--shadow-component);
   list-style: none;
 }

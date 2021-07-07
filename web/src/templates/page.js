@@ -9,9 +9,12 @@ import Container from '../components/container'
 import Header from '../components/header'
 import InfoBlock from '../components/info-block'
 import ClassPreviewGrid from '../components/class-preview-grid'
+import PostPreviewGrid from '../components/post-preview-grid'
 import TestimonialBlock from '../components/testimonial-block'
 import CtaForm from '../components/cta-form'
 import Footer from '../components/footer'
+import { cssColorToHex } from "jimp";
+import LayoutSidebar, { SidebarCta } from "../components/layout-sidebar";
 
 export const query = graphql`
   query PageTemplateQuery($id: String!) {
@@ -24,19 +27,9 @@ export const query = graphql`
         ...PageInfo
       }
     }
-    site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
-      title
-    }
   }
 `;
 
-// openGraph {
-//     title
-//     description
-//     image {
-//       ...SanityImage
-//     }
-//   }
 
 const Page = (props) => {
   const { data, errors } = props;
@@ -68,7 +61,13 @@ const Page = (props) => {
           el = <InfoBlock key={c._key} {...c} />;
           break;
         case "classTypesList":
-          el = <ClassPreviewGrid key={c._key} {...c} />;
+          let nodes = c.classTypes
+          el = (
+          <LayoutSidebar reverse={true} wide={true}>
+            <SidebarCta {...c} />
+            <PostPreviewGrid key={c._key} nodes={nodes} />
+          </LayoutSidebar>
+          );
           break;
         case "testimonialGroup":
           el = <TestimonialBlock key={c._key} {...c} />;
@@ -88,22 +87,31 @@ const Page = (props) => {
     });
 
   const menuItems = page.navMenu && (page.navMenu._rawItems || []);
-  const menuCtas = page.navMenu && (page.navMenu._rawCtas || []);
 
-  const pageTitle = data.route && !data.route.useSiteTitle && page.title;
-  const { _rawHeaderContent, headerSubtitle, headerImage } = page;
-  const headerTitle = page.headerTitle ? page.headerTitle : pageTitle
+  const pageTitle = data.route && !data.route.useSiteTitle && page.openGraph.title
+    ? page.openGraph.title 
+    : page.title;
+
+  const pageDescription = page.openGraph && page.openGraph.description
+    ? page.openGraph.description
+    : site.openGraph && site.openGraph.description || site.description
+
+  const pageImage = page.openGraph && page.openGraph.pageImage
+    ? page.openGraph.pageImage
+    : site.openGraph && site.openGraph.image || null
 
   return (
-    <Layout navMenuItems={menuItems} navMenuCtas={menuCtas}>
+    <Layout navMenuItems={menuItems}>
       <SEO
           title={pageTitle}
-          description={site.description}
+          description={pageDescription}
+          image={pageImage}
           keywords={site.keywords}
+          pathname={props.pathname || null}
         />
       <Container>
         {content}
-        <Footer />
+        <Footer {...data.site.defaultFooter} />
       </Container>
     </Layout>
   );

@@ -1,8 +1,8 @@
 import BaseBlockContent from '@sanity/block-content-to-react'
 import React from 'react'
 import { format } from 'date-fns'
-// import getYouTubeId from 'get-youtube-id'
-// import YouTube from 'react-youtube'
+import getYouTubeId from 'get-youtube-id'
+import YouTube from 'react-youtube'
 import Figure from './figure'
 import ExampleBlock from './example-block'
 import ExcerptBlock from './excerpt-block'
@@ -12,6 +12,7 @@ import QuizInline from './quiz-inline'
 import { v4 as uuidv4 } from 'uuid';
 
 import * as typography from '../typography.module.css'
+import * as styles from './index.module.css'
 
 const serializers = {
   marks: {
@@ -36,7 +37,7 @@ const serializers = {
           return <h1 className={typography.title2}>{props.children}</h1>
 
         case 'h2':
-          return <h2 className={typography.title3}>{props.children}</h2>
+          return <h2 id={`title${props.node.children[0]._key}`} className={typography.title3}>{props.children}</h2>
 
         case 'h3':
           return <h3 className={typography.title4}>{props.children}</h3>
@@ -67,11 +68,18 @@ const serializers = {
     quote (props) {
       return <Quote {...props.node} />
     },
-    // youtube: ({node}) => {
-    //   const { url } = node
-    //   const id = getYouTubeId(url)
-    //   return (<YouTube videoId={id} />)
-    // }
+    youtube: ({node}) => {
+      const { url } = node
+      const id = getYouTubeId(url)
+      return (
+        <div className={styles.youtubeContainer}>
+          <YouTube opts={{
+            height: '100%',
+            width: '100%'
+          }} videoId={id} />
+        </div>
+      )
+    }
   }
 }
 

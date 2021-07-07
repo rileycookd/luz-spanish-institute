@@ -30,9 +30,12 @@
 
 .header-meta-item {
   display: flex;
+  align-items: center;
 
   @nest & > svg {
     margin-right: .5rem;
+    height: 1.5rem;
+    width: 1.5rem;
     fill: var(--color-secondary);
     stroke: var(--color-secondary);
   }

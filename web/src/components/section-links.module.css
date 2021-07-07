@@ -1,0 +1,51 @@
+@import './typography.module.css';
+@import '../styles/vars.css';
+
+.root {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-main);
+  border-radius: var(--border-radius-default);
+  color: var(--color-white);
+  height: max-content;
+}
+
+
+.header {
+  padding: 1.5rem;
+  composes: title6 from './typography.module.css';
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-grey-xlight);
+}
+
+.list {
+  list-style: none;
+}
+
+.list-item {
+  background-color: var(--color-grey-xxlight);
+  border-bottom: 1px solid var(--color-grey-xlight);
+  width: 100%;
+  height: max-content;
+  display: flex;
+
+
+}
+
+.anchorLink {
+  text-decoration: none;
+  color: var(--color-primary);
+  padding: 1rem 1.5rem;
+  min-width: 100%;
+
+  @nest &:hover {
+    background-color: var(--color-text-light);
+  }
+}
+
+.section-title {
+  /* padding: 1rem 1.5rem; */
+
+}

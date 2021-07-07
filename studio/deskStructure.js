@@ -15,9 +15,10 @@ import clients from './src/structure/clients'
 import marketing from './src/structure/marketing';
 import admin from './src/structure/admin'
 import resources from './src/structure/resources'
+import SocialPreview from 'part:social-preview/component'
 
 
-const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'faq', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'category', 'language', 'level', 'teacher', 'company', 'student', 'resource', 'quiz']
+const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'faq', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'category', 'footer', 'language', 'level', 'teacher', 'company', 'student', 'resource', 'quiz']
 
 // Add incoming references to all documents in Studio
 
@@ -98,7 +99,6 @@ const RelatedRegistrations = ({ document }) => (
 export const getDefaultDocumentNode = ({documentId, schemaType}) => {
 
   if (schemaType === "teacher") {
-    console.log({documentId})
     return S.document().views([
       S.view.form(),
       S.view.component(RelatedRegistrations).title('Registrations'),
@@ -107,7 +107,6 @@ export const getDefaultDocumentNode = ({documentId, schemaType}) => {
     ])
   }
   if (schemaType === "company") {
-    console.log({documentId})
     return S.document().views([
       S.view.form(),
       S.view.component(CurrentStudents).title('Employees'),
@@ -115,14 +114,19 @@ export const getDefaultDocumentNode = ({documentId, schemaType}) => {
     ])
   }
   if (schemaType === "student") {
-    console.log({documentId})
     return S.document().views([
       S.view.form(),
       S.view.component(RelatedRegistrations).title('Registrations'),
       S.view.component(AllReferences).title('All references'),
     ])
   }
-  S.document().views([
+  if (['resource'].includes(schemaType)) {
+    return S.document().views([
+      S.view.form(),
+      S.view.component(SocialPreview()).title('Social & SEO'),
+    ])
+  }
+  return S.document().views([
     S.view.form(),
     S.view.component(AllReferences).title('All references'),
   ]);

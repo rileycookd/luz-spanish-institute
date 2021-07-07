@@ -42,9 +42,10 @@
 }
 
 .site-map {
+  margin-right: 5rem;
   display: grid;
-  grid-auto-flow: column;
-  column-gap: 4rem;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 1.5rem;
 }
 
 .site-map-column {
@@ -62,13 +63,16 @@
 .site-map-links {
   list-style: none;
   display: grid;
-  row-gap: .25rem;
+  row-gap: .5rem;
 }
 
 .site-map-link {
   composes: paragraphmain from './typography.module.css';
   
   @nest & > a {
+    width: minmax(max-content, 100%);
+    display: flex;
+    line-height: 1.5;
     color: var(--color-text-medium);
     text-decoration: none;
   }

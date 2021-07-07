@@ -1,3 +1,6 @@
+import React from 'react'
+import { HiMail, HiOutlineMailOpen } from 'react-icons/hi'
+import { GiCheckMark } from 'react-icons/gi'
 import ComputedField from 'sanity-plugin-computed-field'
 import { FaChalkboardTeacher } from 'react-icons/fa'
 import { parseISO, format } from 'date-fns'
@@ -57,12 +60,18 @@ export default {
       type: 'datetime',
       readOnly: true,
       options: {
-        dateFormat: 'DD-MM-YYYY',
+        dateFormat: 'DD MMM YYYY',
         timeFormat: 'HH:mm',
         timeStep: 15,
         calendarTodayLabel: 'Today'
       },
       fieldset: 'admin',
+    },
+    {
+      name: 'opened',
+      title: 'Mark as read?',
+      type: 'boolean',
+      fieldset: 'admin'
     },
     {
       name: "price", 
@@ -230,9 +239,11 @@ export default {
       classType: 'classType',
       quantity: 'quantity',
       classSize: 'classSize',
-      date: 'submitDate'
+      date: 'submitDate',
+      opened: 'opened',
+      payment: 'payment'
     },
-    prepare ({ name, date, classType, quantity, classSize }) {
+    prepare ({ name, opened, date, classType, quantity, payment, classSize }) {
       let classSizeString = ''
       let parsedDate = parseISO(date)
       let formattedDate = format(parsedDate, "dd/MM/yy")
@@ -240,9 +251,17 @@ export default {
         classSizeString = `${classSize} student${Number(classSize) > 1 ? 's' : ''}`
       }
 
+      let media = <HiMail />
+      if(payment) {
+        media = <GiCheckMark />
+      } else if(opened) {
+        media = <HiOutlineMailOpen />
+      }
+
       return {
-        title: `${name}`,
-        subtitle: `${formattedDate}: ${classType}, ${quantity}${classSizeString ? `, ${classSizeString}` : ''}`
+        title: `${payment ? 'PAID:' : ''} ${name}`,
+        subtitle: `${formattedDate}: ${classType}, ${quantity}${classSizeString ? `, ${classSizeString}` : ''}`,
+        media
       }
     }
   }

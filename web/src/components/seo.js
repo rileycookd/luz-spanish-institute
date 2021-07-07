@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { StaticQuery, graphql } from 'gatsby'
 
-function SEO ({ description, lang, meta, keywords = [], title }) {
+function SEO ({ description, lang, meta, image: metaImage, keywords = [], title, pathname }) {
   return (
     <StaticQuery
       query={graphql`
@@ -13,6 +13,7 @@ function SEO ({ description, lang, meta, keywords = [], title }) {
             description
             keywords
             author
+            siteUrl
           }
         }
       `}
@@ -20,7 +21,14 @@ function SEO ({ description, lang, meta, keywords = [], title }) {
         if (!data.site) {
           return
         }
+        const site = (data || {}).site;
         const metaDescription = description || data.site.description
+        const image =
+          metaImage && metaImage.src
+            ? `${site.siteUrl}${metaImage.src}`
+            : null
+        const canonical = pathname ? `${site.siteUrl}${pathname}` : null
+
         return (
           <Helmet
             htmlAttributes={{
@@ -28,6 +36,16 @@ function SEO ({ description, lang, meta, keywords = [], title }) {
             }}
             title={title}
             titleTemplate={title === data.site.title ? '%s' : `%s | ${data.site.title}`}
+            link={
+              canonical
+                ? [
+                    {
+                      rel: "canonical",
+                      href: canonical,
+                    },
+                  ]
+                : []
+            }
             meta={[
               {
                 name: 'description',
@@ -60,8 +78,35 @@ function SEO ({ description, lang, meta, keywords = [], title }) {
               {
                 name: 'twitter:description',
                 content: metaDescription
-              }
+              },
             ]
+              .concat(
+                metaImage
+                  ? [
+                      {
+                        property: "og:image",
+                        content: image,
+                      },
+                      {
+                        property: "og:image:width",
+                        content: metaImage.width,
+                      },
+                      {
+                        property: "og:image:height",
+                        content: metaImage.height,
+                      },
+                      {
+                        name: "twitter:card",
+                        content: "summary_large_image",
+                      },
+                    ]
+                  : [
+                      {
+                        name: "twitter:card",
+                        content: "summary",
+                      },
+                    ]
+              )
               .concat(
                 keywords && keywords.length > 0
                   ? {
@@ -89,7 +134,13 @@ SEO.propTypes = {
   lang: PropTypes.string,
   meta: PropTypes.array,
   keywords: PropTypes.arrayOf(PropTypes.string),
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  image: PropTypes.shape({
+    src: PropTypes.string.isRequired,
+    height: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+  }),
+  pathname: PropTypes.string,
 }
 
 export default SEO

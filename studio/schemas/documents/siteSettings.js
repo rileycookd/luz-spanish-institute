@@ -4,7 +4,7 @@ export default {
   name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
-  __experimental_actions: ['update', 'publish', 'create', 'delete'],
+  __experimental_actions: ['update', 'publish', /* 'create', 'delete' */ ], 
   icon: MdSettings,
   fields: [
     {
@@ -27,6 +27,11 @@ export default {
       }
     },
     {
+      title: 'Site url',
+      name: 'siteUrl',
+      type: 'url',
+    },
+    {
       title: 'Open graph',
       name: 'openGraph',
       description: 'These will be the default meta tags on all pages that have not set their own',
@@ -43,6 +48,14 @@ export default {
       type: 'reference',
       to: [
         { type: 'navigationMenu' }
+      ]
+    },
+    {
+      name: 'defaultFooter',
+      title: 'Default footer',
+      type: 'reference',
+      to: [
+        { type: 'footer' }
       ]
     }
   ]

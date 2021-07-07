@@ -9,5 +9,13 @@ export const PageInfo = graphql`
     }
     _rawContent(resolveReferences: { maxDepth: 10 })
     title
+    openGraph {
+      title
+      description
+      image {
+        ...SanityImage
+      }
+      siteUrl
+    }
   }
 `;

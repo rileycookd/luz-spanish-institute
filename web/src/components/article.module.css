@@ -1,27 +1,24 @@
 @import '../styles/media-queries.css';
 @import '../styles/vars.css';
+@import './typography.module.css';
 
 .root {
-
+  box-shadow: var(--shadow-main);
+  border-radius: var(--border-radius-default);
+  position: relative;
+  background-color: var(--color-white);
+  padding: 40px 40px;
 }
 
 .title {
   composes: responsiveTitle1 from './typography.module.css';
 }
 
-
-.root {
-  box-shadow: var(--shadow-main);
-  border-radius: var(--border-radius-default);
-  position: relative;
-  top: -120px;
-  left: 0px;
+.block-content {
   display: grid;
-  background-color: var(--color-white);
-  padding: 35px 45px;
   font-family: var(--font-article);
 
-  @nest & > div > div {
+  @nest & > div {
     display: grid;
     row-gap: 40px;
   }
@@ -62,10 +59,11 @@
   }
 }
 
-.mainImage {
+.image {
   position: relative;
   background: #eee;
   padding-bottom: calc(9 / 16 * 100%);
+  margin-bottom: 40px;
 
   @nest & img {
     position: absolute;
@@ -93,10 +91,7 @@
 
 .social {
   display: flex;
-  grid-auto-flow: column;
-  column-gap: 1.25rem;
   width: auto;
-  align-self: center;
 }
 
 .updatedAt {
@@ -105,26 +100,47 @@
   color: var(--color-text-dark);
 }
 
-.social > svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: var(--color-text-dark);
+.description {
+  composes: articleParagraph from './typography.module.css';
+  font-style: italic;
+  color: var(--color-text-medium);
 }
 
-.social > svg:hover {
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: var(--color-black);
+.divider {
+  margin-bottom: 40px;
+  border: 0;
+  height: 2px;
+  background: var(--color-grey-xlight);
 }
 
-.metaContent {
-  margin-top: 1rem;
-  composes: small from './typography.module.css';
-  color: var(--color-text-dark);
-  grid-column: 9 / -2;
+.date {
+  font-weight: 400;
+  composes: title6 from './typography.module.css';
+  margin-top: 1.5rem;
+  margin-bottom: 40px;
+  width: 100%;
+  text-align: right;
+  color: var(--color-text-light);
+}
 
-  @nest & > * {
-    margin-bottom: .4rem;
+.meta-content {
+  composes: title6 from './typography.module.css';
+  color: var(--color-text-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 40px 0;
+}
+
+.meta-title {
+  composes: title6 from './typography.module.css';
+  color: var(--color-primary);
+
+  @nest & > span {
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    font-weight: 400;
+    padding-right: .5rem;
   }
 }
 
@@ -151,4 +167,27 @@
 .categoriesHeadline {
   composes: base from './typography.module.css';
   margin: 0.5rem 0 0;
+}
+
+.social-share-link {
+  text-decoration: none;
+  cursor: pointer;
+
+  @nest & > svg {
+    margin: 0 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--color-text-light);
+  
+    @nest &:last-child {
+      margin-right: 0;
+    }
+
+    @nest &:hover {
+      cursor: pointer;
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: var(--color-black);
+    }
+  }
 }

@@ -46,5 +46,11 @@ export default {
         { type: 'form' },
       ],
     },
+    {
+      title: 'Open graph',
+      name: 'openGraph',
+      description: 'Set page meta info for SEO',
+      type: 'openGraph'
+    },
   ]
 }

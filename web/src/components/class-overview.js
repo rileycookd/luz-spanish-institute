@@ -5,7 +5,7 @@ import { IoTimeOutline as DurationIcon } from 'react-icons/io5'
 import { AiOutlineDollar as MoneyIcon } from 'react-icons/ai'
 import { BsPeople as StudentsIcon } from 'react-icons/bs'
 import CTALink from './CTALink'
-import { buildImageObj, cn } from "../lib/helpers"
+import { buildImageObj, cn, getClassSizeString, getClassStartingPrice } from "../lib/helpers"
 import { imageUrlFor } from "../lib/image-url"
 import BlockText from './block-text'
 import Testimonial from './testimonial'
@@ -30,24 +30,11 @@ function ClassOverview ({
   faq,
   ...props }) {
 
-  const startingPrice = pricing.map(p => {
-    return p.price
-  }).sort((a, b) => {
-    return a - b
-  })[0]
-
   const durationArray = pricing.map(p => {
     return p.duration
   }).sort((a, b) => {
     return a - b
   })
-
-  let minStudents = min ? min : '1'
-  let maxStudents = max ? `-${max}` : '+'
-  let classSize = `${minStudents}${max !== min ? maxStudents : ''} student${max > 1 ? 's' : ''}`
-  if(!max && !min) {
-    classSize = '1+ students'
-  }
 
   const durationRange = durationArray.length > 1
   ? `${durationArray[0] / 60}-${durationArray[durationArray.length - 1] / 60} hour${durationArray[durationArray.length - 1] === 1 ? '' : 's'}`
@@ -61,7 +48,7 @@ function ClassOverview ({
           <div className={styles.headerMeta}>
             <div className={styles.headerMetaItem}>
               <StudentsIcon />
-              <p className={styles.headerMetaItemInfo}>{classSize}</p>
+              <p className={styles.headerMetaItemInfo}>{getClassSizeString(min,max)}</p>
             </div>
             <div className={styles.headerMetaItem}>
               <DurationIcon />
@@ -69,7 +56,7 @@ function ClassOverview ({
             </div>
             <div className={styles.headerMetaItem}>
               <MoneyIcon />
-              <p className={styles.headerMetaItemInfo}>{`$${startingPrice}+`}</p>
+              <p className={styles.headerMetaItemInfo}>{`$${getClassStartingPrice(pricing)}+`}</p>
             </div>
           </div>
         </div>

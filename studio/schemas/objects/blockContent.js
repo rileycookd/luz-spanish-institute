@@ -2,6 +2,7 @@ import Unsplash from 'part:sanity-plugin-asset-source-unsplash/image-asset-sourc
 import Default from 'part:@sanity/form-builder/input/image/asset-source-default'
 
 
+
 /**
  * This is the schema definition for the rich text fields used for
  * for this blog studio. When you import it in schemas.js it can be
@@ -64,8 +65,8 @@ export default {
       type: 'reference',
       to: [{ type: "quiz" }],
     },
-    // {
-    //   type: 'youtube'
-    // }
+    {
+      type: 'youtube'
+    },
   ]
 }

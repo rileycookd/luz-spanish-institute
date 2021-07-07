@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { graphql } from "gatsby";
 
 import GraphQLErrorList from "../components/graphql-error-list";
@@ -8,6 +8,9 @@ import Container from '../components/container'
 import PageHeader from '../components/page-header'
 import LayoutSidebar from "../components/layout-sidebar";
 import Article from '../components/article'
+import SectionLinks from '../components/section-links'
+import Footer from '../components/footer';
+
 
 
 export const query = graphql`
@@ -21,6 +24,9 @@ export const query = graphql`
       _updatedAt
       description
       title
+      image {
+        ...SanityImage
+      }
       author {
         name
       }
@@ -29,6 +35,7 @@ export const query = graphql`
 
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
       title
+      siteUrl
       _rawDefaultNav(resolveReferences: {maxDepth: 10})
     }
   }
@@ -36,6 +43,9 @@ export const query = graphql`
 
 const ResourcePage = (props) => {
   const { data, errors } = props;
+
+  const [anchorIds, setAnchorIds] = useState([])
+
 
   if (errors) {
     return (
@@ -71,11 +81,19 @@ const ResourcePage = (props) => {
           content="Tab list"
           sharedPath="/classes/"
           title={resource.title}
+          propsAddedHeight={80}
         />
-        <LayoutSidebar>
-          <Article {...resource} />
-          <div>Sidebar</div>
+        <LayoutSidebar style={{paddingTop: '0'}}>
+          <Article 
+            {...resource} 
+            setAnchorIds={setAnchorIds} 
+            url={`${site.siteUrl.replace(/\/$/, '')}${props.location.pathname}`} 
+          />
+          {anchorIds.length && (
+            <SectionLinks anchorIds={anchorIds} path={props.location.pathname} />
+          )}
         </LayoutSidebar>
+        <Footer />
       </Container>
     </Layout>
   );

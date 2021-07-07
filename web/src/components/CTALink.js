@@ -27,6 +27,16 @@ const CTALink = props => {
     link = `/${props.landingPageRoute.slug.current}`;
   }
 
+  if (
+    props.innerPageRoute &&
+    props.innerPageRoute.slug &&
+    props.innerPageRoute.slug.current
+  ) {
+    link = props.innerPageRoute.pathPrefix
+      ? `/${props.innerPageRoute.pathPrefix}/${props.innerPageRoute.slug.current}`
+      : `/${props.innerPageRoute.slug.current}`
+  }
+
   if (props.kind === "small button") {
     return (
       <button
@@ -54,19 +64,19 @@ const CTALink = props => {
   // External
   if (props.link) {
     return (
-      <a href={props.link} target="_blank" rel="noopener noreferrer">
+      <a className={cn(styles.root, styles.link)} href={props.link} target="_blank" rel="noopener noreferrer">
         {props.title}
       </a>
     );
   }
 
   // Render
-  const el = props.custom ? (
-    <Link to={link}>
+  const el = props.children ? (
+    <Link className={cn(styles.root, props.className, props.style)} to={link}>
       {props.children}
     </Link>
   ) : (
-    <Link className={styles.root} to={link}>
+    <Link className={cn(styles.root, styles.link, props.className, props.style)} to={link}>
       {props.title}
     </Link>
   )

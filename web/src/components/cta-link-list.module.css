@@ -40,8 +40,16 @@
 .link {
   color: var(--color-text-light);
   display: grid;
-  row-gap: .5rem;
+  row-gap: 1rem;
   padding: 4rem 2.5rem;  
+
+  @nest & > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--color-accent);
+    stroke: var(--color-accent);
+    transition: transform .2s ease-out;
+  }
 }
 
 .title {
@@ -50,14 +58,6 @@
 }
 
 .subtitle {
-  font-size: 1rem;
-  line-height: 1.5;
+  composes: paragraphMain from './typography.module.css';
 }
 
-svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: var(--color-accent);
-  stroke: var(--color-accent);
-  transition: transform .2s ease-out;
-}

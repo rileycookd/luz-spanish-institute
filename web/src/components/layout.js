@@ -18,7 +18,6 @@ function Layout (props) {
     showNav,
     siteTitle,
     navMenuItems,
-    navMenuCtas
   } = props;
 
   // const { isModalOpen } = useModal()
@@ -42,8 +41,8 @@ function Layout (props) {
   return (
     // <ModalProvider>
       <div className={styles.root}>
-        {(navMenuItems || navMenuCtas) && (
-          <Navbar navMenuItems={navMenuItems ? navMenuItems : []} navMenuCtas={navMenuCtas ? navMenuCtas : []} />
+        {navMenuItems && (
+          <Navbar navMenuItems={navMenuItems ? navMenuItems : []} />
         )}
         {children}
       </div> 

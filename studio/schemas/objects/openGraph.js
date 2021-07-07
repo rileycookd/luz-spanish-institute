@@ -21,6 +21,11 @@ export default {
       description: 'Facebook recommends 1200x630 (will be auto resized)',
       name: 'image',
       type: 'mainImage'
+    },
+    {
+      title: 'Site url',
+      name: 'siteUrl',
+      type: 'url',
     }
     /*
     // You can add videos to Open Graph tags too

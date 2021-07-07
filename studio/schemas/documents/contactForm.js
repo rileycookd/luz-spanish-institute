@@ -1,11 +1,11 @@
+import React from 'react'
 import { parseISO, format } from 'date-fns'
-import { BsChatDots } from 'react-icons/bs'
+import { HiMail, HiOutlineMailOpen } from 'react-icons/hi'
 
 export default {
   name: "contactForm",
   title: "Contact form submissions",
   type: "document",
-  icon: BsChatDots,
   initialValue: () => ({
     submitDate: new Date().toISOString()
   }),
@@ -21,6 +21,12 @@ export default {
         timeStep: 15,
         calendarTodayLabel: 'Today'
       }
+    },
+    {
+      name: 'opened',
+      title: 'Mark as read?',
+      type: 'boolean',
+      initialValue: false
     },
     {
       name: "name",
@@ -43,16 +49,21 @@ export default {
       name: 'name',
       email: 'email',
       message: 'message',
-      date: 'submitDate'
+      date: 'submitDate',
+      opened: 'opened'
     },
-    prepare({ name, email, date, message }) {
+    prepare({ name, email, date, message, opened }) {
       let parsedDate = parseISO(date)
       let formattedDate = format(parsedDate, "dd/MM/yy")
       const excerpt = message.length <= 20 ? message : `${message.substring(0, 20)}...`;
-      console.log(typeof message)
+      
+      const media = opened
+      ? <HiOutlineMailOpen />
+      : <HiMail />
       return {
-        title: name,
-        subtitle: `${formattedDate} ${excerpt}`
+        title: `${name} - ${excerpt}`,
+        subtitle: `${formattedDate} ${email}`,
+        media
       }
     }
   }

@@ -3,6 +3,38 @@
 .root {
   padding: 5.5rem var(--padding-x);
   display: grid;
-  grid-template-columns: .75fr .25fr;
-  column-gap: 4rem;
+  grid-template-columns: .7fr .3fr;
+  column-gap: 2rem;
+
+  @nest &.reverse {
+    grid-template-columns: .3fr .7fr;
+  }
+
+  @nest &.wide {
+    grid-template-columns: .6fr .4fr;
+    column-gap: 2rem;
+
+    @nest &.reverse {
+      grid-template-columns: .4fr .6fr;
+    }
+  }
+}
+
+.cta {
+  display: grid;
+  row-gap: 1rem;
+  align-content: start;
+  justify-items: start;
+
+  @nest & > button {
+    margin-top: 1.5rem;
+  }
+}
+
+.title {
+  composes: title3 from './typography.module.css';
+}
+
+.subtitle {
+  composes: paragraphlarge from './typography.module.css';
 }

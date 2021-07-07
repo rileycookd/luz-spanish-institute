@@ -1,3 +1,4 @@
+import SlugInput from 'sanity-plugin-better-slug'
 import { FaChalkboardTeacher } from 'react-icons/fa'
 
 export default {
@@ -26,12 +27,21 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'The relative route name (i.e. "private-lessons")',
+      description: 'The relative route name (i.e. "my-resource-name")',
+      inputComponent: SlugInput,
       options: {
         source: 'title',
-        maxLength: 96
+        basePath: (document) => `${document.pathPrefix || 'classes'}`,
+        maxLength: 100,
       },
       validation: Rule => Rule.required()
+    },
+    {
+      name: 'pathPrefix',
+      title: 'pathPrefix',
+      hidden: true,
+      type: 'string',
+      initialValue: 'classes'
     },
     {
       name: 'excerpt',

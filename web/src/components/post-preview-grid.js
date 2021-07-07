@@ -9,19 +9,15 @@ function PostPreviewGrid (props) {
     <div className={styles.root}>
       {props.title && (
         <h2 className={styles.headline}>
-          {props.browseMoreHref ? (
-            <Link to={props.browseMoreHref}>{props.title}</Link>
-          ) : (
-            props.title
-          )}
+          {props.title}
         </h2>
       )}
       <ul className={styles.grid}>
         {props.nodes && (
           props.nodes.map((node, i) => (
-              <li className={styles.listItem} key={node.id}>
-                <PostPreview {...node} />
-              </li>
+            <li className={styles.listItem} key={node.id}>
+              <PostPreview {...node} />
+            </li>
           ))
         )}
       </ul>    

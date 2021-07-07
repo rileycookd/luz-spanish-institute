@@ -13,6 +13,23 @@ module.exports = {
     "gatsby-plugin-postcss",
     "gatsby-plugin-react-helmet",
     {
+      resolve: "gatsby-plugin-anchor-links",
+      options: {
+        offset: -24,
+        duration: 500
+      }
+    },
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/app/*`] },
+    },
+    {
+      resolve: `gatsby-plugin-netlify-identity`,
+      options: {
+        url: "https://luz-spanish-institute-web.netlify.app",
+      }
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,

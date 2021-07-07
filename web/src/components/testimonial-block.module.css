@@ -8,8 +8,8 @@
 .container {
   padding: 4rem 4.5rem;
   display: grid;
-  row-gap: 3rem;
-  background-color: rgba(var(--color-primary-rgb), .02);
+  row-gap: 5rem;
+  background-color: rgba(var(--color-primary-rgb), .03);
   border-radius: var(--border-radius);
 }
 
@@ -20,7 +20,52 @@
 .content {
   max-width: 100%;
   display: grid;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
   column-gap: 4rem;
+}
+
+.control {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @nest & > svg {
+    fill: var(--color-grey-light);
+    margin: 0 1rem;
+  }
+
+  @nest &:hover {
+    @nest & > svg {
+      fill: var(--color-grey-medium);
+    }
+  }
+}
+
+.button {
+  cursor: pointer;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--color-text-light);
+  background-color: var(--color-grey-xlight);
+
+  @nest &:not(:last-child) {
+    margin-right: .5rem;
+  }
+
+  @nest &:not(.selected):hover {
+    background-color: var(--color-grey-light);
+  }
+
+  @nest &.selected {
+    background-color: var(--color-grey-medium);
+  }
 }
 
