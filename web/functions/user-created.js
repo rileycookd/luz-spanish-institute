@@ -6,7 +6,7 @@ const client = sanityClient({
   useCDN: false,
 })
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
   const { email, password, name } = JSON.parse(event.body);
     
   const sanityUser = {
