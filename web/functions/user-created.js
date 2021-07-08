@@ -14,8 +14,8 @@ exports.handler = async (event, context, callback) => {
       name: name,
       email: email
     }
-    const result = await client.create(sanityUser).catch((err) => console.log(err))
-  }
+  const result = await client.create(sanityUser).catch((err) => console.log(err))
+  
   callback(null, {
     statusCode: 200,
   })
