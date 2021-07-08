@@ -7,15 +7,19 @@ const client = sanityClient({
 })
 
 exports.handler = async (event, context, callback) => {
-  const { email, password, name } = JSON.parse(event.body);
+  const { payload } = JSON.parse(event.body);
+  const user = payload.user
+
+  console.log("Payload: ", payload)
+  console.log("User: ", user)
     
   const sanityUser = {
       _type: "student",
-      name: name,
-      email: email
+      name: user.name || user.user_metadata.full_name,
+      email: user.email
     }
   const result = await client.create(sanityUser).catch((err) => console.log(err))
-  
+
   callback(null, {
     statusCode: 200,
   })
