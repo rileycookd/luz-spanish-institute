@@ -23,17 +23,25 @@ module.exports = {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/app/*`] },
     },
-    {
-      resolve: `gatsby-plugin-netlify-identity`,
-      options: {
-        url: "https://luz-spanish-institute-web.netlify.app",
-      }
-    },
+    // {
+    //   resolve: `gatsby-plugin-netlify-identity`,
+    //   options: {
+    //     url: "https://luz-spanish-institute-web.netlify.app",
+    //   }
+    // },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
         path: path.join(__dirname, `src`, `images`)
+      }
+    },
+    {
+      resolve: `gatsby-plugin-netlify-identity-gotrue`,
+      options: {
+        url: `https://luz-spanish-institute-web.netlify.app` // ❗REQUIRED❗
+        // Do _not_ include any path (/.netlify/identity, etc.) and
+        // leave the trailing slash off.
       }
     },
     `gatsby-transformer-sharp`,

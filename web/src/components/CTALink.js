@@ -70,13 +70,21 @@ const CTALink = props => {
     );
   }
 
+  if (props.kind === "inline") {
+    return (
+      <Link className={cn(styles.root, styles.inline, props.className)} style={props.style} to={link}>
+        {props.title || props.children}
+      </Link>
+    )
+  }
+
   // Render
   const el = props.children ? (
-    <Link className={cn(styles.root, props.className, props.style)} to={link}>
+    <Link className={cn(styles.root, props.className)} style={props.style} to={link}>
       {props.children}
     </Link>
   ) : (
-    <Link className={cn(styles.root, styles.link, props.className, props.style)} to={link}>
+    <Link className={cn(styles.root, styles.link, props.className)} style={props.style} to={link}>
       {props.title}
     </Link>
   )

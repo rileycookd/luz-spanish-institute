@@ -23,6 +23,15 @@
   padding: 1rem;
 }
 
+.inline {
+  text-decoration: underline;
+  color: var(--color-secondary);
+
+  @nest &:hover {
+    color: var(--color-text-medium);
+  }
+}
+
 .button {
   cursor: pointer;
   border-radius: var(--border-radius-default);

@@ -14,282 +14,242 @@ import { Form, Step, InputField, SelectField, StepNavigation, SelectSearchField 
 import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIcon } from 'react-icons/io5'
 import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb";
 import { render } from 'react-dom'
+import { useIdentityContext } from 'react-netlify-identity-gotrue'
 
-function FormSlide ({ classTypes, teachers, timezone}) {
+function FormSlide (props) {
+  const { 
+    children, 
+  } = props
 
-  const classTypeTitles = classTypes.map(c => c.title)
+  const identity = useIdentityContext()
+
+  // const classTypeTitles = classTypes.map(c => c.title)
 
   // FORM FIELD STATE
   // Step Student Info
   const [nameValue, setNameValue] = useState("")
+  const [passwordValue, setPasswordValue] = useState("")
   const [emailValue, setEmailValue] = useState("")
-  const [locationValue, setLocationValue] = useState("")
-  // Step Class type
-  const [classTypeValue, setClassTypeValue] = useState(classTypeTitles[0])
-  const [spanishLevelValue, setSpanishLevelValue] = useState("Not sure")
-  const [classSizeValue, setClassSizeValue] = useState("1")
-  // Step Class info
-  const [durationValue, setDurationValue] = useState(classTypes[0].pricing[0].duration)
-  const [frequencyValue, setFrequencyValue] = useState("1x a week")
-  const [quantityValue, setQuantityValue] = useState("1 class")
-  // Step Schedule
-  const [timezoneValue, setTimeZoneValue] = useState("")
-  const [classSchedule1Value, setClassSchedule1Value] = useState("")
-  const [classSchedule2Value, setClassSchedule2Value] = useState("")
-  const [classSchedule3Value, setClassSchedule3Value] = useState("")
+  // const [locationValue, setLocationValue] = useState("")
+  // // Step Class type
+  // const [classTypeValue, setClassTypeValue] = useState(classTypeTitles[0])
+  // const [spanishLevelValue, setSpanishLevelValue] = useState("Not sure")
+  // const [classSizeValue, setClassSizeValue] = useState("1")
+  // // Step Class info
+  // const [durationValue, setDurationValue] = useState(classTypes[0].pricing[0].duration)
+  // const [frequencyValue, setFrequencyValue] = useState("1x a week")
+  // const [quantityValue, setQuantityValue] = useState("1 class")
+  // // Step Schedule
+  // const [timezoneValue, setTimeZoneValue] = useState("")
+  // const [classSchedule1Value, setClassSchedule1Value] = useState("")
+  // const [classSchedule2Value, setClassSchedule2Value] = useState("")
+  // const [classSchedule3Value, setClassSchedule3Value] = useState("")
 
   // COMPONENT STATE
-  const [currentClassType, setCurrentClassType] = useState(classTypes[0])
-  const [estimatedPrice, setEstimatedPrice] = useState(0)
-  const [pricePerStudent, setPricePerStudent] = useState(0)
+  // const [currentClassType, setCurrentClassType] = useState(classTypes[0])
+  // const [estimatedPrice, setEstimatedPrice] = useState(0)
+  // const [pricePerStudent, setPricePerStudent] = useState(0)
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(5);
   const [formStatus, setFormStatus] = useState('default')
-  const [classScheduleError, setClassScheduleError] = useState({})
-  const [timeOffsetDiff, setTimeOffsetDiff] = useState(0)
-  const [availabilityValues, setAvailabilityValues] = useState([])
+  // const [classScheduleError, setClassScheduleError] = useState({})
+  // const [timeOffsetDiff, setTimeOffsetDiff] = useState(0)
+  // const [availabilityValues, setAvailabilityValues] = useState([])
 
 
-  let classTypeDurations = currentClassType.pricing.map(p => (
-     p.duration
-  ))
+  // let classTypeDurations = currentClassType.pricing.map(p => (
+  //    p.duration
+  // ))
     
-  let classTypePackages = ['1 class']
-  currentClassType.packages.map(p => (
-    classTypePackages.push(`${p.quantity} class${p.quantity > 1 ? 'es' : ''}`)
-  ))
+  // let classTypePackages = ['1 class']
+  // currentClassType.packages.map(p => (
+  //   classTypePackages.push(`${p.quantity} class${p.quantity > 1 ? 'es' : ''}`)
+  // ))
 
-  const formatTotalPrice = () => {
-    return estimatedPrice ? (Math.round((estimatedPrice + Number.EPSILON) * 100) / 100).toFixed(2): '—'
-  }
+  // const formatTotalPrice = () => {
+  //   return estimatedPrice ? (Math.round((estimatedPrice + Number.EPSILON) * 100) / 100).toFixed(2): '—'
+  // }
 
-  const formatPricePerStudent = () => {
-    return Number(classSizeValue) > 1 ? (Math.round((pricePerStudent + Number.EPSILON) * 100) / 100).toFixed(2) : 0
-  }
+  // const formatPricePerStudent = () => {
+  //   return Number(classSizeValue) > 1 ? (Math.round((pricePerStudent + Number.EPSILON) * 100) / 100).toFixed(2) : 0
+  // }
 
-  const calculateSizeDiscount = () => {
-    let { min, maxDiscount, sizeDiscount } = currentClassType
-    let currentSizeDiscount = 0;
-    if (sizeDiscount && classSizeValue > min) {
-      currentSizeDiscount = sizeDiscount * (classSizeValue - min);
-      if(currentSizeDiscount > maxDiscount) {
-        currentSizeDiscount = maxDiscount / 100;
-      } else {
-        currentSizeDiscount = currentSizeDiscount / 100;
-      }
-    }
-    return currentSizeDiscount
-  }
+  // const calculateSizeDiscount = () => {
+  //   let { min, maxDiscount, sizeDiscount } = currentClassType
+  //   let currentSizeDiscount = 0;
+  //   if (sizeDiscount && classSizeValue > min) {
+  //     currentSizeDiscount = sizeDiscount * (classSizeValue - min);
+  //     if(currentSizeDiscount > maxDiscount) {
+  //       currentSizeDiscount = maxDiscount / 100;
+  //     } else {
+  //       currentSizeDiscount = currentSizeDiscount / 100;
+  //     }
+  //   }
+  //   return currentSizeDiscount
+  // }
 
-  const renderConfirmStep = () => {
-    return (
-      <>
-        <div></div>
-        {/* <h2 className={styles.confirmStepTitle}>Please confirm your registration details</h2>
-        <div className={styles.confirmContainer}>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Class:</h5>
-            <p className={styles.confirmInputValue}>{classTypeValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Level:</h5>
-            <p className={styles.confirmInputValue}>{spanishLevelValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Size:</h5>
-            <p className={styles.confirmInputValue}>{classSizeValue} student{classSizeValue > 1 ? 's' : ''}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Duration:</h5>
-            <p className={styles.confirmInputValue}>{durationValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Quantity:</h5>
-            <p className={styles.confirmInputValue}>{quantityValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Frequency:</h5>
-            <p className={styles.confirmInputValue}>{frequencyValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Name:</h5>
-            <p className={styles.confirmInputValue}>{nameValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Email:</h5>
-            <p className={styles.confirmInputValue}>{emailValue}</p>
-          </div>
-          <div className={styles.confirmInput}>
-            <h5 className={styles.confirmInputTitle}>Location:</h5>
-            <p className={styles.confirmInputValue}>{locationValue}</p>
-          </div>
-        </div> */}
-      </>
-    )
-  }
+  // const calculateBasePrice = (basePrice) => {
+  //   let { min } = currentClassType
+  //   let classPrice = basePrice;
+  //   let currentSizeDiscount = calculateSizeDiscount()
+  //   if(currentSizeDiscount && classSizeValue > min) {
+  //     classPrice = classPrice - (classPrice * (currentSizeDiscount))
+  //   }
+  //   return classPrice;
+  // }
 
-  const calculateBasePrice = (basePrice) => {
-    let { min } = currentClassType
-    let classPrice = basePrice;
-    let currentSizeDiscount = calculateSizeDiscount()
-    if(currentSizeDiscount && classSizeValue > min) {
-      classPrice = classPrice - (classPrice * (currentSizeDiscount))
-    }
-    return classPrice;
-  }
+  // const calculatePackagePrice = (basePrice, quantity, discount) => {
+  //   let classPrice = basePrice * quantity;
+  //   if(discount) {
+  //     classPrice = classPrice - (classPrice * (discount / 100));
+  //   }
+  //   return classPrice
+  // }
 
-  const calculatePackagePrice = (basePrice, quantity, discount) => {
-    let classPrice = basePrice * quantity;
-    if(discount) {
-      classPrice = classPrice - (classPrice * (discount / 100));
-    }
-    return classPrice
-  }
+  // useEffect(() => {
+  //   setDurationValue(classTypes.filter(c => c.title === classTypeValue)[0].pricing[0].duration)
+  //   setQuantityValue('1 class')
+  //   setCurrentClassType(classTypes.filter(c => c.title === classTypeValue)[0])
+  // }, [classTypeValue]);
 
-  useEffect(() => {
-    setDurationValue(classTypes.filter(c => c.title === classTypeValue)[0].pricing[0].duration)
-    setQuantityValue('1 class')
-    setCurrentClassType(classTypes.filter(c => c.title === classTypeValue)[0])
-  }, [classTypeValue]);
+  // useEffect(() => {
+  //   let classDay1 = classSchedule1Value.substr(0, classSchedule1Value.indexOf(':'))
+  //   let classDay2 = (classSchedule2Value.substr(0, classSchedule2Value.indexOf(':')))
+  //   let classDay3 = (classSchedule3Value.substr(0, classSchedule3Value.indexOf(':')))
+  //   if ((classDay2 && classDay1 === classDay2) || (classDay3 && classDay1 === classDay3) || (classDay3 &&classDay2 === classDay3)) {
+  //     setClassScheduleError({
+  //       type: "manual",
+  //       message: "Classes must be on different days"
+  //     })
+  //   } else {
+  //     setClassScheduleError({})
+  //   }
+  // }, [classSchedule1Value, classSchedule2Value, classSchedule3Value])
 
-  useEffect(() => {
-    let classDay1 = classSchedule1Value.substr(0, classSchedule1Value.indexOf(':'))
-    let classDay2 = (classSchedule2Value.substr(0, classSchedule2Value.indexOf(':')))
-    let classDay3 = (classSchedule3Value.substr(0, classSchedule3Value.indexOf(':')))
-    if ((classDay2 && classDay1 === classDay2) || (classDay3 && classDay1 === classDay3) || (classDay3 &&classDay2 === classDay3)) {
-      setClassScheduleError({
-        type: "manual",
-        message: "Classes must be on different days"
-      })
-    } else {
-      setClassScheduleError({})
-    }
-  }, [classSchedule1Value, classSchedule2Value, classSchedule3Value])
-
-  useEffect(() => {
-    let newCalculatedPrice = calculateBasePrice(
-      currentClassType.pricing[classTypeDurations.findIndex(d => d === durationValue)].price
-    )
-    if(quantityValue !== "1 class") {
-      let currentPackageIndex = classTypePackages.findIndex(d => d === quantityValue) - 1
-      let currentPackage = currentClassType.packages[currentPackageIndex]
-      newCalculatedPrice = calculatePackagePrice(newCalculatedPrice, currentPackage.quantity, currentPackage.discount)
-    }
-    setEstimatedPrice(newCalculatedPrice * classSizeValue)
-    setPricePerStudent(newCalculatedPrice)
-  }, [currentClassType, quantityValue, durationValue, classSizeValue])
+  // useEffect(() => {
+  //   let newCalculatedPrice = calculateBasePrice(
+  //     currentClassType.pricing[classTypeDurations.findIndex(d => d === durationValue)].price
+  //   )
+  //   if(quantityValue !== "1 class") {
+  //     let currentPackageIndex = classTypePackages.findIndex(d => d === quantityValue) - 1
+  //     let currentPackage = currentClassType.packages[currentPackageIndex]
+  //     newCalculatedPrice = calculatePackagePrice(newCalculatedPrice, currentPackage.quantity, currentPackage.discount)
+  //   }
+  //   setEstimatedPrice(newCalculatedPrice * classSizeValue)
+  //   setPricePerStudent(newCalculatedPrice)
+  // }, [currentClassType, quantityValue, durationValue, classSizeValue])
   
-  const addMinutesToTime = (time, minsAdd) => {
-    const z = (n) => (
-      (n<10? '0':'') + n
-    )
-    let bits = time.split(':');
-    let mins = bits[0]*60 + +bits[1] + +minsAdd;
-    return z(mins%(24*60)/60 | 0) + ':' + z(mins%60);  
-  } 
+  // const addMinutesToTime = (time, minsAdd) => {
+  //   const z = (n) => (
+  //     (n<10? '0':'') + n
+  //   )
+  //   let bits = time.split(':');
+  //   let mins = bits[0]*60 + +bits[1] + +minsAdd;
+  //   return z(mins%(24*60)/60 | 0) + ':' + z(mins%60);  
+  // } 
 
-  const convertToMinutes = (time) => {
-    let bits = time.split(':')
-    return Number((+bits[0]) * 60 + (+bits[1]))
-  }
+  // const convertToMinutes = (time) => {
+  //   let bits = time.split(':')
+  //   return Number((+bits[0]) * 60 + (+bits[1]))
+  // }
 
 
-  const addClassIntervals = (start, end, day) => {
+  // const addClassIntervals = (start, end, day) => {
 
-    let classTimes = []
-    let days = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"]
-    let dayName = day[0].toUpperCase() + day.substring(1) + 's'
-    let offsetDayName = dayName
-    let startMinutes = convertToMinutes(start)
-    let endMinutes = convertToMinutes(end)
-    if(endMinutes < startMinutes) endMinutes = endMinutes + 1440
-    let currentInterval = start
-    while(startMinutes <= endMinutes) {
-      convertToMinutes(currentInterval) < convertToMinutes(start) 
-        ? offsetDayName = days[days.indexOf(dayName) + 1]
-        : offsetDayName = dayName
-      let endTime = addMinutesToTime(currentInterval, durationValue)
-      classTimes.push(`${offsetDayName}: ${currentInterval}-${endTime}`)
-      currentInterval = endTime
-      startMinutes = startMinutes + durationValue
+  //   let classTimes = []
+  //   let days = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"]
+  //   let dayName = day[0].toUpperCase() + day.substring(1) + 's'
+  //   let offsetDayName = dayName
+  //   let startMinutes = convertToMinutes(start)
+  //   let endMinutes = convertToMinutes(end)
+  //   if(endMinutes < startMinutes) endMinutes = endMinutes + 1440
+  //   let currentInterval = start
+  //   while(startMinutes <= endMinutes) {
+  //     convertToMinutes(currentInterval) < convertToMinutes(start) 
+  //       ? offsetDayName = days[days.indexOf(dayName) + 1]
+  //       : offsetDayName = dayName
+  //     let endTime = addMinutesToTime(currentInterval, durationValue)
+  //     classTimes.push(`${offsetDayName}: ${currentInterval}-${endTime}`)
+  //     currentInterval = endTime
+  //     startMinutes = startMinutes + durationValue
       
-    }
-    return classTimes
-  }
+  //   }
+  //   return classTimes
+  // }
 
-  const teacherAvailability = (teacher) => (
-    teacher.availability.map(d => {
-      let day = d.day
-      let times = d.availableTimes.map(t => {
-        let offsetStart = addMinutesToTime(t.start, -timeOffsetDiff)
-        let offsetEnd = addMinutesToTime(t.end, -timeOffsetDiff)
-        return addClassIntervals(offsetStart, offsetEnd, day)
-      })
-      return times.flat(2)
-    })
-  )
+  // const teacherAvailability = (teacher) => (
+  //   teacher.availability.map(d => {
+  //     let day = d.day
+  //     let times = d.availableTimes.map(t => {
+  //       let offsetStart = addMinutesToTime(t.start, -timeOffsetDiff)
+  //       let offsetEnd = addMinutesToTime(t.end, -timeOffsetDiff)
+  //       return addClassIntervals(offsetStart, offsetEnd, day)
+  //     })
+  //     return times.flat(2)
+  //   })
+  // )
 
-  const rawTimeZones = getTimeZones();
-  const timeZoneOptions = rawTimeZones.map(t => ({label: t.rawFormat, value: t.name}))
+  // const rawTimeZones = getTimeZones();
+  // const timeZoneOptions = rawTimeZones.map(t => ({label: t.rawFormat, value: t.name}))
 
-  useEffect(() => {
-    if(timezoneValue) {
-      let originalTimeOffset = getTimezoneOffset(timezone, new Date()) / 60000
-      let convertedTimeOffset = getTimezoneOffset(timezoneValue, new Date()) / 60000
-      setTimeOffsetDiff(originalTimeOffset - convertedTimeOffset)
-    }
-  }, [timezoneValue])
+  // useEffect(() => {
+  //   if(timezoneValue) {
+  //     let originalTimeOffset = getTimezoneOffset(timezone, new Date()) / 60000
+  //     let convertedTimeOffset = getTimezoneOffset(timezoneValue, new Date()) / 60000
+  //     setTimeOffsetDiff(originalTimeOffset - convertedTimeOffset)
+  //   }
+  // }, [timezoneValue])
 
-  useEffect(() => {
-    let options = teacherAvailability(teachers[0]).flat(3)
-    let convertedOptions = []
-    if(availabilityValues.length) {
-      convertedOptions = availabilityValues.map((v, i) => (
-        {value: v.value, label: options[i]}
-      ))
-    } else {
-      convertedOptions = options.map(o => (
-        {value: o, label: o}
-      ))
-    }
-    console.log("UPDATE:", convertedOptions)
-    setAvailabilityValues(convertedOptions)
-  }, [timeOffsetDiff, durationValue])
+  // useEffect(() => {
+  //   let options = teacherAvailability(teachers[0]).flat(3)
+  //   let convertedOptions = []
+  //   if(availabilityValues.length) {
+  //     convertedOptions = availabilityValues.map((v, i) => (
+  //       {value: v.value, label: options[i]}
+  //     ))
+  //   } else {
+  //     convertedOptions = options.map(o => (
+  //       {value: o, label: o}
+  //     ))
+  //   }
+  //   console.log("UPDATE:", convertedOptions)
+  //   setAvailabilityValues(convertedOptions)
+  // }, [timeOffsetDiff, durationValue])
 
-  const renderSchedulerInputs = () => {
-    let numberPattern = /\d+/g;
-    let frequencyNumber = Number(frequencyValue.match(numberPattern)[0])
-    const schedulerInputs = [];
-    const onChangeHandlers = [(v) => setClassSchedule1Value(v), (v) => setClassSchedule2Value(v), (v) => setClassSchedule3Value(v)]
+  // const renderSchedulerInputs = () => {
+  //   let numberPattern = /\d+/g;
+  //   let frequencyNumber = Number(frequencyValue.match(numberPattern)[0])
+  //   const schedulerInputs = [];
+  //   const onChangeHandlers = [(v) => setClassSchedule1Value(v), (v) => setClassSchedule2Value(v), (v) => setClassSchedule3Value(v)]
 
-    for (let i = 1; i <= frequencyNumber; i++) {
+  //   for (let i = 1; i <= frequencyNumber; i++) {
       
-      schedulerInputs.push(
-        <SelectField
-          label={`Class ${i}:`}
-          isRequired={true}
-          error={classScheduleError}
-          handleChange={onChangeHandlers[i-1]}
-          name={`classSchedule${i}`}
-          options={availabilityValues}
-        />
-      );
-    }
-    return schedulerInputs;
-  }
+  //     schedulerInputs.push(
+  //       <SelectField
+  //         label={`Class ${i}:`}
+  //         isRequired={true}
+  //         error={classScheduleError}
+  //         handleChange={onChangeHandlers[i-1]}
+  //         name={`classSchedule${i}`}
+  //         options={availabilityValues}
+  //       />
+  //     );
+  //   }
+  //   return schedulerInputs;
+  // }
 
-  const classPackageOptions = classTypePackages.map(p => ({value: p, label: p}))
-  const classFrequencyOptions = quantityValue !== '1 class' ? [{value: "1 per week", label: "1 per week"}, {value: "2 per week", label: "2 per week"}, {value: "3 per week", label: "3 per week"}] : [{value: "1 per week", label: "1 per week"}]
-  let classDurationOptions = classTypeDurations.map(d => (
-    { label: `${d / 60} hour${d / 60 > 1 ? 's' : ''}`, value: d }
-  ))
+  // const classPackageOptions = classTypePackages.map(p => ({value: p, label: p}))
+  // const classFrequencyOptions = quantityValue !== '1 class' ? [{value: "1 per week", label: "1 per week"}, {value: "2 per week", label: "2 per week"}, {value: "3 per week", label: "3 per week"}] : [{value: "1 per week", label: "1 per week"}]
+  // let classDurationOptions = classTypeDurations.map(d => (
+  //   { label: `${d / 60} hour${d / 60 > 1 ? 's' : ''}`, value: d }
+  // ))
 
   return (
     <div className={styles.root}>
       <div className={styles.formNavigation}>
-        {formStatus === 'default' && (
+        {/* {formStatus === 'default' && (
           <StepNavigation steps={['Class selection', 'Package', 'Scheduling', 'Student info']} currentStep={currentStep} totalSteps={totalSteps} />
-        )}
+        )} */}
         {formStatus === 'error' && (
           <h2 className={styles.formNavigationStatus}>Resistration unsuccessful</h2>
         )}
@@ -314,8 +274,9 @@ function FormSlide ({ classTypes, teachers, timezone}) {
               <p className={styles.finePrint}>We will contact you to confirm enrollment before payment</p>
             </div>
           </div>
-          <Form 
-            // onSubmit={handlePost}
+          {children}
+          {/* <Form 
+            onSubmit={handleSubmit}
             name="registration-form"
             method="POST"
             action="/success/"
@@ -417,6 +378,16 @@ function FormSlide ({ classTypes, teachers, timezone}) {
                 <MailIcon />
               </InputField>
               <InputField
+                defaultValue={passwordValue}
+                label="Password (8+ characters)"
+                name="password"
+                isRequired={true}
+                errorMessage="Please enter a secure password"
+                placeholder="Enter a password" 
+                type="text"
+                onChange={(e) => setPasswordValue(e.target.value)}
+              />
+              <InputField
                 defaultValue={locationValue}
                 label="Where do you live?"
                 name="location"
@@ -427,7 +398,7 @@ function FormSlide ({ classTypes, teachers, timezone}) {
                 onChange={(e) => setLocationValue(e.target.value)}
               ><LocationIcon /></InputField>
             </Step>
-          </Form>
+          </Form> */}
         </div>
       )}
       {formStatus === 'success' && (

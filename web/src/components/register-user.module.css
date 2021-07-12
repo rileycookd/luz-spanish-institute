@@ -1,0 +1,31 @@
+@import './typography.module.css';
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  display: grid;
+  row-gap: 2rem;
+  width: 100%;
+  max-width: 450px;
+}
+
+.title-container {
+  display: grid;
+  row-gap: 1rem;
+}
+
+.info {
+  @nest & > span {
+    margin-left: .5rem;
+  }
+}
+
+.title {
+  composes: title2 from './typography.module.css';
+}

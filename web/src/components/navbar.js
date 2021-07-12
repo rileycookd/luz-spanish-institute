@@ -7,19 +7,21 @@ import { buildImageObj } from '../lib/helpers'
 import { cn } from '../lib/helpers'
 import { IoChevronDown as DropdownArrow } from 'react-icons/io5'
 import { ImArrowRight2 as ArrowIcon } from 'react-icons/im'
-import { useIdentityContext } from "react-netlify-identity-widget"
+import { useIdentityContext } from 'react-netlify-identity-gotrue'
 
 
 function Navbar ({ navMenuItems }) {
   
   const [dropDownLinks, setDropDownLinks] = useState([])
-  const { user, isLoggedIn, logoutUser } = useIdentityContext()
+  // const { user, isLoggedIn, logoutUser } = useIdentityContext()
 
-  const handleClick = async event => {
-    event.preventDefault()
-    await logoutUser()
-    navigate(`/app/login`)
-  }
+  // const handleClick = async event => {
+  //   event.preventDefault()
+  //   await logoutUser()
+  //   navigate(`/app/login`)
+  // }
+
+  const identity = useIdentityContext()
 
   const renderDropdownLink = (link) => {
     let image = link.innerPageRoute && link.innerPageRoute.image || link.image || null
@@ -105,8 +107,17 @@ function Navbar ({ navMenuItems }) {
       )}
 
       <ul className={styles.links}>
-        {isLoggedIn ? (<a href="/" onClick={handleClick}>Logout</a>) : (<CTALink route="/app/login" title='Login' />)}
-        <CTALink kind='small button' title='Enroll' />
+        {identity.user
+          ? (
+              <CTALink route="/" title='Logout' onClick={() => handleLogout()} />
+          ) : (
+            <>
+              <CTALink route="/login" title='Login' />
+              <CTALink kind='small button' route="/register" title='Sign up' />
+            </>
+          )
+        }
+        
       </ul>
     </div>
   )

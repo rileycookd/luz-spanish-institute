@@ -7,12 +7,42 @@ import CTALink from './CTALink'
 import { IoRemove as SubtractIcon, IoAdd as AddIcon } from 'react-icons/io5'
 import Select from 'react-select'
 
-// NOTES: Should unregister: false if you want to use disabled inputs
+import { IoEye, IoEyeOff } from 'react-icons/io5'
 
-export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus, setCurrentStep, totalSteps, name, method, action, children }) {
+export function Form (props) {
 
+  // Get props
+  const { 
+    currentStep, 
+    confirmStep, 
+    cta, 
+    onSubmit, 
+    formStatus, 
+    setFormStatus, 
+    setCurrentStep, 
+    totalSteps, 
+    name, 
+    method, 
+    action, 
+    children 
+  } = props
 
-  const { watch, control, register, handleSubmit, setError, clearErrors, setValue, unregister, getValues, reset, formState: { errors, isValid }, } = useForm({ mode: 'all' })
+  // Get React Hook Form props
+  const { 
+    watch, 
+    control, 
+    register, 
+    handleSubmit, 
+    setError, 
+    clearErrors, 
+    setValue, 
+    unregister, 
+    getValues, 
+    reset, 
+    formState: { errors, isValid }
+   } = useForm({ mode: 'all' })
+
+  const [steps, setSteps] = useState([])
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
   const encode = (data) => {
@@ -22,7 +52,6 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
       )
       .join("&")
   }
-
 
    // Handles the post process to Netlify so we can access their serverless functions
    const handlePost = (formData, event) => {
@@ -36,6 +65,7 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
         reset()
         if(response.status === 200 || response.status === 201 || response.status === 203) {
           setFormStatus("success")
+          onSubmit()
         } else {
           setFormStatus("error")
         }
@@ -50,8 +80,8 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
  
   const _next = (e) => {
     e.preventDefault()
-    currentStep >= totalSteps - 1
-    ? setCurrentStep(totalSteps)
+    currentStep >= steps.length - 1
+    ? setCurrentStep(steps.length)
     : setCurrentStep(currentStep + 1)
   }
 
@@ -73,8 +103,8 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
   }
   
   const nextButton = () => {
-    if(currentStep < totalSteps){
-      const nextButtonText = currentStep === (totalSteps - 1) ? 'Confirm' : 'Next step'
+    if(currentStep < steps.length){
+      const nextButtonText = currentStep === (steps.length - 1) ? 'Confirm' : 'Next step'
       return (
         <button disabled={!isValid} className={cn(button, buttonLarge)} onClick={(e) => _next(e)}>{nextButtonText}</button>
       )
@@ -83,7 +113,7 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
   }
 
   const submitButton = () => {
-    if(currentStep === (totalSteps)){
+    if(currentStep === (steps.length)){
       return (
         <button disabled={!isValid} type="submit" className={cn(button, buttonLarge)}>{cta}</button>
       )
@@ -92,29 +122,32 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
     return null;
   }
 
-  let stepCounter = 0;
-  const childrenWithProps = React.Children.map(children, (child) => {
+  useEffect(() => {
+    let stepCounter = 0;
+    const childrenWithProps = React.Children.map(children, (child) => {
 
-    if (React.isValidElement(child)) {
-      stepCounter++
-      return React.cloneElement(child, { 
-        currentStep: currentStep,
-        step: stepCounter,
-        totalSteps: totalSteps,
-        register: register,
-        errors: errors,
-        setValue: setValue,
-        getValues: getValues,
-        unregister: unregister,
-        control: control,
-        Controller: Controller,
-        setError: setError,
-        clearErrors: clearErrors
-      });
-    }
-  
-    return child;
-  });
+      if (React.isValidElement(child)) {
+        stepCounter++
+        return React.cloneElement(child, { 
+          currentStep: currentStep,
+          step: stepCounter,
+          totalSteps: steps.length,
+          register: register,
+          errors: errors,
+          setValue: setValue,
+          getValues: getValues,
+          unregister: unregister,
+          control: control,
+          Controller: Controller,
+          setError: setError,
+          clearErrors: clearErrors
+        });
+      }
+    
+      return child;
+    });
+    setSteps(childrenWithProps)
+  }, [children])  
     
   return(
     <form 
@@ -122,7 +155,6 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
       onSubmit={handleSubmit(handlePost)}
       name={name}
       method={method}
-      action={action}
       data-netlify="true"
       netlify-honeypot="got-ya"
     >
@@ -135,9 +167,7 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
         ref={register}
       />
 
-      {childrenWithProps}
-
-      {currentStep === totalSteps && confirmStep}
+      {steps}
 
       <input tabIndex="-1" name="got-ya" ref={register} />
 
@@ -154,6 +184,8 @@ export function Form ({ currentStep, confirmStep, cta, formStatus, setFormStatus
 }
 
 export const InputField = ({ register, control, Controller, currentStep, unregister, step, readOnly, disabled, pattern, setValue, defaultValue, getValues, isRequired, errors, errorMessage, min, max, label, name, placeholder, type, onChange, children, callback }) => {
+
+  const [currentType, setCurrentType] = useState(type)
 
   const currentValue = getValues(name)
   if(type === "number" && min && Number(currentValue) < min) { 
@@ -186,12 +218,20 @@ export const InputField = ({ register, control, Controller, currentStep, unregis
     }
   }
 
+  const togglePassword = () => {
+    if(currentType === "password") {
+      setCurrentType("text")
+    } else {
+      setCurrentType("password")
+    }
+  }
+
   return (
     <div className={styles.inputGroup}>
       {type === "number" && !disabled && !readOnly && <SubtractIcon onClick={(e) => decrement (e)} className={(currentValue == min || currentValue == '') ? cn(styles.inputNumberControl, styles.disabled) : styles.inputNumberControl} />}
       <input
         id={name}
-        type={type}
+        type={currentType}
         name={name}
         min={min}
         max={max}
@@ -214,6 +254,16 @@ export const InputField = ({ register, control, Controller, currentStep, unregis
         })} )}
         style={(children || type === "number") ? {paddingLeft: '3.5rem'} : {}}
       />
+      {type === "password" && (
+        <>
+          {currentType === "password"
+          ? (
+            <span onClick={() => togglePassword()} className={styles.passwordToggle}><IoEye /> Show</span>
+          ) : (
+            <span onClick={() => togglePassword()} className={styles.passwordToggle}><IoEyeOff /> Hide</span>
+          )}
+        </>
+      )}
       {label && <label className={styles.inputLabel} htmlFor={name}>{label}</label>}
       <p className={styles.inputError}>{errors && errors[name] && errors[name].message}</p>
       {children}
@@ -371,7 +421,13 @@ export const Step = ({title, errors, control, clearErrors, setError, style, Cont
 
   return (
     <div className={styles.formSection} style={currentStep !== step ? {display: 'none'} : {}}>
-      <h2 className={style === "dark" ? cn(styles.formSectionTitle, styles.dark) : styles.formSectionTitle}>{title}</h2>
+      {totalSteps > 1 && (
+        <h2 
+          className={style === "dark" 
+            ? cn(styles.formSectionTitle, styles.dark) 
+            : styles.formSectionTitle}
+        >{title}</h2>
+      )}
       <div className={styles.formSectionInputs}>
         {currentStep >= step ? childrenWithProps : ''}
       </div>

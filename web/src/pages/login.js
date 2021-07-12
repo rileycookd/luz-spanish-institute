@@ -1,16 +1,15 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import GraphQLErrorList from '../components/graphql-error-list'
-import { mapEdgesToNodes } from '../lib/helpers'
 
 import Layout from '../containers/layout'
 import SEO from '../components/seo'
 import Container from '../components/container'
-import RegisterUser from '../components/register-user'
+import LoginUser from '../components/login-user'
 
 
 export const query = graphql`
-  query RegisterPageQuery {
+  query LoginPageQuery {
     site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
       ...SiteSettings
     }
@@ -21,7 +20,7 @@ export const query = graphql`
   }    
 `
 
-const RegisterPage = props => {
+const LoginPage = props => {
   const { data, errors } = props
 
   if (errors) {
@@ -33,32 +32,12 @@ const RegisterPage = props => {
   }
   
   const site = (data || {}).site
-  // const company = (data || {}).company
 
   if (!site) {
     throw new Error(
       'Missing "Site settings". Open the studio at http://localhost:3333 and add some content to "Site settings" and restart the development server.'
     )
   }
-
-  // const menuItems = site._rawDefaultNav && (site._rawDefaultNav.items || []);
-  // const menuCtas = site._rawDefaultNav && (site._rawDefaultNav.ctas || []);
-
-  // const timezone = (data || {}).company
-  //   ? data.company.timezone
-  //   : "America/Santiago"
-
-  // const classTypes = (data || {}).classTypes.edges
-  //   ? mapEdgesToNodes(data.classTypes)
-  //   : []
-  // classTypes.sort((a, b) => a.order - b.order); 
-
-  // const teachers = (data || {}).teachers.edges
-  //   ? mapEdgesToNodes(data.teachers)
-  //   : []
-
-    
-  
 
   return (
     <Layout>
@@ -68,10 +47,10 @@ const RegisterPage = props => {
           keywords={site.keywords}
         />
       <Container>
-        <RegisterUser />
+        <LoginUser />
       </Container>
     </Layout>
   )
 }
 
-export default RegisterPage
+export default LoginPage
