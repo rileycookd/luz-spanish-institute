@@ -1,4 +1,5 @@
 @import '../styles/vars.css';
+@import './typography.module.css';
 
 .root {
   align-self: start;
@@ -190,4 +191,87 @@
   font-family: var(--font-paragraph);
   font-weight: 400;
   color: var(--color-text-dark);
+}
+
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+
+
+  @nest & > svg {
+    height: .75rem;
+    width: .75rem;
+    fill: var(--color-primary);
+    margin-left: .25rem;
+  }
+
+  @nest &:hover > .user-dropdown-content {
+    display: block;
+  }
+}
+
+.user-name {
+  font-family: var(--font-title);
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-line-height);
+  font-weight: 400;
+}
+
+.user-dropdown-content {
+  display: none;
+  cursor: default;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  right: 0;
+  padding: .5rem;
+  border-radius: 0 0 var(--border-radius-default) var(--border-radius-default);
+  background-color: var(--color-white);
+  list-style: none;
+
+  @nest & > li {
+    height: max-content;
+  }
+}
+
+.user-dropdown-item {
+  padding: .5rem 1rem;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+
+  @nest &:hover {
+    color: var(--color-secondary);
+    background-color: var(--color-grey-xxlight);
+    cursor: pointer;
+    border-radius: var(--border-radius-default);
+  }
+
+  @nest & > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    fill: currentColor;
+    margin-right: 1rem;
+  }
+}
+
+.user-pic {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  margin-right: .5rem;
+}
+
+.user-dropdown-link {
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+  composes: link from './typography.module.css';
+  outline: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 }

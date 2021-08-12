@@ -9,21 +9,21 @@ import { useIdentityContext } from "react-netlify-identity-gotrue"
 import { navigate } from "gatsby"
 
 function PrivateRoute(props) {
-  const { isLoggedIn } = useIdentityContext()
+  const identity = useIdentityContext()
   const { component: Component, location, ...rest } = props
 
-  console.log(isLoggedIn)
+  console.log(identity.user)
   
   React.useEffect(
     () => {
-      if (!isLoggedIn && location.pathname !== `/login`) {
+      if (!identity.user && location.pathname !== `/login`) {
         // If the user is not logged in, redirect to the login page.
         navigate(`/login`)
       }
     },
-    [isLoggedIn, location]
+    [identity.user, location]
   )
-  return isLoggedIn ? <Component {...rest} /> : null
+  return identity.user ? <Component {...rest} /> : null
 }
 
 function PublicRoute(props) {
@@ -32,30 +32,25 @@ function PublicRoute(props) {
 
 export default function App(props) {
 
-  const { isLoggedIn } = useIdentityContext()
+  const identity = useIdentityContext()
   const { location } = props
 
   useEffect(
     () => {
-      if (!isLoggedIn && location.pathname !== `/login`) {
+      if (!identity.user && location.pathname !== `/login`) {
         // If the user is not logged in, redirect to the login page.
         navigate(`/login`)
       }
     },
-    [isLoggedIn, location]
+    [identity.user, location]
   )
 
   return (
     <>
-      {isLoggedIn && (
-        <Layout>
-          <Navbar />
-          <Router>
-            <PrivateRoute path="/app">
-              <PrivateRoute path="/" component={Homepage} />
-            </PrivateRoute>
-          </Router>
-        </Layout>
+      {identity && (
+        <Router basepath="/app">
+          <PrivateRoute path="/" component={Homepage} />
+        </Router>
       )}
     </>
   )

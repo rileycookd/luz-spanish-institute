@@ -14,48 +14,8 @@ import PostPreview from "../components/post-preview";
 import LayoutSidebar from '../components/layout-sidebar'
 import Footer from '../components/footer'
 
-export const query = graphql`
-  query HomepageQuery {
+import { useSiteSettings } from "../graphql-hooks/SiteSettings";
 
-    resources: allSanityResource {
-      edges {
-        node {
-          id
-          slug {
-            current
-          }
-          pathPrefix
-          title
-          category {
-            title
-          }
-          level {
-            title
-          }
-          image {
-            ...SanityImage
-          }
-          language {
-            title
-          }
-          description
-          author {
-            name
-          }
-          _updatedAt
-          _type
-          _key
-          _createdAt
-        }
-      }
-    }
-
-    site: sanitySiteSettings(_id: { regex: "/(drafts.|)siteSettings/" }) {
-      title
-      _rawDefaultNav(resolveReferences: {maxDepth: 10})
-    }
-  }
-`;
 
 const Homepage = (props) => {
   const { data, errors } = props;
@@ -70,7 +30,8 @@ const Homepage = (props) => {
     );
   }
 
-  const site = (data || {}).site;
+  const site = useSiteSettings()
+  console.log(site)
 
   if (!site) {
     throw new Error(
@@ -78,16 +39,15 @@ const Homepage = (props) => {
     );
   }
 
-  const menuItems = site && (site._rawDefaultNav.items || []);
-  const menuCtas = site && (site._rawDefaultNav.ctas || []);
+  const menuItems = site && (site.defaultNav._rawItems || []);
 
-  const resources = (data || {}).resources.edges
-    ? mapEdgesToNodes(data.resources).filter(filterOutDocsWithoutSlugs)
-    : []
-  resources.sort((a, b) => a.order - b.order); 
+  // const resources = (data || {}).resources.edges
+  //   ? mapEdgesToNodes(data.resources).filter(filterOutDocsWithoutSlugs)
+  //   : []
+  // resources.sort((a, b) => a.order - b.order); 
 
   return (
-    <Layout navMenuItems={menuItems} navMenuCtas={menuCtas}>
+    <Layout navMenuItems={menuItems}>
       <SEO
           title={'Learning resources'}
           description={site.description}
@@ -102,7 +62,7 @@ const Homepage = (props) => {
           subtitle="Learn the way you learn best"
         /> */}
         <LayoutSidebar>
-          <PostPreviewGrid title="Resources" nodes={resources} />
+          {/* <PostPreviewGrid title="Resources" nodes={resources} /> */}
           <div>Sidebar</div>
         </LayoutSidebar>
         <Footer />

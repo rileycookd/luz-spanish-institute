@@ -52,17 +52,10 @@ const IndexPage = props => {
     )
   }
 
-  const { isLoggedIn } = useIdentityContext()
+  const identity = useIdentityContext()
   const { component: Component, location, ...rest } = props
 
-  console.log(isLoggedIn)
 
-  useEffect(() => {
-    if (isLoggedIn && location.pathname === `/`) {
-      // If the user is not logged in, redirect to the login page.
-      navigate(`/app`)
-    }
-  }, [isLoggedIn, location])
 
   return (
     <Page data={data} pathname={props.location.pathname} />

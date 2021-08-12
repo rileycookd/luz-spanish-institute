@@ -5,6 +5,9 @@
   text-decoration: none;
   composes: link from './typography.module.css';
   transition: color .1s linear;
+  outline: none;
+  cursor: pointer;
+  background: none;
 
   @nest &:visited {
     text-decoration: none;

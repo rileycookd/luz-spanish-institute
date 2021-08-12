@@ -56,6 +56,7 @@ export function Form (props) {
    // Handles the post process to Netlify so we can access their serverless functions
    const handlePost = (formData, event) => {
     console.log(formData)
+    onSubmit()
     fetch(`/`, {
       method: method,
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -65,7 +66,6 @@ export function Form (props) {
         reset()
         if(response.status === 200 || response.status === 201 || response.status === 203) {
           setFormStatus("success")
-          onSubmit()
         } else {
           setFormStatus("error")
         }

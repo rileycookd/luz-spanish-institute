@@ -11,6 +11,9 @@ import { button, buttonSmall } from '../components/CTALink'
 import * as styles from './register-user.module.css'
 import CTALink from './CTALink'
 
+import { navigate } from 'gatsby'
+
+
 
 
 function LoginUser(props) {
@@ -24,14 +27,21 @@ function LoginUser(props) {
 
   const identity = useIdentityContext()
 
-  const handleSignup = async () => {
+  const handleLogin = async () => {
+    debugger
     await identity.login({
       password: passwordValue,
       email: emailValue,
     })
-      .then(() => navigate('/app/'))
+      .then(() => navigate('/app'))
       .catch(e => setErrorMessage(e.message))
   }
+
+  useEffect(() => {
+    if(identity.user) {
+      navigate('/app')
+    }
+  }, [])
 
 
   return (
@@ -46,7 +56,7 @@ function LoginUser(props) {
       </div>
         {formStatus === "default" && (
           <Form 
-            onSubmit={handleSignup}
+            onSubmit={() => handleLogin()}
             name="login-form"
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}

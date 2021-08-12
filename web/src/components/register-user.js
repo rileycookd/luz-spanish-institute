@@ -10,6 +10,8 @@ import { cn } from '../lib/helpers'
 import * as styles from './register-user.module.css'
 import CTALink from './CTALink'
 
+import { navigate } from 'gatsby'
+
 
 
 function RegisterUser(props) {
