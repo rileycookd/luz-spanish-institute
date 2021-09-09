@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import * as styles from './contact-block.module.css'
 import { ImPhone as PhoneIcon, ImFacebook as FacebookIcon, ImLinkedin2 as LinkedinIcon } from 'react-icons/im'
 import { IoLogoInstagram as InstagramIcon } from 'react-icons/io5'
-import { Form, Step, InputField, TextareaField } from './form'
+import { Form, Step, InputField, TextareaField } from './forms/Form'
 import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIcon } from 'react-icons/io5'
 
 function ContactBlock (props) {

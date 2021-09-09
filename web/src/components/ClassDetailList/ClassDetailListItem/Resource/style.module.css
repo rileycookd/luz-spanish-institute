@@ -1,0 +1,21 @@
+@import '../../../typography.module.css';
+@import '../../../../styles/vars.css';
+
+
+.root {
+  /* padding: .75rem 1.5rem; */
+  display: flex;
+  align-items: center;
+
+  @nest & > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
+.link {
+  composes: link from '../../../typography.module.css';
+  color: var(--color-text-medium);
+  text-decoration: underline;
+  cursor: pointer;
+}

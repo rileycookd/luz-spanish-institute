@@ -1,20 +1,17 @@
 import React from 'react'
-import * as styles from './class-overview.module.css'
-import * as tabStyles from './tab-component.module.css'
+import * as styles from './style.css'
+import * as tabStyles from '../../../components/tab-component.module.css'
 import { IoTimeOutline as DurationIcon } from 'react-icons/io5'
 import { AiOutlineDollar as MoneyIcon } from 'react-icons/ai'
 import { BsPeople as StudentsIcon } from 'react-icons/bs'
-import CTALink from './CTALink'
-import { buildImageObj, cn, getClassSizeString, getClassStartingPrice } from "../lib/helpers"
-import { imageUrlFor } from "../lib/image-url"
-import BlockText from './block-text'
-import Testimonial from './testimonial'
-import Pricing from './pricing'
-import FAQ from './faq'
+import CTALink from '../../../components/CTALink'
+import { buildImageObj, cn, getClassSizeString, getClassStartingPrice } from "../../../lib/helpers"
+import { imageUrlFor } from "../../../lib/image-url"
+import BlockText from '../../../components/block-text'
+import Testimonial from '../../../components/testimonial'
+import Pricing from '../../../components/pricing'
+import FAQ from '../../../components/faq'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
-// import { TabList, Tab, Tabs, TabPanel } from './tab-component'
-
 
 function ClassOverview ({ 
   image, 

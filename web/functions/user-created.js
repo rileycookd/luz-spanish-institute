@@ -12,7 +12,8 @@ exports.handler = async (event, context, callback) => {
   const sanityUser = {
       _type: "student",
       name: user.user_metadata.full_name,
-      email: user.email
+      email: user.email,
+      netlifyId: user.id
     }
   const result = await client.create(sanityUser).catch((err) => console.log(err))
 

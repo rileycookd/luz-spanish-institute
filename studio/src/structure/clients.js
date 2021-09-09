@@ -34,7 +34,7 @@ export default S.listItem()
           .icon(FaUserGraduate)
           .child(
             S.documentTypeList('student')
-              .title('Private students')   
+              .title('Students')   
           ),
         S.divider(),
         S.listItem()

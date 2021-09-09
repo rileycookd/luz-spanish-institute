@@ -1,0 +1,28 @@
+@import '../../../typography.module.css';
+@import '../../../../styles/vars.css';
+
+.root {
+  /* padding: .75rem 1.5rem; */
+  display: flex;
+  align-items: center;
+
+  @nest & > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
+.content {
+  display: grid;
+}
+
+.title {
+  composes: title6 from '../../../typography.module.css'
+}
+
+.subtitle {
+  font-family: 'Montserrat';
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-line-height);
+  font-weight: 400;
+}

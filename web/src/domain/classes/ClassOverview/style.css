@@ -1,4 +1,4 @@
-@import '../styles/vars.css';
+@import '../../../styles/vars.css';
 
 
 .root {
@@ -18,7 +18,7 @@
 }
 
 .header-title {
-  composes: title3 from './typography.module.css'
+  composes: title3 from '../../../components/typography.module.css'
 }
 
 .header-meta {

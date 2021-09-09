@@ -72,17 +72,17 @@ const ResourcePage = (props) => {
   return (
     <Layout navMenuItems={menuItems} navMenuCtas={menuCtas}>
       <SEO
-          title={resource.title}
-          description={site.description}
-          keywords={site.keywords}
-        />
+        title={resource.title}
+        description={site.description}
+        keywords={site.keywords}
+      />
+      <PageHeader
+        content="Tab list"
+        sharedPath="/classes/"
+        title={resource.title}
+        propsAddedHeight={80}
+      />
       <Container>
-        <PageHeader
-          content="Tab list"
-          sharedPath="/classes/"
-          title={resource.title}
-          propsAddedHeight={80}
-        />
         <LayoutSidebar style={{paddingTop: '0'}}>
           <Article 
             {...resource} 
@@ -93,8 +93,8 @@ const ResourcePage = (props) => {
             <SectionLinks anchorIds={anchorIds} path={props.location.pathname} />
           )}
         </LayoutSidebar>
-        <Footer />
-      </Container>
+      </Container>   
+      <Footer />
     </Layout>
   );
 };

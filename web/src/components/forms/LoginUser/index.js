@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 
-import { Form, Step, InputField } from '../components/form'
+import { Form, Step, InputField } from '../Form'
 import { IoMail as MailIcon } from 'react-icons/io5'
 import { BsLockFill as PasswordIcon } from 'react-icons/bs'
 import { useIdentityContext } from 'react-netlify-identity-gotrue'
 
-import { cn } from '../lib/helpers'
-import { button, buttonSmall } from '../components/CTALink'
+import { cn } from '../../../lib/helpers'
+import { button, buttonSmall } from '../../CTALink'
 
-import * as styles from './register-user.module.css'
-import CTALink from './CTALink'
+import * as styles from '../RegisterUser/style.module.css'
+import CTALink from '../../CTALink'
 
 import { navigate } from 'gatsby'
 

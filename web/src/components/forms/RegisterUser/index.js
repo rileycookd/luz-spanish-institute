@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
-import { Form, Step, InputField } from '../components/form'
+import { Form, Step, InputField } from '../Form'
 import { IoPerson as NameIcon, IoMail as MailIcon } from 'react-icons/io5'
 import { BsLockFill as PasswordIcon } from 'react-icons/bs'
 import { useIdentityContext } from 'react-netlify-identity-gotrue'
 
-import { cn } from '../lib/helpers'
+import { cn } from '../../../lib/helpers'
 
-import * as styles from './register-user.module.css'
-import CTALink from './CTALink'
+import * as styles from './style.module.css'
+import CTALink from '../../CTALink'
 
 import { navigate } from 'gatsby'
 

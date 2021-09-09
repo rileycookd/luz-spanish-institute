@@ -1,0 +1,139 @@
+@import '../../../typography.module.css';
+@import '../../../../styles/vars.css';
+
+.input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  @nest & > svg {
+    position: absolute;
+    fill: var(--color-text-light);
+    margin-top: .25rem;
+    left: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+
+    @nest &.input-number-control {
+      stroke: var(--color-primary);
+
+      @nest &.disabled {
+        cursor: not-allowed;
+        stroke: var(--color-grey-light);
+      }
+    }
+  }
+}
+
+.input-label {
+  font-family: var(--font-title);
+  composes: small from '../../../typography.module.css';
+  font-weight: 400;
+  position: absolute;
+  top: .75rem;
+  left: 3.5rem;
+  color: var(--color-primary);
+}
+
+.inputError {
+  position: absolute;
+  bottom: .5rem;
+  left: 3.5rem;
+  composes: small from '../../../typography.module.css';
+  color: var(--color-error);
+}
+
+.input {
+  transition: box-shadow .1s ease-out;
+  height: max-content;
+  border: 1px solid var(--color-grey-light);
+  color: var(--color-primary);
+  padding: 2.25rem 1.5rem 2rem 1.5rem;
+  composes: titlesub from '../../../typography.module.css';
+  border-radius: var(--border-radius-default);
+  width: 100%;
+
+  @nest &::placeholder {
+    color: var(--color-text-light);
+  }
+
+  @nest &.error {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--color-error);
+  }
+
+  @nest &.valid:not(:placeholder-shown):not(:disabled) {
+
+    @nest & ~ svg {
+      fill: var(--color-secondary);
+    }
+  }
+
+  @nest &[type="number"] {
+    -moz-appearance: textfield;
+    text-align: center;
+    padding-right: 3.5rem;
+
+    @nest &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+  }
+
+  @nest &:disabled:not([type="file"]) {
+    
+  }
+
+  @nest &[disabled], &:disabled {
+    background: transparent;
+    border: none;
+    outline: none;
+    /* border-bottom: 1px solid var(--color-grey-xlight); */
+
+    @nest &:focus {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  @nest &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #2684ff;
+  }
+}
+
+.input-number-control {
+  position: absolute;
+  cursor: pointer;
+
+  @nest &:last-of-type {
+    position: absolute;
+    right: 1.5rem;
+    left: auto;
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  cursor: pointer;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  font-family: var(--font-title);
+  align-items: center;
+  color: var(--color-text-light);
+  user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+
+  @nest & > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+  }
+}

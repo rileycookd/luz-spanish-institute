@@ -1,0 +1,81 @@
+@import '../../../../styles/vars.css';
+@import '../../../typography.module.css';
+
+.editor {
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 0;
+  padding: 2rem;
+  display: grid;
+  row-gap: 1rem;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight);
+  box-shadow: var(--shadow-main);
+}
+
+.cropper {
+  border: 1px solid var(--color-grey-xlight);
+  background-color: var(--color-grey-xxlight);
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  composes: titlesub from '../../../typography.module.css';
+  margin-right: 1.25rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+
+  @nest & > *:not(:last-child) {
+    margin-right: .5rem;
+  }
+}
+
+.button {
+  composes: titlesub from '../../../typography.module.css';
+  color: var(--color-primary);
+  padding: 1rem;
+  cursor: pointer;
+  height: max-content;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-light);
+  transition: .1s ease-out;
+
+  @nest &:hover {
+    background-color: var(--color-grey-xxlight);
+    border: 1px solid var(--color-grey-medium);
+  }
+
+}
+
+.button-2 {
+  composes: titlesub from '../../../typography.module.css';
+  color: var(--color-primary);
+  padding: 1rem;
+  cursor: pointer;
+  height: max-content;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-grey-xlight);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-light);
+  transition: .1s ease-out;
+
+  @nest &:hover {
+    background-color: var(--color-grey-light);
+    border: 1px solid var(--color-grey-medium);
+  }
+}

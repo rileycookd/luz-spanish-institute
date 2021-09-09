@@ -1,15 +1,15 @@
-@import '../styles/vars.css';
-@import './typography.module.css';
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
 
 .root {
   width: 100%;
   display: grid;
-  row-gap: 3rem;
+  row-gap: 1rem;
 }
 
 .form-title {
   justify-self: center;
-  composes: title3 from './typography.module.css';
+  composes: title3 from '../../typography.module.css';
 }
 
 .form-section {
@@ -18,7 +18,7 @@
 }
 
 .form-section-title {
-  composes: title6 from './typography.module.css';
+  composes: title6 from '../../typography.module.css';
   color: var(--color-primary);
 
   @nest &.dark {
@@ -94,11 +94,11 @@
   height: 2rem;
   border-radius: 50%;
   color: currentColor;
-  composes: title5 from './typography.module.css';
+  composes: title5 from '../../typography.module.css';
 }
 
 .form-navigation-step-title {
-  composes: titlesub from './typography.module.css';
+  composes: titlesub from '../../typography.module.css';
   color: currentColor;
 }
 
@@ -136,7 +136,7 @@ textarea {
 }
 
 .input-label {
-  composes: titlesub from './typography.module.css';
+  composes: titlesub from '../../typography.module.css';
   font-weight: 400;
   position: absolute;
   top: .75rem;
@@ -148,7 +148,7 @@ textarea {
   position: absolute;
   bottom: .5rem;
   left: 3.5rem;
-  composes: small from './typography.module.css';
+  composes: small from '../../typography.module.css';
   color: var(--color-error);
 }
 
@@ -158,7 +158,7 @@ textarea {
   border: 1px solid var(--color-grey-light);
   color: var(--color-primary);
   padding: 2.25rem 1.5rem 2rem 1.5rem;
-  composes: titlesub from './typography.module.css';
+  composes: titlesub from '../../typography.module.css';
   border-radius: var(--border-radius-default);
   width: 100%;
 
@@ -189,7 +189,7 @@ textarea {
     }
   }
 
-  @nest &[disabled], &:disabled, &:read-only {
+  @nest &[disabled], &:disabled, &:read-only:not([type="file"]) {
     cursor: not-allowed;
     color: var(--color-grey-medium);
     outline: none;
@@ -251,7 +251,7 @@ input[name='got-ya'] {
   cursor: pointer;
   display: block;
   position: relative;
-  composes: titlesub from './typography.module.css';
+  composes: titlesub from '../../typography.module.css';
   color: #444;
   padding: 2.5rem 3.5rem 2rem 1.5rem;
   width: 100%;

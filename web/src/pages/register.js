@@ -6,7 +6,7 @@ import { mapEdgesToNodes } from '../lib/helpers'
 import Layout from '../containers/layout'
 import SEO from '../components/seo'
 import Container from '../components/container'
-import RegisterUser from '../components/register-user'
+import RegisterUser from '../components/forms/RegisterUser'
 
 
 export const query = graphql`

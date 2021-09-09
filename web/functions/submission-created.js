@@ -12,6 +12,7 @@ exports.handler = async function (event, context, callback) {
   // Checking which form has been submitted
   const isRegistrationForm = payload.data.formId === "registration-form"
   const isContactForm = payload.data.formId === "contact-form"
+  const isEditUserForm = payload.data.formId === "edit-user-form"
   // Build the document JSON and submit it to SANITY
   if (isRegistrationForm) {
     weeklySchedule=[];
@@ -44,6 +45,37 @@ exports.handler = async function (event, context, callback) {
       message: payload.data.message
     }
     const result = await client.create(contactForm).catch((err) => console.log(err))
+  }
+  if (isEditUserForm) {
+    const editUserForm = {
+      _id: payload.data._id,
+      name: payload.data.name,
+      email: payload.data.email,
+      city: payload.data.city,
+      phone: payload.data.phone,
+      country: payload.data.country,
+      timezone: payload.data.timezone,
+      company: payload.data.company
+    }
+    const result = await client
+      .patch(_id) // Document ID to patch
+      .set({
+        name: editUserForm.name,
+        email: editUserForm.email,
+        city: editUserForm.city,
+        phone: editUserForm.phone,
+        country: editUserForm.country,
+        timezone: editUserForm.timezone,
+        company: editUserForm.company,
+      }) // Shallow merge
+      .commit() // Perform the patch and return a promise
+      .then((updatedUser) => {
+        console.log('Hurray, the user is updated! New document:')
+        console.log(updatedUser)
+      })
+      .catch((err) => {
+        console.error('Oh no, the update failed: ', err.message)
+      })
   }
   callback(null, {
     statusCode: 200,

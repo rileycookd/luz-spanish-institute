@@ -1,0 +1,14 @@
+@import '../../styles/vars.css';
+@import '../typography.module.css';
+
+.root {
+  list-style: none;
+  display: grid;
+  row-gap: 1.5rem;
+  align-content: start;
+}
+
+.title {
+  composes: title6 from '../typography.module.css';
+  color: var(--color-grey-medium);
+}

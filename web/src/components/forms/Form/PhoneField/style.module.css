@@ -1,0 +1,128 @@
+@import '../../../typography.module.css';
+@import '../../../../styles/vars.css';
+
+.button {
+  margin-top: 2rem;
+  margin-left: 3rem;
+  width: 2.5rem;
+  height: 1.5rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  outline: none;
+}
+
+.dropdown {
+  top: 100%;
+  left: 0;
+}
+
+.container {
+  width: 100%;
+}
+
+.search {
+  padding-left: 2.5rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  @nest &.valid > svg {
+    fill: var(--color-secondary);
+  }
+
+  @nest & > svg {
+    position: absolute;
+    fill: var(--color-text-light);
+    margin-top: .25rem;
+    left: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+
+    @nest &.input-number-control {
+      stroke: var(--color-primary);
+
+      @nest &.disabled {
+        cursor: not-allowed;
+        stroke: var(--color-grey-light);
+      }
+    }
+  }
+}
+
+.input-label {
+  font-family: var(--font-title);
+  composes: small from '../../../typography.module.css';
+  font-weight: 400;
+  position: absolute;
+  top: .75rem;
+  left: 3.5rem;
+  color: var(--color-primary);
+}
+
+.inputError {
+  position: absolute;
+  bottom: .5rem;
+  left: 3.5rem;
+  composes: small from '../../../typography.module.css';
+  color: var(--color-error);
+}
+
+.input {
+  padding: 2.25rem 1.5rem 2rem 1.5rem;
+  transition: box-shadow .1s ease-out;
+  height: max-content;
+  border: 1px solid var(--color-grey-light);
+  color: var(--color-primary);
+  composes: titlesub from '../../../typography.module.css';
+  border-radius: var(--border-radius-default);
+  width: 100%;
+
+  @nest &::placeholder {
+    color: var(--color-text-light);
+  }
+
+  @nest &.error {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--color-error);
+  }
+
+  @nest &:not(:placeholder-shown) {
+
+    @nest &:not(.error) ~ svg {
+      fill: var(--color-secondary);
+    }
+  }
+
+  @nest &[type="number"] {
+    -moz-appearance: textfield;
+    text-align: center;
+    padding-right: 3.5rem;
+
+    @nest &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+  }
+
+  @nest &[disabled], &:disabled, &:read-only:not([type="file"]) {
+    cursor: not-allowed;
+    color: var(--color-grey-medium);
+    outline: none;
+    background-color: var(--color-grey-xlight);
+
+    @nest & + .input-label {
+      color: var(--color-grey-medium);
+    }
+  }
+
+  @nest &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #2684ff;
+  }
+}

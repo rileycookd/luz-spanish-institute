@@ -1,0 +1,44 @@
+@import '../../../../styles/vars.css';
+@import '../../../typography.module.css';
+
+.root {
+  display: flex;
+  align-items: flex-end;
+  row-gap: 1rem;
+}
+
+.image {
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-grey-medium);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.input-group {
+  margin-left: 1rem;
+  display: grid;
+  row-gap: .5rem;
+}
+
+.label {
+  padding: 1rem;
+  cursor: pointer;
+  height: max-content;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight);
+
+  @nest & > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--color-primary);
+    margin-right: .5rem;
+  }
+}

@@ -103,8 +103,9 @@ const ResourcesPage = (props) => {
           <PostPreviewGrid title="Resources" nodes={resources} />
           <div>Sidebar</div>
         </LayoutSidebar>
-        <Footer />
       </Container>
+      
+      <Footer />
     </Layout>
   );
 };

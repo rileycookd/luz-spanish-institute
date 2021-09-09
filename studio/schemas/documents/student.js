@@ -14,6 +14,12 @@ export default {
   },
   fields: [
     {
+      name: 'netlifyId',
+      title: 'Netlify ID',
+      type: 'string',
+      hidden: true,
+    },
+    {
       name: 'status',
       title: 'Currently enrolled?',
       type: 'boolean',
@@ -62,6 +68,14 @@ export default {
         { type: 'classDayTime' }
       ],
       fieldset: 'schedule'
+    },
+    {
+      name: 'classes',
+      title: 'Classes',
+      type: 'array',
+      of: [
+        { type: 'class' }
+      ]
     },
     {
       name: "level",

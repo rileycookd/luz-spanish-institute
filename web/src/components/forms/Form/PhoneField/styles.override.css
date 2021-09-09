@@ -1,0 +1,198 @@
+@import '../../../typography.module.css';
+@import '../../../../styles/vars.css';
+
+.react-tel-input {
+  border: 1px solid var(--color-grey-light);
+  border-radius: var(--border-radius-default);
+}
+
+
+.react-tel-input .v-hide {
+  visibility: hidden;
+}
+
+
+
+.react-tel-input .form-control {
+  position: relative;
+  font-size: 14px;
+  letter-spacing: 0.01rem;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 6rem;
+  margin-left: 0;
+  color: var(--color-primary);
+  line-height: 25px;
+  height: 100%;
+  width: 100%;
+  border: none !important;
+}
+
+.react-tel-input .form-control.invalid-number {
+  border: 1px solid var(--color-error);
+  background-color: var(--color-white);
+  border-left-color: var(--color-grey-light);
+}
+
+.react-tel-input .form-control.invalid-number:focus {
+  border: 1px solid var(--color-error);
+  border-left-color: var(--color-grey-light);
+  background-color: var(--color-grey-xlight);
+}
+
+.react-tel-input .flag-dropdown {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey-light);
+  border-radius: 3px 0 0 3px;
+  border: none !important;
+  width: 2.25rem;
+}
+
+.react-tel-input .flag-dropdown:hover,
+.react-tel-input .flag-dropdown:focus {
+  cursor: pointer;
+}
+
+.react-tel-input .flag-dropdown.invalid-number {
+  border-color: var(--color-error);
+}
+.react-tel-input .flag-dropdown.open {
+  z-index: 2;
+  background: #fff;
+  border-radius: 3px 0 0 0;
+}
+.react-tel-input .flag-dropdown.open .selected-flag {
+  background: #fff;
+  border-radius: 3px 0 0 0;
+}
+.react-tel-input input[disabled] + .flag-dropdown:hover {
+  cursor: default;
+}
+.react-tel-input input[disabled] + .flag-dropdown:hover .selected-flag {
+  background-color: transparent;
+}
+.react-tel-input .selected-flag {
+  outline: none;
+  position: relative;
+  width: 100px;
+  height: 100%;
+  border-radius: 3px 0 0 3px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0;
+  background: transparent;
+}
+.react-tel-input .selected-flag:hover,
+.react-tel-input .selected-flag:focus {
+  background-color: #fff;
+}
+.react-tel-input .selected-flag .flag {
+  position: absolute;
+  top: 50%;
+  margin-top: -5px;
+}
+.react-tel-input .selected-flag .arrow {
+  position: relative;
+  top: 50%;
+  margin-top: -2px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid #555;
+}
+.react-tel-input .selected-flag .arrow.up {
+  border-top: none;
+  border-bottom: 4px solid #555;
+}
+.react-tel-input .country-list {
+  outline: none;
+  z-index: 1;
+  list-style: none;
+  position: absolute;
+  padding: 0;
+  margin: 10px 0 10px -1px;
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.35);
+  background-color: white;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: scroll;
+  border-radius: 0 0 3px 3px;
+}
+.react-tel-input .country-list .flag {
+  display: inline-block;
+}
+.react-tel-input .country-list .divider {
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}
+.react-tel-input .country-list .country {
+  padding: 7px 9px;
+}
+.react-tel-input .country-list .country .dial-code {
+  color: #6b6b6b;
+}
+.react-tel-input .country-list .country:hover {
+  background-color: #f1f1f1;
+}
+.react-tel-input .country-list .country.highlight {
+  background-color: #f1f1f1;
+}
+.react-tel-input .country-list .flag {
+  margin-right: 7px;
+  margin-top: 2px;
+}
+.react-tel-input .country-list .country-name {
+  margin-right: 6px;
+}
+.react-tel-input .country-list .search {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  padding: 10px 0 6px 10px;
+}
+.react-tel-input .country-list .search-emoji {
+  font-size: 15px;
+}
+.react-tel-input .country-list .search-box {
+  border: 1px solid var(--color-grey-light);
+  border-radius: 3px;
+  font-size: 15px;
+  line-height: 15px;
+  margin-left: 6px;
+  padding: 3px 8px 5px;
+  outline: none;
+}
+.react-tel-input .country-list .no-entries-message {
+  padding: 7px 10px 11px;
+  opacity: 0.7;
+}
+.react-tel-input .invalid-number-message {
+  position: absolute;
+  z-index: 1;
+  font-size: 13px;
+  left: 46px;
+  top: -8px;
+  background: #fff;
+  padding: 0 2px;
+  color: #de0000;
+}
+.react-tel-input .special-label {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  font-size: 13px;
+  left: 46px;
+  top: -8px;
+  background: #fff;
+  padding: 0 2px;
+  white-space: nowrap;
+}

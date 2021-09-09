@@ -113,10 +113,8 @@ const Page = (props) => {
           keywords={site.keywords}
           pathname={props.pathname || null}
         />
-      <Container>
-        {content}
-        <Footer {...data.site.defaultFooter} />
-      </Container>
+      {content}
+      <Footer {...data.site.defaultFooter} />
     </Layout>
   );
 };

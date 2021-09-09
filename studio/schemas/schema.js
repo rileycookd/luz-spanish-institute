@@ -24,7 +24,7 @@ import resource from './documents/resource'
 import quiz from './documents/quiz'
 import category from './documents/category'
 import footer from './documents/footer'
-
+import classDoc from './documents/class'
 
 
 import * as blocks from './blocks'
@@ -68,6 +68,7 @@ import dropdownCta from './objects/dropdownCta'
 import dropdownCtaGroup from './objects/dropdownCtaGroup'
 import dropdownThumbnailCta from './objects/dropdownThumbnailCta'
 import dropdownMenu from './objects/dropdownMenu'
+import homework from './objects/homework'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -135,7 +136,9 @@ export default createSchema({
       dropdownCta,
       dropdownThumbnailCta,
       dropdownMenu,
-      footer
+      footer,
+      homework,
+      classDoc
     ])
     .concat(allBlocks),
 })

@@ -1,4 +1,4 @@
-@import './typography.module.css';
+@import '../../typography.module.css';
 
 .root {
   width: 100%;
@@ -27,5 +27,5 @@
 }
 
 .title {
-  composes: title2 from './typography.module.css';
+  composes: title2 from '../../typography.module.css';
 }

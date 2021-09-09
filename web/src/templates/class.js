@@ -12,7 +12,7 @@ import PageHeader from '../components/page-header'
 
 import LayoutSidebar from '../components/layout-sidebar'
 import Footer from '../components/footer'
-import ClassOverview from "../components/class-overview";
+import ClassOverview from "../domain/classes/ClassOverview";
 import CtaForm from '../components/cta-form'
 
 export const query = graphql`
@@ -123,25 +123,25 @@ const ClassType = (props) => {
   return (
     <Layout navMenuItems={menuItems} navMenuCtas={menuCtas}>
       <SEO
-          title={pageTitle}
-          description={site.description}
-          keywords={site.keywords}
-        />
+        title={pageTitle}
+        description={site.description}
+        keywords={site.keywords}
+      />
+      <PageHeader
+        content="Tab list"
+        tabs={classTypes}
+        sharedPath="/classes/"
+        title="Spanish classes"
+        subtitle="Learn the way you learn best"
+      />
       <Container>
-        <PageHeader
-          content="Tab list"
-          tabs={classTypes}
-          sharedPath="/classes/"
-          title="Spanish classes"
-          subtitle="Learn the way you learn best"
-        />
         <LayoutSidebar>
           <ClassOverview {...classType} />
           <div>Sidebar</div>
         </LayoutSidebar>
-        <CtaForm title="Need lessons? Schedule a demo lesson" />
-        <Footer />
       </Container>
+      <CtaForm title="Need lessons? Schedule a demo lesson" />
+      <Footer />
     </Layout>
   );
 };

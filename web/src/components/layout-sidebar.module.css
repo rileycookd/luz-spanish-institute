@@ -1,7 +1,7 @@
 @import '../styles/vars.css';
 
 .root {
-  padding: 5.5rem var(--padding-x);
+  padding: 0;
   display: grid;
   grid-template-columns: .7fr .3fr;
   column-gap: 2rem;

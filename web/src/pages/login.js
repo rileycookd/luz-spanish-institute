@@ -5,7 +5,7 @@ import GraphQLErrorList from '../components/graphql-error-list'
 import Layout from '../containers/layout'
 import SEO from '../components/seo'
 import Container from '../components/container'
-import LoginUser from '../components/login-user'
+import LoginUser from '../components/forms/LoginUser'
 
 
 export const query = graphql`

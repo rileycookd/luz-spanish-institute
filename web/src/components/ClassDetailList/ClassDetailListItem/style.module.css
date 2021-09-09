@@ -1,0 +1,52 @@
+@import '../../typography.module.css';
+@import '../../../styles/vars.css';
+
+.root {
+  height: max-content;
+  border-radius: var(--border-radius-medium);
+  overflow: hidden;
+  box-shadow: var(--shadow-main);
+}
+
+.header {
+  background-color: var(--color-primary);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.date {
+  composes: title6 from '../../typography.module.css';
+  color: var(--color-white);
+  padding-bottom: .25rem;
+}
+
+.title {
+  font-family: 'Montserrat';
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-line-height);
+  color: var(--color-grey-xxlight);
+  font-weight: 400;
+}
+
+.content {
+  background-color: var(--color-white);
+
+  @nest & > * {
+    padding: 1rem 1.5rem;
+  }
+
+  @nest & > *:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-xlight);
+  }
+}
+
+.dots {
+  fill: var(--color-white);
+  height: 1.5rem;
+  width: 1.5rem;
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}

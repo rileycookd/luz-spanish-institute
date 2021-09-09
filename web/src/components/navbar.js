@@ -140,17 +140,23 @@ function Navbar ({ navMenuItems }) {
                 <h3 className={styles.userName}>{userData.name}</h3>
                 <DropdownArrow />
                 <ul className={styles.userDropdownContent}>
-                  <li className={styles.userDropdownItem}>
-                    <HomeIcon />
-                    <Link className={styles.userDropdownLink} to="/app">Dashboard</Link>
+                  <li>
+                    <Link className={styles.userDropdownLink} to="/app">
+                      <HomeIcon />
+                      <span>Dashboard</span>
+                    </Link>
                   </li>
-                  <li className={styles.userDropdownItem}>
+                  <li>
+                    <Link className={styles.userDropdownLink} to="/app/account">
                     <ProfileIcon />
-                    <Link className={styles.userDropdownLink} to="/app/account">Account</Link>
+                    <span>Account</span>
+                    </Link>
                   </li>
-                  <li className={styles.userDropdownItem}>
-                    <LogoutIcon />
-                    <button className={styles.userDropdownLink} onClick={(e) => handleLogout(e)}>Logout</button>  
+                  <li>
+                    <button className={styles.userDropdownLink} onClick={(e) => handleLogout(e)}>
+                      <LogoutIcon />
+                      <span>Logout</span>
+                    </button>  
                   </li>
                 </ul>
               </div>

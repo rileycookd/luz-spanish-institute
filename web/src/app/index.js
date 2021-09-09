@@ -11,8 +11,6 @@ import { navigate } from "gatsby"
 function PrivateRoute(props) {
   const identity = useIdentityContext()
   const { component: Component, location, ...rest } = props
-
-  console.log(identity.user)
   
   React.useEffect(
     () => {
@@ -23,7 +21,7 @@ function PrivateRoute(props) {
     },
     [identity.user, location]
   )
-  return identity.user ? <Component {...rest} /> : null
+  return identity.user ? <Component user={identity.user} {...rest} /> : null
 }
 
 function PublicRoute(props) {

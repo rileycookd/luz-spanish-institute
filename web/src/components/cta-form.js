@@ -4,7 +4,7 @@ import { Link } from 'gatsby'
 import { IoLocationSharp as LocationIcon } from 'react-icons/io5'
 import { BsArrowRight as ArrowIcon } from 'react-icons/bs'
 import CTALink from './CTALink'
-import { InputField, SelectField } from './form'
+import { InputField, SelectField } from './forms/Form'
 import DatePicker from "react-datepicker";
 import { getTimeZones, rawTimeZones, timeZonesNames } from "@vvo/tzdb";
 import Select from 'react-select'
