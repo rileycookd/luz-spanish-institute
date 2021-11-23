@@ -78,6 +78,7 @@ function Step1(props) {
             <legend>Choose a language:</legend>
             {languageData && languageData.map(l => (
               <RadioField 
+                key={l._id}
                 id={l.title} 
                 label={l.title}
                 name="language" 

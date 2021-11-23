@@ -1,29 +1,41 @@
 import React, { useState, useEffect } from 'react'
 
-import { Form, Step, InputField } from '../Form'
-import { IoPerson as NameIcon, IoMail as MailIcon } from 'react-icons/io5'
+import { Form, InputField, SubmitButton } from '../Form'
+import { IoMail as MailIcon } from 'react-icons/io5'
 import { BsLockFill as PasswordIcon } from 'react-icons/bs'
 import { useIdentityContext } from 'react-netlify-identity-gotrue'
 
-import { cn } from '../../../lib/helpers'
-
-import * as styles from './style.module.css'
+import * as styles from '../RegisterUser/style.module.css'
 import CTALink from '../../CTALink'
 
 import { navigate } from 'gatsby'
+
+import { useForm, useFormState } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
+
 
 
 
 function RegisterUser(props) {
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formStatus, setFormStatus] = useState('default')
+  const schema = yup.object().shape({
+    name: yup.string().required("Please enter your full name"),
+    email: yup.string().email("Please enter a valid email").required("Please enter your email"),
+    password: yup.string().required("Please enter a password"),
+  })
 
-  const [nameValue, setNameValue] = useState("")
-  const [passwordValue, setPasswordValue] = useState("")
-  const [emailValue, setEmailValue] = useState("")
+  const { watch, register, getValues, control, handleSubmit, formState: { errors, isDirty } } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  })
+
+  const { isValid } = useFormState({
+    control
+  });
 
   const identity = useIdentityContext()
+
 
   const handleSignup = async () => {
     await identity.signup({
@@ -40,79 +52,53 @@ function RegisterUser(props) {
   return (
     <div className={styles.root}>
       <div className={styles.formContainer}>
-        {formStatus === "default" && (
-          <>
-          <div className={styles.titleContainer}>
-            <h1 className={styles.title}>Sign up</h1>
-            <p className={styles.info}>
-              Already have an account? 
-              <span><CTALink kind="inline" route="/login">Login</CTALink></span>
-            </p>
-          </div>
-          <Form 
-            onSubmit={handleSignup}
-            name="signup-form"
+      <div className={styles.titleContainer}>
+        <h1 className={styles.title}>Sign up</h1>
+        <p className={styles.info}>
+          Already have an account?
+          <span><CTALink kind="inline" route="/login">Sign up</CTALink></span>
+        </p>
+      </div>
+          <Form
+            onSubmit={handleSubmit(handleSignup)}
+            name="login-form"
             method="POST"
             action="/success/"
-            currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-            formStatus={formStatus}
-            setFormStatus={setFormStatus}
-            cta="Sign up"
+            register={register}
           >
-            <Step title="User info">
-              <InputField
-                defaultValue={nameValue}
-                label="Full name:"
-                isRequired={true}
-                errorMessage="Please enter your full name"
-                name="name"
-                placeholder="Your full name" 
-                type="text"
-                onChange={(e) => setNameValue(e.target.value)}
-              >
-                <NameIcon />
-              </InputField>
-              <InputField
-                defaultValue={emailValue}
-                label="Email:"
-                name="email"
-                isRequired={true}
-                placeholder="you@email.com" 
-                type="text"
-                errorMessage="Please enter a valid email"
-                pattern={/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/}
-                onChange={(e) => setEmailValue(e.target.value)}
-              >
-                <MailIcon />
-              </InputField>
-              <InputField
-                defaultValue={passwordValue}
-                label="Password:"
-                name="password"
-                isRequired={true}
-                errorMessage="Please enter a secure password"
-                placeholder="Enter a password" 
-                type="password"
-                onChange={(e) => setPasswordValue(e.target.value)}
-              ><PasswordIcon /></InputField>
-            </Step>
+            <InputField
+              label="Full name:"
+              name="name"
+              placeholder="Enter your name" 
+              id="email"
+              type="text"
+              error={errors?.name}
+              register={register}
+            >
+              <MailIcon />
+            </InputField>
+            <InputField
+              label="Email:"
+              name="email"
+              placeholder="you@email.com" 
+              id="email"
+              type="text"
+              error={errors?.email}
+              register={register}
+            >
+              <MailIcon />
+            </InputField>
+            <InputField
+              label="Password:"
+              name="password"
+              placeholder="Enter your password" 
+              id="password"
+              type="password"
+              error={errors?.password}
+              register={register}
+            ><PasswordIcon /></InputField>
+            <SubmitButton disabled={!isValid} type="Submit">Login</SubmitButton>
           </Form>
-          </>
-        )}
-        {formStatus === 'success' && (
-          <div className={styles.titleContainer} style={{justifyItems: 'center', textAlign: 'center'}}>
-            <h1 className={styles.formTitle}>Check your email</h1>
-            <p className={styles.info}>We just sent you a confirmation link. Click the link in your email to verify your account.</p>
-          </div>
-        )}
-        {formStatus === 'error' && (
-          <div className={styles.titleContainer} style={{justifyItems: 'center', textAlign: 'center'}}>
-            <h1 className={styles.formTitle}>Hm... something went wrong</h1>
-            <p className={styles.info}>We’re sorry! We couldn’t create your account. Please try again or try contacting us directly if you need help.</p>   
-            <button className={cn(button, buttonSmall)} onClick={() => window.location.reload()}>Try again</button> 
-          </div>
-        )}
       </div>
     </div>
   )

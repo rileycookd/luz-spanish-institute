@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import * as styles from './contact-block.module.css'
 import { ImPhone as PhoneIcon, ImFacebook as FacebookIcon, ImLinkedin2 as LinkedinIcon } from 'react-icons/im'
 import { IoLogoInstagram as InstagramIcon } from 'react-icons/io5'
-import { Form, Step, InputField, TextareaField } from './forms/Form'
+import { Form, FormContainer, FormTitle, InputField, TextareaField } from './forms/Form'
+import ContactUs from './forms/Contact'
 import { IoPerson as NameIcon, IoMail as MailIcon, IoLocationSharp as LocationIcon } from 'react-icons/io5'
 
 function ContactBlock (props) {
@@ -32,47 +33,7 @@ function ContactBlock (props) {
         </div>
       </div>
       <div className={styles.formWrapper}>
-      <Form 
-        name="contact-form"
-        method="POST"
-        action="/success/"
-        formStatus={formStatus}
-        setFormStatus={setFormStatus}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        totalSteps={totalSteps}
-        cta="Send message"
-      >
-        <Step title="How can we help you?" style="dark">
-          <InputField
-            label="Full name:"
-            required={true}
-            errorMessage="Please enter your full name"
-            name="name"
-            placeholder="Your full name" 
-            type="text"
-          >
-            <NameIcon />
-          </InputField>
-          <InputField
-            label="Email:"
-            name="email"
-            placeholder="you@email.com" 
-            type="text"
-            errorMessage="Please enter a valid email"
-            pattern={/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/}
-          >
-            <MailIcon />
-          </InputField>
-          <TextareaField
-            label="Message:"
-            name="message"
-            errorMessage="Please include a message"
-            placeholder="Write your message here" 
-            type="text"
-          ></TextareaField>
-        </Step>
-      </Form>
+        <ContactUs />
       </div>
     </div>
   )

@@ -119,9 +119,9 @@ function Step2(props) {
         </div>
 
 
-        <pre>{JSON.stringify(watch(), null, 2)}</pre>
+        {/* <pre>{JSON.stringify(watch(), null, 2)}</pre>
         <div>{JSON.stringify(errors)}</div>
-        <div>{isValid.toString()}</div>
+        <div>{isValid.toString()}</div> */}
       </Form>
 
     </FormContainer>

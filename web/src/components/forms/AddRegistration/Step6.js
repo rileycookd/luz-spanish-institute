@@ -83,6 +83,7 @@ function Step6(props) {
             <legend>Choose a package:</legend>
             {chosenClassType.packages.map(p => (
               <RadioField 
+                key={p._id}
                 id={p.title} 
                 label={`${p.quantity} class${p.quantity > 1 ? 'es' : ''}`}
                 name="package" 

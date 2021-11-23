@@ -225,8 +225,8 @@ function Step7(props) {
                 </Row>
               </Header>
               <Body>
-                {initialState.days?.map(d => (
-                  <Row>
+                {initialState.days?.map((d, i) => (
+                  <Row key={`${d.day}-${d.start}-${d.end}-${i}`}>
                     <Cell>{d.day}</Cell>
                     <Cell>{d.start}-{d.end}</Cell>
                   </Row>
@@ -247,9 +247,9 @@ function Step7(props) {
             </ConfirmationTable>
 
          
-            <pre>{JSON.stringify(watch(), null, 2)}</pre>
+            {/* <pre>{JSON.stringify(watch(), null, 2)}</pre>
             <div>{JSON.stringify(errors)}</div>
-            <div>{isValid.toString()}</div>
+            <div>{isValid.toString()}</div> */}
           </>
         <p>No credit card required. Payment will be due once your registration has been accepted.</p>
         <div className={styles.buttonContainer}> 
