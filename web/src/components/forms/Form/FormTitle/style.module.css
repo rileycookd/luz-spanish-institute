@@ -1,0 +1,14 @@
+@import '../../../typography.module.css';
+
+.root {
+  composes: title3 from '../../../typography.module.css';
+  text-align: left;
+  display: flex;
+  align-items: center;
+
+  @nest & > svg, & > span > svg {
+    height: 2rem;
+    width: 2rem;
+    margin-right: .5rem;
+  }
+}

@@ -25,6 +25,8 @@ import quiz from './documents/quiz'
 import category from './documents/category'
 import footer from './documents/footer'
 import classDoc from './documents/class'
+import classPackage from './documents/classPackage'
+import addRegistrationForm from './documents/addRegistrationForm'
 
 
 import * as blocks from './blocks'
@@ -36,7 +38,6 @@ import availability from './objects/availability'
 import mainImage from './objects/mainImage'
 import blockContent from './objects/blockContent'
 import blockText from './objects/blockText'
-import classDiscount from './objects/classDiscount'
 import classPricing from './objects/classPricing'
 import ctaGroup from './objects/ctaGroup'
 import ctaLabel from './objects/ctaLabel'
@@ -69,6 +70,7 @@ import dropdownCtaGroup from './objects/dropdownCtaGroup'
 import dropdownThumbnailCta from './objects/dropdownThumbnailCta'
 import dropdownMenu from './objects/dropdownMenu'
 import homework from './objects/homework'
+import groupDiscount from './objects/groupDiscount'
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -106,7 +108,7 @@ export default createSchema({
       languageLevelGroup,
       blockContent,
       figure,
-      classDiscount,
+      classPackage,
       company,
       category,
       student,
@@ -138,7 +140,9 @@ export default createSchema({
       dropdownMenu,
       footer,
       homework,
-      classDoc
+      classDoc,
+      addRegistrationForm,
+      groupDiscount
     ])
     .concat(allBlocks),
 })

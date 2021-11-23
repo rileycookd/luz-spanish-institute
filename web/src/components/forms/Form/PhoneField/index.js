@@ -10,8 +10,20 @@ import { IoEye, IoEyeOff } from 'react-icons/io5'
 
 const PhoneField = ({children, register, isDirty, disabled, control, error, id, label, name}) => {
 
+  const validStyles = () => {
+    if(!disabled) {
+      if(isDirty) {
+        return cn(styles.inputGroup, styles.valid)
+      } else {
+        return styles.inputGroup
+      }
+    } else {
+      return cn(styles.disabled, styles.inputGroup)
+    }
+  }
+
   return (
-    <div className={error ? styles.inputGroup : cn(styles.inputGroup, styles.valid)}>
+    <div className={validStyles()}>
       <Controller
           name={name}
           control={control}
@@ -21,8 +33,10 @@ const PhoneField = ({children, register, isDirty, disabled, control, error, id, 
           render={({ field: { onChange, value } }) => (
             <PhoneInput
               value={value}
+              enableSearch={true}
               onChange={onChange}
               country='us'
+              disabled={disabled}
               id={id}
               className={
                 error && error.message 

@@ -1,0 +1,17 @@
+.root {
+  display: grid;
+  row-gap: 2rem;
+}
+
+.button-container {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 2rem;
+  justify-content: end;
+  align-items: center;
+}
+
+.fieldset {
+  display: grid;
+  row-gap: .5rem;
+}

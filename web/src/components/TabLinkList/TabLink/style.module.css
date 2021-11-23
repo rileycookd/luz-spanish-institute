@@ -1,0 +1,50 @@
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
+
+.tab {
+  composes: base from '../../typography.module.css';
+  cursor: pointer;
+  padding: .75rem 0;
+  font-family: 'Montserrat';
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-grey-medium);
+  text-decoration: none;
+  border-bottom: 5px solid transparent;
+  transition: color .1s ease-out;
+
+  @nest &.dark {
+    color: var(--color-text-light);
+
+    @nest &.active {
+      color: var(--color-primary);
+
+      @nest &:hover {
+        color: var(--color-primary);
+      }
+    }
+
+    @nest &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  @nest &.active {
+    color: var(--color-white);
+    border-bottom: 5px solid var(--color-accent);
+    font-weight: 700;
+    transition: color .1s ease-out, border-bottom .1s ease-out;
+
+
+
+    @nest &:hover {
+      border-bottom: 5px solid var(--color-accent);
+      color: var(--color-white);
+    }
+  }
+
+  @nest &:hover {
+    border-bottom: 1px solid var(--color-text-light);
+    color: var(--color-text-light);
+  }
+}

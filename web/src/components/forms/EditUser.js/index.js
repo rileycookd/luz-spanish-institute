@@ -8,7 +8,7 @@ import {
   FileField, 
   SelectField, 
   TimezoneField, 
-  PrimaryButton, 
+  SubmitButton, 
   PhoneField,
   EditButton,
   AvatarField
@@ -20,6 +20,7 @@ import {
   IoBriefcase as CompanyIcon, 
   IoMail as MailIcon 
 } from 'react-icons/io5'
+
 import { BsLockFill as PasswordIcon } from 'react-icons/bs'
 import { ImPhone as PhoneIcon } from 'react-icons/im'
 import { useIdentityContext } from 'react-netlify-identity-gotrue'
@@ -46,9 +47,10 @@ function EditUser(props) {
     timezone: yup.string().required("Choose your timezone"),
   })
 
-  const { watch, register, control, handleSubmit, formState: { errors, isDirty } } = useForm({
+  const { watch, register, control, handleSubmit, reset, formState: { errors, isDirty, isValid } } = useForm({
     mode: 'onBlur',
     defaultValues: {
+      _id: props._id,
       name: props.name,
       email: props.email,
       city: props.city,
@@ -67,11 +69,11 @@ function EditUser(props) {
   const [formStatus, setFormStatus] = useState('default')
   const [editMode, setEditMode] = useState(false) 
 
-
-  console.log(props)
-
-
-  const identity = useIdentityContext()
+  useEffect(() => {
+    if(!editMode) {
+      reset()
+    }
+  }, [editMode])
 
   // Transforms the form data from the React Hook Form output to a format Netlify can read
   const encode = (data) => {
@@ -90,7 +92,7 @@ function EditUser(props) {
     fetch(`/`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": 'edit-user-form', "_id": props._id, ...formData }),
+      body: encode({ "form-name": 'edit-user-form', ...formData }),
     })
       .then((response) => {
         reset()
@@ -124,20 +126,17 @@ function EditUser(props) {
           <Form
             onSubmit={handleSubmit(handlePost)}
             name="edit-user-form"
-            method="POST"
-            action="/success/"
-            // formStatus={formStatus}
-            // setFormStatus={setFormStatus}
+            register={register}
           >
-
-            <AvatarField
+            <input type="hidden" {...register('_id')} />
+            {/* <AvatarField
               label="Upload photo"
               name="photo"
               accept=".png, .jpg, .jpeg"
               onChange={(e) => setPicValue(e.target.value)}
               currentImage={props.image}
               disabled={!editMode}
-            />
+            /> */}
             <InputField
               label="Full name:"
               id="name"
@@ -200,7 +199,7 @@ function EditUser(props) {
             </InputField>
             <TimezoneField 
               // placeholder="Search..." 
-              label="Select your timezone:" 
+              label="Timezone:" 
               name="timezone"
               id="timezone"
               control={control}
@@ -210,7 +209,7 @@ function EditUser(props) {
             >
               <TimezoneIcon />
             </TimezoneField> 
-            <InputField
+            {/* <InputField
               label="Company:"
               id="company"
               name="company"
@@ -221,8 +220,8 @@ function EditUser(props) {
               disabled={!editMode}
             >
               <CompanyIcon />
-            </InputField>
-            {editMode && <PrimaryButton type="Submit">Save changes</PrimaryButton>}
+            </InputField> */}
+            {editMode && (isDirty && isValid) && <SubmitButton type="Submit">Save changes</SubmitButton>}
 
 
 <pre>{JSON.stringify(watch(), null, 2)}</pre>
@@ -231,7 +230,7 @@ function EditUser(props) {
           </Form>
           </>
         )}
-        {formStatus === 'success' && (
+        {/* {formStatus === 'success' && (
           <div className={styles.titleContainer} style={{justifyItems: 'center', textAlign: 'center'}}>
             <h1 className={styles.formTitle}>Check your email</h1>
             <p className={styles.info}>We just sent you a confirmation link. Click the link in your email to verify your account.</p>
@@ -243,7 +242,7 @@ function EditUser(props) {
             <p className={styles.info}>We’re sorry! We couldn’t create your account. Please try again or try contacting us directly if you need help.</p>   
             <button className={cn(button, buttonSmall)} onClick={() => window.location.reload()}>Try again</button> 
           </div>
-        )}
+        )} */}
       </div>
     </div>
   )

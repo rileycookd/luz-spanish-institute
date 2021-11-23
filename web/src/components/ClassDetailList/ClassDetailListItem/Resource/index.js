@@ -7,16 +7,18 @@ import { Link } from 'gatsby'
 
 function Resource(props) {
 
-  console.log(props)
+  console.log("PROPS: ", props)
 
   const {
-    title
+    title,
+    pathPrefix,
+    slug
   } = props
   
   return (
     <div className={styles.root}>
        <Icon />
-       <Link className={styles.link}>{title}</Link>
+       <Link to={`/${pathPrefix ? `${pathPrefix}/` : ''}${slug.current}`} className={styles.link}>{title}</Link>
     </div>
   )
 }

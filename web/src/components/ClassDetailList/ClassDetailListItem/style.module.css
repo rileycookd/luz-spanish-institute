@@ -2,51 +2,73 @@
 @import '../../../styles/vars.css';
 
 .root {
-  height: max-content;
+  display: flex;
+  padding: 1.5rem;
+  align-items: center;
+  background-color: var(--color-grey-xxxlight);
   border-radius: var(--border-radius-medium);
-  overflow: hidden;
-  box-shadow: var(--shadow-main);
+  border: 1px solid var(--color-grey-xlight-alt);
+  position: relative;
+  cursor: pointer;
+  transition: border .1s ease-out, background-color .1s ease-out;
+
+  @nest &:hover {
+    z-index: 2;
+    border: 1px solid var(--color-secondary);
+    background-color: var(--color-secondary-light);
+  }
 }
 
-.header {
-  background-color: var(--color-primary);
-  padding: 1.5rem;
-  position: relative;
+.date-container {
+  padding: .5rem .75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1.5rem;
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight-alt);
+  background-color: var(--color-white);
 }
 
 .date {
-  composes: title6 from '../../typography.module.css';
-  color: var(--color-white);
-  padding-bottom: .25rem;
+  composes: xsmall from '../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 700;
 }
+
+.header {
+  /* background-color: var(--color-white);
+  position: relative; */
+}
+
+
 
 .title {
   font-family: 'Montserrat';
   font-size: var(--font-small-size);
   line-height: var(--font-small-line-height);
-  color: var(--color-grey-xxlight);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.subtitle {
+  font-family: 'Montserrat';
+  font-size: var(--font-xsmall-size);
+  line-height: var(--font-xsmall-line-height);
+  color: var(--color-primary);
   font-weight: 400;
 }
 
-.content {
-  background-color: var(--color-white);
 
-  @nest & > * {
-    padding: 1rem 1.5rem;
-  }
-
-  @nest & > *:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-xlight);
-  }
-}
-
-.dots {
-  fill: var(--color-white);
-  height: 1.5rem;
-  width: 1.5rem;
+.chevron {
+  fill: var(--color-primary);
+  height: 1.25rem;
+  width: 1.25rem;
   position: absolute;
   right: 1.5rem;
   top: 50%;
   transform: translateY(-50%);
+  margin-right: 0;
   cursor: pointer;
 }

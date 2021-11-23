@@ -1,24 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ClassEventListItem from './ClassEventListItem'
 import * as styles from './style.module.css'
+import { parseISO } from 'date-fns'
+
+import { useGetCurrentUserQuery } from '../../services/sanityApi'
+import { useIdentityContext } from "react-netlify-identity-gotrue"
 
 function ClassEventList(props) {
-  const {
-    children
-  } = props
 
+  const identity = useIdentityContext()
+  const { data, error, isLoading } = useGetCurrentUserQuery(identity.user.id)
+
+  const classes = data?.classes?.filter(c => parseISO(c.start) > new Date())
 
   return (
-    <ul className={styles.root}>
-      <li className={styles.group}>
-        <h3 className={styles.title}>Next class</h3>
-        {children && children.length && <ClassEventListItem {...children[0]}/>}
-      </li>
-      <li className={styles.group}>
-        {children && children.length && <h3 className={styles.title}>Upcoming classes ({children.length - 1})</h3>}
-        {children?.filter((c, i) => i > 0).map(c => <ClassEventListItem {...c} />)}
-      </li>
-    </ul>
+    <>
+
+      { error ? (
+
+        <p>Whoops, something went wrong. Try again later</p>
+
+      ) : isLoading ? (
+
+        <p>Loading...</p>
+
+      ) : data ? (
+
+        <>
+          {classes?.length ? (
+            <>
+              <h3 className={styles.title}>Upcoming classes ({classes.length})</h3>
+              <ul className={styles.list}>
+                {classes.map(c => <ClassEventListItem {...c} />)}
+              </ul>
+              
+            </>
+          ) : (
+            <p>You don't have any upcoming classes</p>
+          )}
+        </>
+        
+      ) : null}
+    </>
   )
 }
 

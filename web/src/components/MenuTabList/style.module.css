@@ -1,0 +1,8 @@
+@import '../../styles/vars.css';
+
+.root {
+  display: grid;
+  align-content: start;
+  width: 100%;
+}
+

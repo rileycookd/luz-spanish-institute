@@ -1,0 +1,64 @@
+@import '../../../../typography.module.css';
+@import '../../../../../styles/vars.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  color: var(--color-text-light);
+
+  @nest &.active {
+    color: var(--color-secondary);
+
+    @nest & > .icon-container > .icon {
+      background-color: var(--color-secondary);
+    }
+
+    @nest & > .title {
+      color: var(--color-secondary);
+    }
+  }
+  
+  @nest &:first-child > .icon-container:before {
+    background-color: transparent;
+  }
+
+  @nest &:last-child > .icon-container:after {
+    background-color: transparent;
+  }
+}
+
+.icon-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  color: inherit;
+
+  @nest &:before, &:after {
+    content: "";
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+  }
+}
+
+.icon {
+  composes: title6 from '../../../../typography.module.css';
+  border-radius: 50%;
+  background-color: var(--color-text-light);
+  color: var(--color-white);
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: .25rem;
+  position: relative;
+}
+
+.title {
+  composes: title 6 from '../../../../typography.module.css';
+  color: var(--color-text-light);
+}

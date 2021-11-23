@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import * as styles from './style.module.css'
 import blankProfilePic from '../../../../images/blank-profile.svg'
 import { IoMdCloudUpload as UploadIcon } from 'react-icons/io'
@@ -9,22 +9,40 @@ import { ImageCropper } from '../../Form'
  const AvatarField = ({ register, disabled, accept, currentStep, step, pattern, isRequired, errors, errorMessage, label, name, placeholder, children }) => { 
 
   const errorMessageValue = errorMessage ? errorMessage : "Please enter a valid value"
+  const uploadInputRef = React.useRef();
+  const croppedInputRef = React.useRef();
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
 
+  const handleCancel = () => {
+    uploadInputRef.current.value = null
+    setSelectedImage(null)
+  }
+
   console.log("CROPPED: ", croppedImage)
   console.log("SELECTED: ", selectedImage)
 
+  
+
   return (
     <div className={styles.root}>
-      <img className={styles.image} src={croppedImage ? croppedImage : blankProfilePic} />
+      <img className={styles.image} src={croppedImage ? URL.createObjectURL(croppedImage) : blankProfilePic} />
       {selectedImage && (
-        <ImageCropper onSubmit={setCroppedImage} onCancel={() => setSelectedImage(null)} image={selectedImage} />
+        <ImageCropper onSubmit={setCroppedImage} onCancel={() => handleCancel()} image={selectedImage} />
       )}
       {!disabled && (
         <>
           <input
+            ref={uploadInputRef}
+            id={name}
+            type='file'
+            onChange={(event) => {
+              setSelectedImage(event.target.files[0]);
+            }}
+          />
+          <input 
+            ref={croppedInputRef}
             id={name}
             type='file'
             name={name}
@@ -35,19 +53,6 @@ import { ImageCropper } from '../../Form'
             onChange={(event) => {
               setSelectedImage(event.target.files[0]);
             }}
-            // onChange={onChange}
-            {...(currentStep >= step && { ref: register({
-              pattern: {
-                value: pattern,
-                message: errorMessageValue
-              },
-              required: {
-                value: isRequired,
-                pattern: pattern,
-                message: errorMessageValue,
-              }
-            })} )}
-            style={children ? {paddingLeft: '3.5rem'} : {}}
           />
           <div className={styles.inputGroup}>
             <label className={styles.label} htmlFor={name}>

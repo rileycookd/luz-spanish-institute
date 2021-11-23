@@ -41,6 +41,7 @@
     "react-player": "^1.15.2",
     "react-select": "^4.3.1",
     "react-timepicker": "^2.0.2",
+    "react-world-flags": "^1.4.0",
     "react-youtube": "^7.13.1",
     "sanity-plugin-asset-source-thispersondoesnotexist": "0.0.1",
     "sanity-plugin-asset-source-unsplash": "^0.1.3",

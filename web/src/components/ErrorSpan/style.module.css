@@ -1,0 +1,6 @@
+@import '../../styles/vars.css';
+
+.root {
+  display: flex;
+  color: var(--color-error);
+}

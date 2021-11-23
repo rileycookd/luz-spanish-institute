@@ -1,19 +1,15 @@
 @import '../../styles/vars.css';
 @import '../typography.module.css';
 
-.root {
+.list {
   list-style: none;
   display: grid;
-  row-gap: 4rem;
+  row-gap: .5rem;
   align-content: start;
-}
-
-.group {
-  display: grid;
-  row-gap: 1.5rem;
 }
 
 .title {
   composes: title6 from '../typography.module.css';
-  color: var(--color-grey-medium);
+  color: var(--color-primary);
+  margin-bottom: 1rem;
 }

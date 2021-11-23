@@ -1,0 +1,19 @@
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
+
+
+.root {
+  background-color: var(--color-primary);
+  width: 220px;
+  height: 100vh;
+  position: fixed;
+}
+
+.header {
+  color: var(--color-white);
+  padding: 2rem;
+}
+
+.list {
+  margin-top: 30%;
+}

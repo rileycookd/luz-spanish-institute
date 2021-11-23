@@ -1,12 +1,11 @@
 import React, { useEffect } from "react"
-import { Router } from "@reach/router"
-import Layout from "../components/layout"
-import Navbar from "../components/navbar"
-import Homepage from "./homepage"
-// import Main from "./main"
-import Login from "./login"
+import { Router, Redirect } from "@reach/router"
+import Dashboard from "./routes/Dashboard"
 import { useIdentityContext } from "react-netlify-identity-gotrue"
 import { navigate } from "gatsby"
+
+import Enrollment from './routes/Enrollment'
+import { StudentAppLayout } from "../components/Layout/index.js"
 
 function PrivateRoute(props) {
   const identity = useIdentityContext()
@@ -16,7 +15,7 @@ function PrivateRoute(props) {
     () => {
       if (!identity.user && location.pathname !== `/login`) {
         // If the user is not logged in, redirect to the login page.
-        navigate(`/login`)
+        // navigate(`/login`)
       }
     },
     [identity.user, location]
@@ -33,21 +32,29 @@ export default function App(props) {
   const identity = useIdentityContext()
   const { location } = props
 
-  useEffect(
-    () => {
-      if (!identity.user && location.pathname !== `/login`) {
-        // If the user is not logged in, redirect to the login page.
-        navigate(`/login`)
-      }
-    },
-    [identity.user, location]
-  )
+  // useEffect(
+  //   () => {
+  //     if (!identity.user && location.pathname !== `/login`) {
+  //       // If the user is not logged in, redirect to the login page.
+  //       navigate(`/login`)
+  //     }
+  //   },
+  //   [identity.user, location]
+  // )
+
+  // const user = useSelector((state) => state.user.value)
+
+  // alert(user.name)
 
   return (
     <>
       {identity && (
         <Router basepath="/app">
-          <PrivateRoute path="/" component={Homepage} />
+          <PrivateRoute path="/" component={StudentAppLayout}>
+            <PrivateRoute path="/" component={Dashboard} />
+            <PrivateRoute path="/enrollment/*" component={Enrollment} />
+          </PrivateRoute>
+         
         </Router>
       )}
     </>

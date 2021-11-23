@@ -32,6 +32,19 @@
   align-items: center;
   position: relative;
 
+  @nest &.disabled > .container {
+    border: none;
+    outline: none;
+
+    @nest & > .button {
+      display: none;
+    }
+
+    @nest & > .input {
+      padding-left: 3.5rem;
+    }
+  }
+
   @nest &.valid > svg {
     fill: var(--color-secondary);
   }
@@ -111,10 +124,14 @@
   }
 
   @nest &[disabled], &:disabled, &:read-only:not([type="file"]) {
-    cursor: not-allowed;
-    color: var(--color-grey-medium);
+    background: transparent;
+    border: none;
     outline: none;
-    background-color: var(--color-grey-xlight);
+    cursor: default;
+
+    @nest & + flag-dropdown {
+      display: none;
+    }
 
     @nest & + .input-label {
       color: var(--color-grey-medium);

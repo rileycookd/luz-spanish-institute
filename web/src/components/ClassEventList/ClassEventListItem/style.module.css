@@ -3,32 +3,58 @@
 
 .root {
   display: flex;
-  padding: 2rem 1.5rem;
+  padding: 1rem;
   align-items: center;
   background-color: var(--color-white);
-  box-shadow: var(--shadow-main);
   border-radius: var(--border-radius-medium);
-  border: 1px solid var(--color-grey-xxlight);
+  border: 1px solid var(--color-grey-xlight);
   position: relative;
+  cursor: pointer;
+  transition: border .1s ease-out, background-color .1s ease-out;
+
+  @nest &:hover {
+    z-index: 2;
+    border: 1px solid var(--color-secondary);
+    background-color: var(--color-secondary-light);
+  }
 }
 
-.title {
-  composes: title6 from '../../typography.module.css';
+.date-container {
+  padding: .25rem .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.date {
+  composes: xsmall from '../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 700;
+}
+
+.time-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.time {
+  composes: xsmall from '../../typography.module.css';
+  font-family: var(--font-title);
   width: 100%;
-}
 
-.title-span {
-  margin-left: .5rem;
-  composes: small from '../../typography.module.css';
-  font-weight: 400;
+  @nest &:first-child {
+    margin-bottom: .25rem;
+  }
 }
 
 .dots {
   fill: var(--color-primary);
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 1.25rem;
+  width: 1.25rem;
   position: absolute;
-  right: 1.5rem;
+  right: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;

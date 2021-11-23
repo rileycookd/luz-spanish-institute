@@ -10,7 +10,7 @@ const InputField = ({children, register, error, id, label, ...props}) => {
     <div className={styles.inputGroup}>
       <input
         {...props}
-        {...register(props.name, { required: true })}
+        {...register(props.name)}
         className={
           error && error.message 
           ? cn(styles.error, styles.input) 

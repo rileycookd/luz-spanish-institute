@@ -1,0 +1,21 @@
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
+
+body {
+  background-color: var(--color-white);
+}
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.content {
+  margin-left: 220px; 
+  width: 100%;
+  
+  @nest & > div:first-child {
+    width: 100%;
+  }
+}

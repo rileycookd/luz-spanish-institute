@@ -1,0 +1,116 @@
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
+
+.root {
+  display: flex;
+  color: var(--color-primary);
+  align-items: center;
+  text-decoration: none;
+  justify-content: space-between;
+  background-color: var(--color-grey-xxxlight);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight-alt);
+  position: relative;
+  cursor: pointer;
+  transition: border .1s ease-out, background-color .1s ease-out;
+  padding: 1.75rem 1.25rem;
+  /* box-shadow: var(--shadow-primary-xlight); */
+
+  @nest &:hover {
+    background-color: var(--color-secondary-light);
+    border: 1px solid var(--color-secondary);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.image {
+  height: 2.25rem;
+  width: 3rem;
+  border-radius: var(--border-radius-default);
+  margin-right: 1rem;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  composes: titlesub from '../../typography.module.css';
+  color: var(--color-primary);
+  margin-right: .5rem;
+}
+
+.status {
+  composes: xsmall from '../../typography.module.css';
+  display: flex;
+  align-items: center;
+  font-family: var(--font-title);
+  font-weight: 500;
+  height: max-content;
+  width: max-content;
+  justify-content: flex-start;
+  padding: .25rem .5rem;
+  border-radius: var(--border-radius-default);
+
+  @nest &.active {
+    color: var(--color-secondary);
+    background-color: var(--color-secondary-light);
+  }
+
+  @nest &.pending {
+    color: var(--color-warning-dark);
+    background-color: var(--color-warning-light);
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  @nest & > svg {
+    height: 1.25rem;
+    width: 1.25rem;
+    fill: var(--color-primary);
+    margin-left: 1rem;
+    margin-right: 0;
+  }
+}
+
+
+.remaining {
+  composes: xsmall from '../../typography.module.css';
+  text-align: center;
+  color: var(--color-text-medium-light);
+  margin: 0 1.25rem 0 0;
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  composes: xxsmall from '../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 600;
+  white-space: nowrap;
+  width: max-content;
+  padding: .5rem 1rem;
+  border-radius: var(--border-radius-default);
+  background-color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  color: var(--color-white);
+  text-transform: uppercase;
+  transition: background-color .1s ease-out;
+
+  @nest &:hover {
+    cursor: pointer;
+    background-color: var(--color-secondary-medium);
+  }
+}

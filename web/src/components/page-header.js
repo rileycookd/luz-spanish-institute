@@ -1,6 +1,7 @@
 import React, { useRef, useState, useLayoutEffect } from 'react'
 import * as styles from './page-header.module.css'
 import * as tabStyles from './tab-component.module.css'
+import { Router } from "@reach/router"
 import CTALinkList from './cta-link-list'
 import { buildImageObj, cn } from "../lib/helpers"
 import { imageUrlFor } from "../lib/image-url"

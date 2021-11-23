@@ -31,7 +31,8 @@
 }
 
 .input-label {
-  composes: titlesub from '../../../typography.module.css';
+  composes: small from '../../../typography.module.css';
+  font-family: var(--font-title);
   font-weight: 400;
   position: absolute;
   top: .75rem;

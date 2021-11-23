@@ -40,7 +40,7 @@
 .link {
   color: var(--color-text-light);
   display: grid;
-  row-gap: 1rem;
+  row-gap: .5rem;
   padding: 4rem 2.5rem;  
 
   @nest & > svg {
@@ -53,11 +53,12 @@
 }
 
 .title {
-  transition: color .2s ease-out;
   composes: title6 from './typography.module.css';
+  transition: color .2s ease-out;
 }
 
 .subtitle {
   composes: paragraphMain from './typography.module.css';
+  margin-bottom: .5rem;
 }
 

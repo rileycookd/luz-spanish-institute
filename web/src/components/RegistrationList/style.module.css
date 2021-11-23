@@ -1,0 +1,50 @@
+@import '../typography.module.css';
+@import '../../styles/vars.css';
+
+.list {
+  display: grid;
+  row-gap: .5rem;
+  padding: 1rem;
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight);
+  background-color: var(--color-white);
+  list-style: none;
+}
+
+.title {
+  composes: title6 from '../typography.module.css';
+  margin-bottom: 1rem;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: .5rem;
+}
+
+.button {
+  composes: xsmall from '../typography.module.css';
+  text-decoration: none;
+  font-weight: 600;
+  font-family: var(--font-title);
+  display: flex;
+  align-items: center;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  cursor: pointer;
+  padding: .5rem .75rem;
+  transition: background-color .1s ease-out;
+  border-radius: var(--border-radius-light);
+
+  @nest & > svg {
+    fill: currentColor;
+    height: 1rem;
+    width: 1rem;
+    margin-right: .25rem;
+  }
+
+  @nest &:hover {
+    background-color: var(--color-secondary-medium);
+  }
+}

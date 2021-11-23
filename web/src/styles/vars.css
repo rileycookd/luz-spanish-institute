@@ -12,6 +12,12 @@
   --color-grey-light: #C4C4C4;
   --color-grey-xlight: #E5E5E5;
   --color-grey-xxlight: #F3F5F6;
+  --color-grey-xxxlight: #F9FAFB;
+
+  --color-grey-xlight-alt: #E8ECED;
+
+
+  --color-grey-hover: #E8ECED;
 
   /* Primary Shades */
 
@@ -21,21 +27,29 @@
   --color-primary-medium-dark: #0B3447;
   --color-primary-medium: #0D4159;
   --color-primary-medium-light: #114E6A;
+  --color-primary-medium-light-rgb: 17, 78, 106;
+  --color-primary-light: #1B82B1;
 
   /* Accent Shades */
 
   --color-accent: #F2BB05;
   --color-accent-dark: #DCAA04;
+  --color-accent-light: #FEF5D7;
 
   /* Secondary Shades */
   
   --color-secondary: #00BFB2;
   --color-secondary-rgb: 97, 152, 142;
 
+  --color-secondary-medium: #00E0D1;
+
+  --color-secondary-light: #DEF7F5;
+
   /* Text Colors */
 
   --color-text-dark: #4E616A;
   --color-text-medium: #5F7681;
+  --color-text-medium-light: #7E95A0;
   --color-text-light: #ADBCC2;
 
   /* Status Colors */
@@ -43,7 +57,13 @@
   --color-error: #D44D5C;
   --color-success: #64B990;
 
+  --color-warning: #F2BB05;
+  --color-warning-dark: #DCAA04;
+  --color-warning-light: #FDF0C3;
 
+  /* Input Colors */
+
+  --color-active: #2684ff;
 
   /* ~~~~~~~ */
   /*  Fonts */
@@ -59,6 +79,7 @@
   --shadow-main: 0 6px 20px rgba(var(--color-primary-rgb), .12);
   --shadow-dark: 0 4px 15px rgba(var(--color-primary-rgb), .4);
   --shadow-shallow: 0 2px 4px rgba(var(--color-primary-rgb), .4);
+  --shadow-primary-xlight: 0 4px 8px rgba(var(--color-primary-medium-light-rgb), .08);
 
   /* ~~~~~~~ */
   /* Padding */
@@ -72,6 +93,7 @@
   /* ~~~~~~~~~~~~~ */
 
   --border-radius-default: 3px;
+  --border-radius-light: 5px;
   --border-radius-medium: 8px;
 
 }

@@ -1,0 +1,33 @@
+@import '../../typography.module.css';
+@import '../../../styles/vars.css';
+
+.tab {
+  composes: title6 from '../../typography.module.css';
+  cursor: pointer;
+  padding: 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-grey-medium);
+  text-decoration: none;
+  transition: color .1s ease-out;
+  background-color: transparent;
+
+  @nest &:hover {
+    background-color: var(--color-grey-hover);
+  }
+
+  @nest &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-xlight);
+  }
+
+  @nest & > svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: currentColor;
+    margin-right: 1rem;
+  }
+
+  @nest &.active {
+    color: var(--color-primary);
+  }
+}

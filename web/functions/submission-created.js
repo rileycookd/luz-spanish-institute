@@ -6,35 +6,67 @@ const client = sanityClient({
   useCDN: false,
 })
 
+const qs = require('qs')
+
+const { nanoid } = require('nanoid');
+
 exports.handler = async function (event, context, callback) {
+  
   // Pulling out the payload from the body
   const { payload } = JSON.parse(event.body)
+
+
   // Checking which form has been submitted
   const isRegistrationForm = payload.data.formId === "registration-form"
   const isContactForm = payload.data.formId === "contact-form"
   const isEditUserForm = payload.data.formId === "edit-user-form"
+  const isAddRegistrationForm = payload.data.formId === "add-registration-form"
   // Build the document JSON and submit it to SANITY
-  if (isRegistrationForm) {
-    weeklySchedule=[];
-    if(payload.data.classSchedule1) weeklySchedule.push(payload.data.classSchedule1)
-    if(payload.data.classSchedule2) weeklySchedule.push(payload.data.classSchedule2)
-    if(payload.data.classSchedule3) weeklySchedule.push(payload.data.classSchedule3)
-    const registrationForm = {
-      _type: "registrationForm",
-      submitDate: new Date().toISOString(),
-      name: payload.data.name,
-      email: payload.data.email,
-      location: payload.data.location,
-      classType: payload.data.classType,
-      level: payload.data.level,
-      classSize: payload.data.classSize,
-      duration: payload.data.duration,
-      quantity: payload.data.quantity,
-      frequency: payload.data.frequency,
-      timezone: payload.data.timezone,
-      schedule: weeklySchedule
+  if (isAddRegistrationForm) {
+    const parsedData = qs.parse(payload.data)
+    
+    let schedule = parsedData.days
+      .map(d => (
+        {
+          _key: nanoid(),
+          _type: "classDayTime",
+          day: d.day.toLowerCase(),
+          time: {
+            _type: "timeRange",
+            start: d.start,
+            end: d.end
+          }
+        }
+      ))
+
+    let studentRefs = [
+      {
+        _type: "reference",
+        _key: nanoid(),
+        _ref: parsedData._id
+      }
+    ]
+
+    let languageRef = {
+      _type: "reference",
+      _ref: parsedData.language
     }
-    const result = await client.create(registrationForm).catch((err) => console.log(err))
+
+    let classTypeRef = {
+      _type: "reference",
+      _ref: parsedData.classType
+    }
+
+    const addRegistrationForm = {
+      _type: "addRegistrationForm",
+      submitDate: new Date().toISOString(),
+      students: studentRefs,
+      classType: classTypeRef,
+      schedule: schedule,
+      language: languageRef,
+      classSize: parsedData.size,
+    }
+    const result = await client.create(addRegistrationForm).catch((err) => console.log(err))
   }
   if (isContactForm) {
     const contactForm = {
@@ -47,6 +79,7 @@ exports.handler = async function (event, context, callback) {
     const result = await client.create(contactForm).catch((err) => console.log(err))
   }
   if (isEditUserForm) {
+    console.log("PAYLOAD:", payload.data)
     const editUserForm = {
       _id: payload.data._id,
       name: payload.data.name,
@@ -58,15 +91,15 @@ exports.handler = async function (event, context, callback) {
       company: payload.data.company
     }
     const result = await client
-      .patch(_id) // Document ID to patch
+      .patch(editUserForm._id) // Document ID to patch
       .set({
-        name: editUserForm.name,
-        email: editUserForm.email,
-        city: editUserForm.city,
-        phone: editUserForm.phone,
-        country: editUserForm.country,
-        timezone: editUserForm.timezone,
-        company: editUserForm.company,
+        name: editUserForm.name ? editUserForm.name : '',
+        email: editUserForm.email ? editUserForm.email : '',
+        city: editUserForm.city ? editUserForm.city : '',
+        phone: editUserForm.phone ? editUserForm.phone : '',
+        country: editUserForm.country ? editUserForm.country : '',
+        timezone: editUserForm.timezone ? editUserForm.timezone : '',
+        company: editUserForm.company ? editUserForm.company : '',
       }) // Shallow merge
       .commit() // Perform the patch and return a promise
       .then((updatedUser) => {

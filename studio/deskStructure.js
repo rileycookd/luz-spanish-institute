@@ -5,9 +5,11 @@ import Spinner from 'part:@sanity/components/loading/spinner';
 import Preview from 'part:@sanity/base/preview';
 import schema from 'part:@sanity/base/schema';
 import { MdSettings } from 'react-icons/md'
-import { FaHandHoldingUsd } from 'react-icons/fa'
+import { FaHandHoldingUsd, FaChalkboardTeacher } from 'react-icons/fa'
 import { CgBrowser } from 'react-icons/cg'
 import { IoHome } from 'react-icons/io5'
+import { BsGiftFill } from 'react-icons/bs'
+
 import pageBuilder from './src/structure/page-builder'
 import forms from './src/structure/forms'
 import staff from './src/structure/staff'
@@ -18,7 +20,7 @@ import resources from './src/structure/resources'
 import SocialPreview from 'part:social-preview/component'
 
 
-const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'faq', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'category', 'footer', 'language', 'level', 'teacher', 'company', 'student', 'resource', 'quiz']
+const hiddenTypes = ['companyInfo', 'testimonial', 'classType', 'faq', 'navigationMenu', 'route', 'page', 'siteSettings', 'contactForm', 'media.tag', 'registrationForm', 'classPackage', 'category', 'footer', 'language', 'level', 'teacher', 'company', 'student', 'resource', 'quiz']
 
 // Add incoming references to all documents in Studio
 
@@ -75,7 +77,7 @@ const CurrentStudents = ({ document }) => (
 
 const RelatedRegistrations = ({ document }) => (
   <QueryContainer
-    query={`*[references($id) && _type == "registrationForm"]`} 
+    query={`*[references($id) && _type == "addRegistrationForm"]`} 
     params={{ id: document.displayed._id.replace('drafts.', '') }}
   >
     {({ result, loading }) =>
@@ -147,10 +149,21 @@ export default () =>
           .icon(FaHandHoldingUsd)
           .child(
             S.list()
-              .title('Service menu')
+              .title('Services panel')
               .items([
-                S.documentTypeListItem('classType')
-                  .title('Classes'),  
+                S.listItem()
+                  .title('Packages')
+                  .icon(BsGiftFill)
+                  .child(
+                    S.documentTypeList('classPackage')
+                  ),
+                S.listItem()
+                  .title('Class types')
+                  .icon(FaChalkboardTeacher)
+                  .child(
+                    S.documentTypeList('classType')
+                      .title('Class types')
+                  )
               ])
             ),
       marketing,

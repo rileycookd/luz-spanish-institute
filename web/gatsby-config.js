@@ -12,6 +12,7 @@ module.exports = {
   plugins: [
     "gatsby-plugin-postcss",
     "gatsby-plugin-react-helmet",
+    'gatsby-plugin-svgr',
     {
       resolve: "gatsby-plugin-anchor-links",
       options: {
@@ -23,12 +24,6 @@ module.exports = {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/app/*`] },
     },
-    // {
-    //   resolve: `gatsby-plugin-netlify-identity`,
-    //   options: {
-    //     url: "https://luz-spanish-institute-web.netlify.app",
-    //   }
-    // },
     {
       resolve: `gatsby-source-filesystem`,
       options: {

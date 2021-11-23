@@ -1,0 +1,37 @@
+@import '../../../../typography.module.css';
+@import '../../../../../styles/vars.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--color-text-light);
+
+  @nest &.active {
+    color: var(--color-secondary);
+
+    @nest & > .title {
+      color: var(--color-secondary);
+    }
+  }
+
+  @nest &:after {
+    content: "";
+    margin-top: .5rem;
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: currentColor;
+  }
+
+  @nest &:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.title {
+  composes: xsmall from '../../../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 600;
+  color: var(--color-text-light);
+}

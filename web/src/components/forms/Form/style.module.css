@@ -4,7 +4,7 @@
 .root {
   width: 100%;
   display: grid;
-  row-gap: 1rem;
+  row-gap: 3rem;
 }
 
 .form-title {

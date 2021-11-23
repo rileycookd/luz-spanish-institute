@@ -1,0 +1,160 @@
+@import '../../../../../../styles/vars.css';
+@import '../../../../../../components/typography.module.css';
+
+.root {
+  display: grid;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight);
+  position: relative;
+  cursor: default;
+  transition: box-shadow .1s ease-out;
+
+  @nest &:hover {
+    z-index: 2;
+    box-shadow: var(--shadow-main);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-grey-xxlight);
+}
+
+.content {
+  display: grid;;
+  align-items: center;
+  width: 100%;
+
+  @nest & > * {
+    display: flex;
+    width: 100%;
+    justify-content: start;
+  }
+}
+
+.content-item {
+  border-top: 1px solid var(--color-grey-xxlight);
+  border-bottom: 1px solid var(--color-grey-xxlight);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+
+  @nest & > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--color-text-light);
+    margin-right: 1.5rem;
+  }
+
+  @nest &:nth-child(even) {
+    /* background-color: var(--color-grey-xxxlight); */
+  }
+}
+
+.content-title {
+  composes: titlesub from '../../../../../../components/typography.module.css';
+  color: var(--color-primary);
+}
+
+.date {
+  composes: small from '../../../../../../components/typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 500;
+  justify-content: start;
+  color: var(--color-grey-medium);
+}
+
+.title {
+  composes: title6 from '../../../../../../components/typography.module.css';
+  color: var(--color-primary);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  composes: small from '../../../../../../components/typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 500;
+  width: max-content;
+  justify-content: flex-start;
+  color: var(--color-active);
+
+  @nest &:before {
+    content: "";
+    width: .4rem;
+    height: .4rem;
+    border-radius: 50%;
+    background-color: var(--color-active);
+    margin-right: .2rem;
+  }
+}
+
+.subtitle {
+  composes: small from '../../../../../../components/typography.module.css';
+  color: var(--color-primary);
+}
+
+.remaining {
+  composes: xsmall from '../../../../../../components/typography.module.css';
+  text-align: center;
+  color: var(--color-text-medium-light);
+  margin-right: .5rem;
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  composes: small from '../../../../../../components/typography.module.css';
+  white-space: nowrap;
+  width: max-content;
+  padding: .5rem 1rem;
+  border-radius: var(--border-radius-default);
+  background-color: var(--color-grey-hover);
+  color: var(--color-primary);
+  transition: background-color .1s ease-out;
+
+  @nest &:hover {
+    cursor: pointer;
+    background-color: var(--color-grey-medium);
+  }
+}
+
+.schedule {
+  display: flex;
+  justify-content: space-between;
+}
+
+.schedule-item {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.day {
+  composes: small from '../../../../../../components/typography.module.css';
+  font-family: var(--font-title);
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.time {
+  composes: small from '../../../../../../components/typography.module.css';
+  color: var(--color-text-medium);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-top: 1px solid var(--color-grey-xxlight);
+  padding: 1rem 1.5rem 2rem 1.5rem;
+}

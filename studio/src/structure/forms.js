@@ -15,7 +15,7 @@ export default S.listItem()
           .title('Registrations')
           .icon(FaChalkboardTeacher)
           .child(
-            S.documentTypeList('registrationForm')
+            S.documentTypeList('addRegistrationForm')
               .title('Registration inbox')   
           ),
         S.listItem()

@@ -1,0 +1,24 @@
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
+
+.content {
+  display: flex;
+}
+
+.main {
+  display: grid;
+  align-content: start;
+  row-gap: 5rem;
+  padding: 1.5rem;
+  padding-left: 5%;
+  width: 100%;
+}
+
+.sidebar {
+  display: grid;
+  align-content: start;
+  row-gap: 2rem;
+  padding: 1.5rem;
+  width: 40%;
+  padding-right: 5%;
+}

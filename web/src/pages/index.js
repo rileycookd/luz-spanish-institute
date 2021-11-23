@@ -6,7 +6,6 @@ import Layout from '../containers/layout'
 import Page from '../templates/page'
 
 import { navigate } from "gatsby"
-import { useIdentityContext } from "react-netlify-identity-gotrue"
 
 
 export const query = graphql`
@@ -33,6 +32,7 @@ export const query = graphql`
 
 
 const IndexPage = props => {
+
   const { data, errors } = props
 
   if (errors) {
@@ -52,10 +52,7 @@ const IndexPage = props => {
     )
   }
 
-  const identity = useIdentityContext()
   const { component: Component, location, ...rest } = props
-
-
 
   return (
     <Page data={data} pathname={props.location.pathname} />

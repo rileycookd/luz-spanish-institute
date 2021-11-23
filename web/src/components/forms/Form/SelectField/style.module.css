@@ -14,21 +14,27 @@
     left: 1.25rem;
     width: 1.25rem;
     height: 1.25rem;
+  }
+  
+  @nest &.valid > svg {
+    fill: var(--color-secondary);
+  }
 
-    @nest &.input-number-control {
-      stroke: var(--color-primary);
-
-      @nest &.disabled {
-        cursor: not-allowed;
-        stroke: var(--color-grey-light);
-      }
+  @nest &.disabled {
+    @nest & > .input-label {
+      color: var(--color-grey-xlight);
+    }
+    @nest & > svg {
+      fill: var(--color-grey-xlight);
     }
   }
 }
 
 .input-label {
-  composes: titlesub from '../../../typography.module.css';
+
+  composes: small from '../../../typography.module.css';
   font-weight: 400;
+  font-family: var(--font-title);
   position: absolute;
   top: .75rem;
   left: 3.5rem;

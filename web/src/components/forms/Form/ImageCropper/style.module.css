@@ -54,7 +54,7 @@
   transition: .1s ease-out;
 
   @nest &:hover {
-    background-color: var(--color-grey-xxlight);
+    /* background-color: var(--color-grey-xxlight); */
     border: 1px solid var(--color-grey-medium);
   }
 
@@ -75,7 +75,7 @@
   transition: .1s ease-out;
 
   @nest &:hover {
-    background-color: var(--color-grey-light);
+    /* background-color: var(--color-grey-light); */
     border: 1px solid var(--color-grey-medium);
   }
 }

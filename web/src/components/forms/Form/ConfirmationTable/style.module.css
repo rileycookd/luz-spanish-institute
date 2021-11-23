@@ -1,0 +1,36 @@
+@import '../../../../styles/vars.css';
+@import '../../../typography.module.css';
+
+.root {
+  border-collapse: collapse;
+}
+
+.header {
+
+
+  @nest & > .row > .cell {
+    border-bottom: 1px solid var(--color-grey-xlight);
+    color: var(--color-text-light);
+    text-transform: uppercase;
+  }
+
+  @nest &:not(:first-child) > .row > .cell {
+    padding-top: 2rem;
+  }
+}
+
+.row {
+  border-radius: var(--border-radius-default);
+
+  @nest &:nth-child(even) {
+    background-color: var(--color-grey-xxxlight);
+  }
+}
+
+.cell {
+  composes: small from '../../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 700;
+  padding: .5rem .5rem;
+  text-align: left;
+}

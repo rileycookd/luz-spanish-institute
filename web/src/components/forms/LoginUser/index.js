@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Form, Step, InputField } from '../Form'
+import { Form, InputField, SubmitButton } from '../Form'
 import { IoMail as MailIcon } from 'react-icons/io5'
 import { BsLockFill as PasswordIcon } from 'react-icons/bs'
 import { useIdentityContext } from 'react-netlify-identity-gotrue'
@@ -13,35 +13,47 @@ import CTALink from '../../CTALink'
 
 import { navigate } from 'gatsby'
 
+import { useForm, useFormState } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
+
 
 
 
 function LoginUser(props) {
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formStatus, setFormStatus] = useState('default')
-  const [errorMessage, setErrorMessage] = useState('')
+  const schema = yup.object().shape({
+    email: yup.string().email("Please enter a valid email").required("Please enter your email"),
+    password: yup.string().required("Please enter a password"),
+  })
 
-  const [passwordValue, setPasswordValue] = useState("")
-  const [emailValue, setEmailValue] = useState("")
+  const { watch, register, getValues, control, handleSubmit, formState: { errors, isDirty } } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  })
+
+  const { isValid } = useFormState({
+    control
+  });
 
   const identity = useIdentityContext()
 
+
+
   const handleLogin = async () => {
-    debugger
     await identity.login({
-      password: passwordValue,
-      email: emailValue,
+      password: getValues('password'),
+      email: getValues('email'),
     })
       .then(() => navigate('/app'))
       .catch(e => setErrorMessage(e.message))
   }
 
-  useEffect(() => {
-    if(identity.user) {
-      navigate('/app')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(identity.user) {
+  //     navigate('/app')
+  //   }
+  // }, [])
 
 
   return (
@@ -54,46 +66,35 @@ function LoginUser(props) {
           <span><CTALink kind="inline" route="/register">Sign up</CTALink></span>
         </p>
       </div>
-        {formStatus === "default" && (
-          <Form 
-            onSubmit={() => handleLogin()}
+          <Form
+            onSubmit={handleSubmit(handleLogin)}
             name="login-form"
-            currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-            formStatus={formStatus}
-            setFormStatus={setFormStatus}
-            cta="Login"
+            method="POST"
+            action="/success/"
+            register={register}
           >
-            <Step title="Login info">
-              <InputField
-                defaultValue={emailValue}
-                label="Email:"
-                name="email"
-                isRequired={true}
-                placeholder="you@email.com" 
-                type="text"
-                errorMessage="Please enter a valid email"
-                pattern={/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/}
-                onChange={(e) => setEmailValue(e.target.value)}
-              >
-                <MailIcon />
-              </InputField>
-              <InputField
-                defaultValue={passwordValue}
-                label="Password:"
-                name="password"
-                isRequired={true}
-                errorMessage="Please enter a secure password"
-                placeholder="Enter your password" 
-                type="password"
-                onChange={(e) => setPasswordValue(e.target.value)}
-              ><PasswordIcon /></InputField>
-            </Step>
+            <InputField
+              label="Email:"
+              name="email"
+              placeholder="you@email.com" 
+              id="email"
+              type="text"
+              error={errors?.name}
+              register={register}
+            >
+              <MailIcon />
+            </InputField>
+            <InputField
+              label="Password:"
+              name="password"
+              placeholder="Enter your password" 
+              id="password"
+              type="password"
+              error={errors?.name}
+              register={register}
+            ><PasswordIcon /></InputField>
+            <SubmitButton disabled={!isValid} type="Submit">Login</SubmitButton>
           </Form>
-        )}
-        {errorMessage  && (
-          <p className={styles.info}>{errorMessage}</p>   
-        )}
       </div>
     </div>
   )

@@ -1,15 +1,17 @@
 import { graphql, StaticQuery } from 'gatsby'
-import React, { useState } from 'react'
+import React from 'react'
+
+import '../styles/layout.css'
+import "@fontsource/montserrat/400.css"
+import "@fontsource/montserrat/500.css"
+import "@fontsource/montserrat/700.css"
+import "@fontsource/raleway/400.css"
+import "@fontsource/raleway/700.css"
+
 import Layout from '../components/layout'
 
 function LayoutContainer (props) {
-  const [showNav, setShowNav] = useState(false)
-  function handleShowNav () {
-    setShowNav(true)
-  }
-  function handleHideNav () {
-    setShowNav(false)
-  }
+ 
   return (
     <StaticQuery
       query = {graphql`
@@ -43,11 +45,8 @@ function LayoutContainer (props) {
         return (
           <Layout
             {...props}
-            showNav={showNav}
             company={data.company}
             siteTitle={data.site.title}
-            onHideNav={handleHideNav}
-            onShowNav={handleShowNav}
           />
         )
       }}

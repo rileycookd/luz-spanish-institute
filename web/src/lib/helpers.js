@@ -72,3 +72,7 @@ export function getClassStartingPrice(pricing) {
     return a - b
   })[0]
 }
+
+export function capitalizeWords(str) {
+  return  str.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+}

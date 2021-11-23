@@ -41,7 +41,7 @@ const TimezoneField = ({children, control, disabled, error, id, label, name, isD
       paddingLeft: '2rem',
       fontSize: '14px',
       fontWeight: '700',
-      color: 'c4c4c4'
+      color: '#082735'
     }),
     dropdownIndicator: (provided, state) => ({
       ...provided,
@@ -59,21 +59,30 @@ const TimezoneField = ({children, control, disabled, error, id, label, name, isD
       marginLeft: '0',
       fontFamily: 'Montserrat',
       fontWeight: 700,
-      fontSize: '14px'
+      fontSize: '14px',
+      color: '#082735'
     })
   }
 
+  const validStyles = () => {
+    if(!disabled) {
+      if(isDirty) {
+        return cn(styles.inputGroup, styles.valid)
+      } else {
+        return styles.inputGroup
+      }
+    } else {
+      return styles.inputGroup
+    }
+  }
+
   return (
-    <div className={isDirty ? cn(styles.inputGroup, styles.valid) : styles.inputGroup}>
+    <div className={validStyles()}>
       <Controller
           name={name}
           control={control}
-          // rules={{
-          //   validate: (value) => isValidPhoneNumber(value)
-          // }}
           render={({ field: { onChange, value } }) => (
             <TimezoneSelect 
-              // innerRef={ref}
               isDisabled={disabled} 
               id={id}
               value={value}

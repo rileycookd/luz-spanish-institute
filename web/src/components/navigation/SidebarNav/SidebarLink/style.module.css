@@ -1,0 +1,30 @@
+@import '../../../../styles/vars.css';
+@import '../../../typography.module.css';
+
+.root {
+  composes: small from '../../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 600;
+  display: flex;
+  text-decoration: none;
+  color: var(--color-text-medium-light);
+  padding: 1.25rem 2rem;
+  transition: color .1s ease-out;
+  
+
+  @nest & > svg {
+    margin-right: 1rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+  }
+
+  @nest &:hover {
+    color: var(--color-text-light);
+  }
+
+  @nest &.active {
+    background-color: var(--color-primary-medium);
+    color: var(--color-secondary);
+  }
+}

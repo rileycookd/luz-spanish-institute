@@ -1,0 +1,17 @@
+@import '../../../../styles/vars.css';
+@import '../../../typography.module.css';
+
+.root {
+  display: grid;
+  row-gap: .5rem;
+  margin: 1rem 0;
+
+  @nest & > legend {
+    font-size: var(--font-title6-size);
+    line-height: var(--font-title6-line-height);
+    font-family: var(--font-title);
+    font-weight: 400;
+    display: flex;
+    margin-bottom: .5rem;
+  }
+}

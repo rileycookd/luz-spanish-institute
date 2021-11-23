@@ -44,6 +44,20 @@ export default {
       initialValue: 'classes'
     },
     {
+      name: 'languages',
+      title: 'Languages',
+      type: 'array',
+      of: [
+        { 
+          type: 'reference', 
+          to: [
+            { type: 'language' }
+          ]
+        }
+      ],
+      validation: Rule => Rule.required().unique()
+    },
+    {
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
@@ -64,6 +78,22 @@ export default {
       type: 'mainImage'
     },
     {
+      name: 'min',
+      title: 'Min students',
+      type: 'number',
+      description: '(Optional) Enter the minimum number of students',
+      fieldset: 'classSize',
+      validation: Rule => Rule.required().min(1).max(Rule.valueOfField('max'))
+    },
+    {
+      name: 'max',
+      title: 'Max students',
+      type: 'number',
+      description: '(Optional) Enter the max limit of students',
+      fieldset: 'classSize',
+      validation: Rule => Rule.required().min(Rule.valueOfField('min'))
+    },
+    {
       name: 'pricing',
       title: 'Pricing',
       type: 'array',
@@ -73,42 +103,18 @@ export default {
       ]
     },
     {
-      name: 'min',
-      title: 'Min students',
-      type: 'number',
-      description: '(Optional) Enter the minimum number of students',
-      fieldset: 'classSize'
-    },
-    {
-      name: 'max',
-      title: 'Max students',
-      type: 'number',
-      description: '(Optional) Enter the max limit of students',
-      fieldset: 'classSize'
-    },
-    {
-      name: 'sizeDiscount',
-      title: 'Discount per additional student',
-      type: 'number',
-      description: '(Optional) Enter percentage discount per additional student (20 = 20%)',
-      fieldset: 'classSize',
-      validation: Rule => Rule.positive().max(90).error('Discounts must be between 0 and 90%')
-    },
-    {
-      name: 'maxDiscount',
-      title: 'Discount limit',
-      type: 'number',
-      description: '(Optional) Set an upper limit to the percentage discount (80 = 80%)',
-      fieldset: 'classSize',
-      validation: Rule => Rule.min(Rule.valueOfField('sizeDiscount')).max(90).error('Limit must be between additional student discount and 90%')
-    },
-    {
       name: 'packages',
-      title: 'Package discounts',
+      title: 'Packages',
       type: 'array',
       of: [
-        { type: 'packageDiscount' }
-      ]
+        { 
+          type: 'reference',
+          to: [
+            { title: 'Class package', type: 'classPackage'}
+          ]
+        }
+      ],
+      validation: Rule => Rule.required()
     },
     {
       name: 'testimonial',
@@ -136,14 +142,24 @@ export default {
   preview: {
     select: {
       title: 'title',
+      min: 'min',
       max: 'max',
     },
-    prepare ({ title, max }) {
-      const size = max ? max : 'unlimited'
+    prepare ({ title, min, max }) {
       return {
         title: title,
-        subtitle: `Class size: ${size}`
+        subtitle: `${min} - ${max} student${max > 1 ? 's' : ''}`
       }
     }
-  }
+  },
+  validation: Rule => Rule.custom(fields => {
+    let isValid = true
+    fields.pricing?.map(p => {
+      p.groupDiscounts?.map(d => {
+        if(d.size <= fields.min) isValid = `Group discount sizes must be greater than ${fields.min}`
+        if(d.size > fields.max) isValid = `Group discount sizes must be less than ${fields.max + 1}`
+      })
+    })
+    return isValid
+  }),
 }

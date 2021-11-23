@@ -1,0 +1,45 @@
+@import '../../../../styles/vars.css';
+
+.root {
+  composes: base from '../../../typography.module.css';
+  display: flex;
+  /* margin: 1.5rem 2rem; */
+  cursor: pointer;
+  border-radius: var(--border-radius-default);
+  font-family: "Montserrat";
+  font-weight: 700;
+  outline: none;
+  border: none;
+  width: max-content;
+  background-color: transparent;
+  color: var(--color-text-medium-light);
+  text-decoration: underline;
+  transition: background-color .1s ease-out;
+  -webkit-user-select: none;    /* Safari */
+  -webkit-touch-callout: none;  /* iOS Safari */
+  -khtml-user-select: none;     /* Konqueror HTML */
+  -ms-user-select: none;        /* Internet Explorer/Edge */
+  -moz-user-select: none;       /* Old versions of Firefox */
+   user-select: none;           /* Non-prefixed version*/
+
+  @nest &:hover {
+    color: var(--color-text-light);
+  }
+
+  @nest &:focus {
+    outline: none;
+  }
+
+  @nest &:disabled, &[disabled] {
+    background-color: var(--color-grey-medium);
+    opacity: .5;
+    cursor: default;
+  }
+
+  @nest & > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    fill: currentColor;
+    margin-right: none;
+  }
+}

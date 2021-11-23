@@ -1,0 +1,6 @@
+@import '../../../../styles/vars.css';
+@import '../../../typography.module.css';
+
+.root {
+  color: var(--color-error);
+}

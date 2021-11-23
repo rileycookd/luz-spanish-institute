@@ -1,0 +1,81 @@
+@import '../../../styles/vars.css';
+@import '../../typography.module.css';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 5%;
+  margin-bottom: 5rem;
+}
+
+.title {
+  composes: title3 from '../../typography.module.css';
+  padding: 13px 0;
+  margin-bottom: -1rem;
+}
+
+/* Extra styles */
+
+.user-links {
+  display: flex;
+}
+
+.button {
+  display: flex;
+  width: max-content;
+  height: max-content;
+  padding: 1.25rem;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight);
+  margin-right: 1rem;
+
+  @nest & > svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    fill: var(--color-primary);
+    margin: 0;
+  }
+}
+
+.currentUser {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  height: max-content;
+  padding: .75rem;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--color-grey-xlight);
+
+  @nest & > svg {
+    height: 1rem;
+    width: 1rem;
+    margin-left: 1rem;
+    margin-right: 0;
+  }
+
+  @nest & > img {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    margin-right: .5rem;
+  }
+}
+
+.userTitles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.name {
+  composes: xsmall from '../../typography.module.css';
+  font-family: var(--font-title);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.role {
+  composes: xsmall from '../../typography.module.css';
+}
