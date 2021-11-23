@@ -40,8 +40,6 @@ export const query = graphql`
       }
       min
       max
-      maxDiscount
-      sizeDiscount
       testimonial {
         _type
         student {
@@ -78,14 +76,6 @@ export const query = graphql`
     }
   }
 `;
-
-// openGraph {
-//     title
-//     description
-//     image {
-//       ...SanityImage
-//     }
-//   }
 
 const ClassType = (props) => {
   const { data, errors } = props;

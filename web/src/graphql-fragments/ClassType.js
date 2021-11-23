@@ -5,7 +5,6 @@ export const ClassType = graphql`
     title
     min
     max
-    sizeDiscount
     pricing {
       duration
       price
@@ -20,6 +19,5 @@ export const ClassType = graphql`
       _key
     }
     order
-    maxDiscount
   }
 `;
