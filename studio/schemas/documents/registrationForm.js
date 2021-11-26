@@ -231,7 +231,7 @@ export default {
         { type: 'string' }
       ],
       fieldset: "application",
-    }
+    },
   ],
   preview: {
     select: {

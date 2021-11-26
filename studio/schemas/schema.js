@@ -24,11 +24,10 @@ import resource from './documents/resource'
 import quiz from './documents/quiz'
 import category from './documents/category'
 import footer from './documents/footer'
-import classDoc from './documents/class'
 import classPackage from './documents/classPackage'
 import addRegistrationForm from './documents/addRegistrationForm'
 
-
+// Block types
 import * as blocks from './blocks'
 
 // Object types
@@ -71,6 +70,10 @@ import dropdownThumbnailCta from './objects/dropdownThumbnailCta'
 import dropdownMenu from './objects/dropdownMenu'
 import homework from './objects/homework'
 import groupDiscount from './objects/groupDiscount'
+import classObj from './objects/class'
+import registrationPackage from './objects/registrationPackage'
+
+
 
 const allBlocks = Object.values(blocks).map((block) => {
   return { ...block, fields: block.fields }
@@ -89,6 +92,7 @@ export default createSchema({
       link,
       cta,
       siteSettings,
+      registrationPackage,
       navMenu,
       page,
       language,
@@ -140,9 +144,9 @@ export default createSchema({
       dropdownMenu,
       footer,
       homework,
-      classDoc,
+      classObj,
       addRegistrationForm,
-      groupDiscount
+      groupDiscount,
     ])
     .concat(allBlocks),
 })

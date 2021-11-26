@@ -16,7 +16,7 @@ export default {
   }),
   fieldsets: [
     {name: 'admin', title: 'Admin'},
-    {name: 'details', title: 'Details'}
+    {name: 'details', title: 'Details'},
   ],
   fields: [
     {
@@ -167,7 +167,15 @@ export default {
         { type: 'classDayTime' }
       ],
       fieldset: "details",
-    }
+    },
+    {
+      name: 'packages',
+      title: 'Packages',
+      type: 'array',
+      of: [
+        { type: 'registrationPackage' }
+      ]
+    },
   ],
   preview: {
     select: {

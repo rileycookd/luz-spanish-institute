@@ -57,16 +57,29 @@ exports.handler = async function (event, context, callback) {
       _ref: parsedData.classType
     }
 
-    const addRegistrationForm = {
+    let addRegistrationForm = {
       _type: "addRegistrationForm",
       submitDate: new Date().toISOString(),
+      state: 'pending',
       students: studentRefs,
       classType: classTypeRef,
       schedule: schedule,
       language: languageRef,
       classSize: parsedData.size,
+      packages: [
+        {
+          _key: nanoid(),
+          _type: 'registrationPackage',
+          quantity: Number(parsedData.quantity),
+          classes: [],
+          start: '',
+          end: '',
+        }
+      ]
     }
+
     const result = await client.create(addRegistrationForm).catch((err) => console.log(err))
+
   }
   if (isContactForm) {
     const contactForm = {
