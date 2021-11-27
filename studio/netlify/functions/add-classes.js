@@ -22,51 +22,22 @@ const getClassDuration = (start, end) => {
 		new Date(2012, 1, 29, start.split(":")[0], start.split(":")[1])
 	)
 }
+// GROQ Filter tests
+// _type == "addRegistrationForm" && before().packages[].active == "false" && after().packages[].active == "true" && count(packages[].classes) == 0
 
 exports.handler = async function(event, context, callback) {
-	const payload = JSON.parse(event.body)
 
-	const packageObjKey = `packages[_key=="${payload._key}"].classes`
+	// Parse body
+	const { _id, schedule, packages } = JSON.parse(event.body)
 
-	let packages = []
-	let registrationData = {}
-
-	// WHY DOESN'T THIS WORK? Only shallow object available, but can be STRINGIFIED?
-	//
-	// const query = `
-	// 	*[_type == 'addRegistrationForm' && _id == $id] { 
-	// 		packages[] {
-	// 			_key,
-	// 			quantity,
-	// 			start
-	// 		}
-	// 	}
-	// `
-	// const params = {id: payload._id}
-	//
-	// await client
-	// 	.fetch(query, params)
-	// 	.then(registration => {
-	// 		packages = JSON.parse(registration.packages)
-	// 		registrationData = registration
-	// 	})
-
-
-	await client.getDocument(payload._id).then((registration) => {
-		packages = registration.packages
-		registrationData = registration
-	})
-
-	const packageData = packages?.find(p => p._key === payload._key)
-
-
-	let classes = []
-	const schedule = registrationData.schedule.map((d, i) => {
+	// Create an iterable array for adding consecutive class dates in a for loop
+	const scheduleWithDifs= schedule.map((d, i) => {
+		// Calculate the number of week days after previous class 
 		let dif = 0
 		if(i === 0) {
-			dif = 7 - (Number(registrationData.schedule[registrationData.schedule.length - 1].day) - Number(d.day))
+			dif = 7 - (Number(schedule[schedule.length - 1].day) - Number(d.day))
 		} else {
-			dif =  Number(d.day) - Number(registrationData.schedule[i - 1].day)
+			dif =  Number(d.day) - Number(schedule[i - 1].day)
 		}
 		return {
 			dif: dif,
@@ -75,60 +46,92 @@ exports.handler = async function(event, context, callback) {
 		}
 	})
 
-	const startDay = getDay(parseISO(packageData.start))
-	let firstClassIndex = registrationData.schedule.findIndex(d => Number(d.day) >= startDay)
-	let differenceInDays = 0;
-	if (firstClassIndex === -1) {
-		differenceInDays = 7 - (startDay - Number(registrationData.schedule[0].day)) 
-		firstClassIndex = 0
-	} else {
-		differenceInDays = Number(registrationData.schedule[firstClassIndex].day) - startDay
+	const fillPackage = (package) => {
+		let classes = []
+		
+		// Get weekday from package start date
+		const startDay = getDay(parseISO(package.start))
+
+		// Determine how many days after the start date the first class will be
+		// (according to schedule array)
+		let firstClassIndex = schedule.findIndex(d => Number(d.day) >= startDay)
+		let differenceInDays = 0;
+		if (firstClassIndex === -1) {
+			// First class starts the week after the start date
+			differenceInDays = 7 - (startDay - Number(schedule[0].day)) 
+			firstClassIndex = 0
+		} else {
+			// First class starts same week as start date
+			differenceInDays = Number(schedule[firstClassIndex].day) - startDay
+		}
+
+		// Starting date to add days to in for loop (to be updated each iteration)
+		let currentISODate = formatISO(
+			addDays(
+				parseISO(`${package.start}`), 
+				differenceInDays
+			), 
+			{ representation: 'date' }
+		)
+
+		// Starting index in scheduleWithDifs (to be updated each iteration)
+		let currentScheduleIndex = firstClassIndex
+
+		// Where the magic happens
+		for(let i = 0; i < package.quantity; i++) {
+			let daysToAdd = 0
+			// Only add days after the first iteration
+			if(i > 0) daysToAdd = scheduleWithDifs[currentScheduleIndex].dif
+			let start = addDays(parseISO(
+				`${currentISODate} ${scheduleWithDifs[currentScheduleIndex].start}`
+			), daysToAdd)
+			let end = formatISO(addMinutes(start, scheduleWithDifs[currentScheduleIndex].duration))
+			currentISODate = formatISO(start, { representation: 'date' })
+			start = formatISO(start)
+			// Create class object
+			classes.push(
+				{
+					_key: nanoid(),
+					_type: "class",
+					title: "Test",
+					start: start,
+					end: end,
+					cancelled: false,
+					content: []
+				}
+			)
+			currentScheduleIndex++
+			// Check if we need to cycle through scheduleWithDifs again
+			if(currentScheduleIndex === scheduleWithDifs.length) currentScheduleIndex = 0
+		}	
+		return classes
 	}
 
-	let currentISODate = formatISO(
-		addDays(
-			parseISO(`${packageData.start}`), 
-			differenceInDays
-		), 
-		{ representation: 'date' }
-	)
+	// Add classes to relevant packages
+	let filledPackages = packages
+		.filter(package => package.active && package.start && package.classes.length === 0)
+		.map(package => {
+		package.classes = fillPackage(package)
+		return package
+	})
 
-	let currentScheduleIndex = firstClassIndex
+	// Create a set object for Sanity
+	let setObj = {}
 
-	for(let i = 0; i < packageData.quantity; i++) {
-		let daysToAdd = 0
-		if(i > 0) daysToAdd = schedule[currentScheduleIndex].dif
-		let start = addDays(parseISO(
-			`${currentISODate} ${schedule[currentScheduleIndex].start}`
-		), daysToAdd)
-		let end = formatISO(addMinutes(start, schedule[currentScheduleIndex].duration))
-		currentISODate = formatISO(start, { representation: 'date' })
-		start = formatISO(start)
-		classes.push(
-			{
-				_key: nanoid(),
-				_type: "class",
-				title: "Test",
-				start: start,
-				end: end,
-				cancelled: false,
-				content: []
-			}
-		)
-		currentScheduleIndex++
-		if(currentScheduleIndex === schedule.length) currentScheduleIndex = 0
-	}	
-
+	// Add a key value pair to setObj for each package to edit
+	filledPackages.map(package => {
+		let keyString = `packages[_key=="${package._key}"].classes`
+		setObj[keyString] = package.classes
+	})
 
 	await client
-			.patch(payload._id)
-			.set({[packageObjKey]: classes})
+			.patch(_id)
+			.set(setObj)
 			.commit()
 
 
 	callback(null, {
 		statusCode: 200,
-		// body: JSON.stringify(document)
-		body: JSON.stringify(classes)
+		body: JSON.stringify({_id: _id, schedule: schedule, packages: packages, filledPackages: filledPackages, })
 	})
 }
