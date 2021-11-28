@@ -55,7 +55,22 @@ const IndexPage = props => {
   const { component: Component, location, ...rest } = props
 
   return (
-    <Page data={data} pathname={props.location.pathname} />
+    <>
+      <Page data={data} pathname={props.location.pathname} />
+      <form
+        style={{display: "none"}}
+        data-netlify="true"
+        netlify-honeypot="got-ya" 
+        name="add-registration-form"
+      >
+        <input type="hidden" name="form-name" value="add-registration-form" />
+        <input
+          type="hidden"
+          name="formId"
+          value="add-registration-form"
+        />
+      </form>
+    </>
   )
 }
 

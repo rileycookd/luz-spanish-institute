@@ -163,7 +163,6 @@ function Step7(props) {
       body: encode({ "form-name": 'add-registration-form', ...formData }),
     })
       .then((response) => {
-        reset()
         if(response.status === 200 || response.status === 201 || response.status === 203) {
           navigate("../success")
         } else {
@@ -183,11 +182,18 @@ function Step7(props) {
       <ProgressMeter title="Confirm" step={7} steps={7} />
       <Form
         onSubmit={handleSubmit(handlePost)}
+        method="POST"
         name="add-registration-form"
         register={register}
       >
 
         <input type="hidden" {...register('_id')} />
+        <input type="hidden" {...register('langauge')} />
+        <input type="hidden" {...register('classType')} />
+        <input type="hidden" {...register('size')} />
+        <input type="hidden" {...register('days')} />
+        <input type="hidden" {...register('quantity')} />
+
 
         <p>Confirm your enrollment details:</p>
 
