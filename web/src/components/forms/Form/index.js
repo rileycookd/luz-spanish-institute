@@ -55,8 +55,22 @@ export const Form = ({children, register, name, ...props}) => {
       className={styles.root} 
       noValidate
       name={name}
+      {...props}
+    >
+      {children}
+
+    </form>
+  )
+}
+
+export const NetlifyForm = ({children, register, name, ...props}) => {
+  return (
+    <form
+      className={styles.root} 
+      noValidate
       data-netlify="true"
       netlify-honeypot="got-ya" 
+      name={name}
       {...props}
     >
       <input type="hidden" name="form-name" value={name} />

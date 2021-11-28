@@ -75,7 +75,7 @@ function Step4(props) {
       
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        name="add-registration-form"
+        name="add-registration-form-step-4"
         register={register}
       >
 

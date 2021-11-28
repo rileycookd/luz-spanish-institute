@@ -112,7 +112,7 @@ function Step5(props) {
       
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        name="add-registration-form"
+        name="add-registration-form-step-5"
         register={register}
       >
         <p>Your account's timezone is set to: <em>{userData?.timezone}</em>. You can change your timezone in your account settings.</p>

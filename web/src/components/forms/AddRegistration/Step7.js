@@ -5,7 +5,7 @@ import { addHours, addMinutes, format } from 'date-fns'
 import qs from 'qs'
 
 import { 
-  Form, 
+  NetlifyForm, 
   LinkButton,
   SubmitButton,
   FormContainer,
@@ -168,7 +168,8 @@ function Step7(props) {
         } else {
           navigate("../error")
         }
-        console.log(response)
+        console.log("RESPONSE: ", response)
+        console.log("FORM DATA: ", formData)
       })
       .catch((error) => {
         navigate("../error")
@@ -180,19 +181,19 @@ function Step7(props) {
     <FormContainer>
       <FormTitle>Register for classes</FormTitle>
       <ProgressMeter title="Confirm" step={7} steps={7} />
-      <Form
+      <NetlifyForm
         onSubmit={handleSubmit(handlePost)}
         method="POST"
         name="add-registration-form"
         register={register}
       >
 
-        <input type="hidden" {...register('_id')} />
-        <input type="hidden" {...register('langauge')} />
-        <input type="hidden" {...register('classType')} />
-        <input type="hidden" {...register('size')} />
-        <input type="hidden" {...register('days')} />
-        <input type="hidden" {...register('quantity')} />
+        <input type="hidden" name="_id" {...register('_id')} />
+        <input type="hidden" name="language" {...register('language')} />
+        <input type="hidden" name="classType" {...register('classType')} />
+        <input type="hidden" name="size" {...register('size')} />
+        <input type="hidden" name="days" {...register('days')} />
+        <input type="hidden" name="quantity" {...register('quantity')} />
 
 
         <p>Confirm your enrollment details:</p>
@@ -266,7 +267,7 @@ function Step7(props) {
 
           <SubmitButton>Register</SubmitButton>
         </div>
-      </Form>
+      </NetlifyForm>
     
     </FormContainer>
   )

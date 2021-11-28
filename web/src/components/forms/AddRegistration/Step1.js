@@ -68,7 +68,7 @@ function Step1(props) {
       <ProgressMeter title="Language selection" step={1} steps={7} />
       <Form
         onSubmit={handleSubmit(onSubmit)}
-        name="add-registration-form"
+        name="add-registration-form-step-1"
         register={register}
       >
 
