@@ -69,6 +69,12 @@ const IndexPage = props => {
           name="formId"
           value="add-registration-form"
         />
+        <input type="hidden" name="_id" />
+        <input type="hidden" name="language" />
+        <input type="hidden" name="classType" />
+        <input type="hidden" name="size" />
+        <input type="hidden" name="days" />
+        <input type="hidden" name="quantity" />
       </form>
     </>
   )
