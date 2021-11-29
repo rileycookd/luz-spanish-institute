@@ -3,12 +3,14 @@ const client = sanityClient({
   projectId: process.env.GATSBY_SANITY_PROJECT_ID,
   dataset: process.env.GATSBY_SANITY_DATASET,
   token: process.env.SANITY_FORM_SUBMIT_TOKEN,
+  apiVersion: '2021-10-21',
   useCDN: false,
 })
 
 const qs = require('qs')
 
 const { nanoid } = require('nanoid');
+const { GiConsoleController } = require("react-icons/gi");
 
 exports.handler = async function (event, context, callback) {
   
@@ -24,9 +26,11 @@ exports.handler = async function (event, context, callback) {
   // Build the document JSON and submit it to SANITY
   if (isAddRegistrationForm) {
     const parsedData = qs.parse(payload.data)
+
+    console.log("PARSED DATA: ", parsedData)
     
-    let schedule = parsedData.days
-      .map(d => (
+    let schedule = parsedData?.days
+      ?.map(d => (
         {
           _key: nanoid(),
           _type: "classDayTime",
@@ -77,6 +81,8 @@ exports.handler = async function (event, context, callback) {
         }
       ]
     }
+
+    console.log("RESULT: ", addRegistrationForm)
 
     const result = await client.create(addRegistrationForm).catch((err) => console.log(err))
 

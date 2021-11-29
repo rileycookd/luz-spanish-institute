@@ -6,11 +6,10 @@ const client = sanityClient({
   apiVersion: '2021-10-21',
   useCDN: false,
 })
-const addWeeks = require('date-fns/addWeeks')
+
 const addMinutes = require('date-fns/addMinutes')
 const addDays = require('date-fns/addDays')
 const getDay = require('date-fns/getDay')
-const getISODay = require('date-fns/getISODay')
 const parseISO = require('date-fns/parseISO')
 const formatISO = require('date-fns/formatISO')
 const differenceInMinutes = require('date-fns/differenceInMinutes')
